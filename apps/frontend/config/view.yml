@@ -3,13 +3,13 @@ default:
     content-type: text/html
 
   metas:
-    #title:        symfony project
+    title:        SILICIO
     #description:  symfony project
     #keywords:     symfony, project
-    #language:     en
+    language:     es
     #robots:       index, follow
 
-  stylesheets:    [main.css]
+  stylesheets:    [ext-all.css]
 
   javascripts:    []
 
