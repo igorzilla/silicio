@@ -9,9 +9,9 @@ default:
     language:     es
     #robots:       index, follow
 
-  stylesheets:    [ext-all.css]
+  stylesheets:    [ext/ext-all.css]
 
-  javascripts:    []
+  javascripts:    [ext/adapter/ext/ext-base.js, ext/ext-all-debug.js]
 
   has_layout:     on
   layout:         layout
