@@ -1,5 +1,14 @@
 <script>
 Ext.onReady(function() {
-	Ext.Msg.alert('Hola', 'Mundo');
+	iniciar();
 });
+
 </script>
+<div id="paintarea" style="position:relative;width:3000px;height:3000px;">
+</div>
+<div id="AND" class="compuerta">
+<?php echo image_tag('AND.gif');?>
+</div>
+<div id="OR" class="compuerta">
+<?php echo image_tag('OR.gif');?>
+</div>
