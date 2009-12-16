@@ -83,5 +83,12 @@ function iniciar() {
 		height: 100,
 		border: false
 	});
+	compuertas.add({
+		xtype: 'panel',
+		contentEl: 'NOT',
+		width: 200,
+		height: 100,
+		border: false
+	});
 	compuertas.doLayout();
 }

@@ -12,3 +12,6 @@ Ext.onReady(function() {
 <div id="OR" class="compuerta">
 <?php echo image_tag('OR.gif');?>
 </div>
+<div id="NOT" class="compuerta">
+<?php echo image_tag('NOT.gif');?>
+</div>
