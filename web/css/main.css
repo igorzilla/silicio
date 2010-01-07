@@ -1,0 +1,9 @@
+.gates_cover {
+	padding-left: 66px;
+	padding-top: 32px;
+}
+
+.gate {
+	cursor: move;
+	width: 67px;
+}
