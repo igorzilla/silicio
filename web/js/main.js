@@ -70,11 +70,12 @@ function buildWorkArea(){
         height: 100,
         border: false
     });
-//    workflow.scrollArea = document.getElementById("paintarea").parentNode;
+    //    workflow.scrollArea = document.getElementById("paintarea").parentNode;
     new Ext.dd.DragSource("AND");
     new Ext.dd.DropTarget("paintarea", {
         notifyDrop: function(source, event, data){
-            workflow.addFigure(new draw2d.ImageFigure("/images/AND.gif"), event.xy[0] - workflow.getAbsoluteX(), event.xy[1] - workflow.getAbsoluteY());
+            //            workflow.addFigure(new draw2d.ImageFigure("/images/AND.gif"), event.xy[0] - workflow.getAbsoluteX(), event.xy[1] - workflow.getAbsoluteY());
+			workflow.addFigure(new AndGate(workflow),event.xy[0] - workflow.getAbsoluteX(), event.xy[1] - workflow.getAbsoluteY());            
             return true;
         }
     });
