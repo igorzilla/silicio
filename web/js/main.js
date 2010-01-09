@@ -1,7 +1,7 @@
 function buildWorkArea(){
     var workflow = new draw2d.Workflow("paintarea");
     workflow.setBackgroundImage("/images/grid_10.png", true);
-    var gates = new Ext.Panel({
+    var toolsPanel = new Ext.Panel({
         region: 'west',
         xtype: 'panel',
         split: true,
@@ -9,7 +9,7 @@ function buildWorkArea(){
         collapsible: true,
         collapseMode: 'mini',
         minSize: 200,
-        title: 'Compuertas'
+        title: 'Herramientas'
     });
     var viewport = new Ext.Viewport({
         layout: 'border',
@@ -58,40 +58,56 @@ function buildWorkArea(){
                     }]
                 }]
             }]
-        }, gates, {
+        }, toolsPanel, {
             region: 'center',
             xtype: 'panel',
             contentEl: "paintarea"
         }]
     });
-    gates.add({
+    //    workflow.scrollArea = document.getElementById("paintarea").parentNode;
+    toolsPanel.add({
         contentEl: 'AND_cover',
         width: 200,
         height: 100,
         border: false
     });
-    //    workflow.scrollArea = document.getElementById("paintarea").parentNode;
-    new Ext.dd.DragSource("AND");
+    toolsPanel.add({
+        xtype: 'panel',
+        contentEl: 'OR_cover',
+        width: 200,
+        height: 100,
+        border: false
+    });
+    toolsPanel.add({
+        xtype: 'panel',
+        contentEl: 'NOT_cover',
+        width: 200,
+        height: 100,
+        border: false
+    });
+    new Ext.dd.DragSource("AND", {
+        dragData: {
+            className: 'AndGate'
+        }
+    });
+    new Ext.dd.DragSource("OR", {
+        dragData: {
+            className: 'OrGate'
+        }
+    });
+    new Ext.dd.DragSource("NOT", {
+        dragData: {
+            className: 'NotGate'
+        }
+    });
     new Ext.dd.DropTarget("paintarea", {
         notifyDrop: function(source, event, data){
-            //            workflow.addFigure(new draw2d.ImageFigure("/images/AND.gif"), event.xy[0] - workflow.getAbsoluteX(), event.xy[1] - workflow.getAbsoluteY());
-			workflow.addFigure(new AndGate(workflow),event.xy[0] - workflow.getAbsoluteX(), event.xy[1] - workflow.getAbsoluteY());            
+			xCoordinate = event.xy[0] - workflow.getAbsoluteX();
+			yCoordinate = event.xy[1] - workflow.getAbsoluteY();
+			figure = eval('new ' + data.className + '(workflow)');
+            workflow.addFigure(figure, xCoordinate, yCoordinate);
             return true;
         }
     });
-    gates.add({
-        xtype: 'panel',
-        contentEl: 'OR',
-        width: 200,
-        height: 100,
-        border: false
-    });
-    gates.add({
-        xtype: 'panel',
-        contentEl: 'NOT',
-        width: 200,
-        height: 100,
-        border: false
-    });
-    gates.doLayout();
+    toolsPanel.doLayout();
 }

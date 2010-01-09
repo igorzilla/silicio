@@ -12,6 +12,6 @@ Ext.onReady(function() {
 <div id="OR_cover" class="gates_cover">
 <div id="OR" class="gate"><?php echo image_tag('OR.gif');?></div>
 </div>
-<div id="AND_cover" class="gates_cover">
+<div id="NOT_cover" class="gates_cover">
 <div id="NOT" class="gate"><?php echo image_tag('NOT.gif');?></div>
 </div>
