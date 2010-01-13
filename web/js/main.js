@@ -11,6 +11,13 @@ function buildWorkArea(){
         minSize: 200,
         title: 'Herramientas'
     });
+    var saveAction = new Ext.Action({
+        text: 'Guardar',
+        handler: function(){
+            var serializer = new Serializer(workflow.getDocument().getFigures());
+						alert(serializer.serializeInXML());
+        }
+    });
     var viewport = new Ext.Viewport({
         layout: 'border',
         renderTo: Ext.getBody(),
@@ -29,9 +36,7 @@ function buildWorkArea(){
                         text: 'Nuevo diseño'
                     }, {
                         text: 'Abrir'
-                    }, {
-                        text: 'Guardar'
-                    }, {
+                    }, saveAction, {
                         text: 'Cerrar sesión'
                     }]
                 }, '-', {
@@ -102,9 +107,9 @@ function buildWorkArea(){
     });
     new Ext.dd.DropTarget("paintarea", {
         notifyDrop: function(source, event, data){
-			xCoordinate = event.xy[0] - workflow.getAbsoluteX();
-			yCoordinate = event.xy[1] - workflow.getAbsoluteY();
-			figure = eval('new ' + data.className + '(workflow)');
+            var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
+            var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
+            var figure = eval('new ' + data.className + '(workflow)');
             workflow.addFigure(figure, xCoordinate, yCoordinate);
             return true;
         }
