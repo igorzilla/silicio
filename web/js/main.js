@@ -14,13 +14,14 @@ function buildWorkArea(){
   var saveAction = new Ext.Action({
     text: 'Guardar',
     handler: function(){
-			var validator = new Validator(workflow.getDocument().getFigures());
-			if (validator.isValid()) {
-				var serializer = new Serializer(workflow.getDocument().getFigures());
-				alert(serializer.serializeToXML());
+			var design = new Design(workflow.getDocument().getFigures());
+			var xmlDesignCode = design.toXML();
+			if(xmlDesignCode!=null) {
+				Ext.Msg.alert('Código XML', xmlDesignCode);
 			}
 			else {
-				alert(validator.getErrorMessage());
+				var errorMessage = design.getErrorMessage();
+				Ext.Msg.alert('Error', errorMessage);
 			}
     }
   });
