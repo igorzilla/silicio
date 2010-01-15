@@ -42,6 +42,20 @@ Component = function(){
     }
     return xml;
   }
+	
+	this.arePortsConnected = function() {
+		for(var i=0;i<this.inputPorts.length;i++){
+			if(this.inputPorts[i].getConnections().getSize()==0) {
+				return false;
+			}
+		}
+		for(var i=0;i<this.outputPorts.length;i++){
+			if(this.outputPorts[i].getConnections().getSize()==0) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
 
 Component.prototype = new draw2d.ImageFigure;

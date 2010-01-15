@@ -14,8 +14,14 @@ function buildWorkArea(){
   var saveAction = new Ext.Action({
     text: 'Guardar',
     handler: function(){
-      var serializer = new Serializer(workflow.getDocument().getFigures());
-      alert(serializer.serializeInXML());
+			var validator = new Validator(workflow.getDocument().getFigures());
+			if (validator.isValid()) {
+				var serializer = new Serializer(workflow.getDocument().getFigures());
+				alert(serializer.serializeToXML());
+			}
+			else {
+				alert(validator.getErrorMessage());
+			}
     }
   });
   var viewport = new Ext.Viewport({
