@@ -19,6 +19,6 @@ TwoInputBasicGate = function(workflow){
   this.addPort(this.outputPorts[0], 67, 17);
 }
 
-TwoInputBasicGate.prototype = new draw2d.ImageFigure;
+TwoInputBasicGate.prototype = new Component;
 TwoInputBasicGate.prototype.constructor = TwoInputBasicGate;
 TwoInputBasicGate.prototype.type = 'TwoInputBasicGate';

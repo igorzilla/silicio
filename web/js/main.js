@@ -1,7 +1,42 @@
-function buildWorkArea(){
-  var workflow = new draw2d.Workflow("paintarea");
-  workflow.setBackgroundImage("/images/grid_10.png", true);
-  var toolsPanel = new Ext.Panel({
+MainController = function () {
+	this.workflow = null;
+	this.basicGatesPanel = null;
+	this.toolsPanel = null;
+}
+
+MainController.prototype.buildWorkflow = function () {
+	this.workflow = new draw2d.Workflow("paintarea");
+  this.workflow.setBackgroundImage("/images/grid.png", true);
+}
+
+MainController.prototype.buildToolsPanel = function () {
+	this.basicGatesPanel = new Ext.Panel({
+    split: true,
+    width: 200,
+    minSize: 200,
+    title: 'Compuertas básicas'
+  });
+  this.basicGatesPanel.add({
+    contentEl: 'AND_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  this.basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'OR_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  this.basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'NOT_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  this.toolsPanel = new Ext.Panel({
     region: 'west',
     xtype: 'panel',
     split: true,
@@ -9,23 +44,30 @@ function buildWorkArea(){
     collapsible: true,
     collapseMode: 'mini',
     minSize: 200,
-    title: 'Herramientas'
+    title: 'Herramientas',
+    layout: 'accordion',
+    items: [this.basicGatesPanel]
   });
+	this.toolsPanel.doLayout();
+}
+
+MainController.prototype.buildWorkArea = function(){
+	var workflow = this.workflow;
   var saveAction = new Ext.Action({
     text: 'Guardar',
     handler: function(){
-			var design = new Design(workflow.getDocument().getFigures());
-			var xmlDesignCode = design.toXML();
-			if(xmlDesignCode!=null) {
-				Ext.Msg.alert('Código XML', xmlDesignCode);
-			}
-			else {
-				var errorMessage = design.getErrorMessage();
-				Ext.Msg.alert('Error', errorMessage);
-			}
+      var design = new Design(workflow.getDocument().getFigures());
+      var xmlDesignCode = design.toXML();
+      if (xmlDesignCode != null) {
+        Ext.Msg.alert('Código XML', xmlDesignCode);
+      }
+      else {
+        var errorMessage = design.getErrorMessage();
+        Ext.Msg.alert('Error', errorMessage);
+      }
     }
   });
-  var viewport = new Ext.Viewport({
+  this.viewport = new Ext.Viewport({
     layout: 'border',
     renderTo: Ext.getBody(),
     items: [{
@@ -70,33 +112,13 @@ function buildWorkArea(){
           }]
         }]
       }]
-    }, toolsPanel, {
+    }, this.toolsPanel, {
       region: 'center',
       xtype: 'panel',
       contentEl: "paintarea"
     }]
   });
   //    workflow.scrollArea = document.getElementById("paintarea").parentNode;
-  toolsPanel.add({
-    contentEl: 'AND_cover',
-    width: 200,
-    height: 100,
-    border: false
-  });
-  toolsPanel.add({
-    xtype: 'panel',
-    contentEl: 'OR_cover',
-    width: 200,
-    height: 100,
-    border: false
-  });
-  toolsPanel.add({
-    xtype: 'panel',
-    contentEl: 'NOT_cover',
-    width: 200,
-    height: 100,
-    border: false
-  });
   new Ext.dd.DragSource("AND", {
     dragData: {
       className: 'AndGate'
@@ -112,6 +134,7 @@ function buildWorkArea(){
       className: 'NotGate'
     }
   });
+	var workflow = this.workflow;
   new Ext.dd.DropTarget("paintarea", {
     notifyDrop: function(source, event, data){
       var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
@@ -121,5 +144,6 @@ function buildWorkArea(){
       return true;
     }
   });
-  toolsPanel.doLayout();
+  
+  this.workflow.getCommandStack().addCommandStackEventListener(new CommandListener());
 }

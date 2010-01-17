@@ -4,6 +4,6 @@ AndGate = function(workflow){
 	this.setDimension(67, 35);
 }
 
-AndGate.prototype = new draw2d.ImageFigure;
+AndGate.prototype = new TwoInputBasicGate;
 AndGate.prototype.constructor = AndGate;
 AndGate.prototype.type = 'AndGate';

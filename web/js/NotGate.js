@@ -16,6 +16,6 @@ NotGate = function(workflow){
   this.addPort(this.outputPorts[0], 67, 17);
 }
 
-NotGate.prototype = new draw2d.ImageFigure;
+NotGate.prototype = new Component;
 NotGate.prototype.constructor = NotGate;
 NotGate.prototype.type = 'NotGate';

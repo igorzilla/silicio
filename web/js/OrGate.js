@@ -4,6 +4,6 @@ OrGate = function(workflow){
 		this.setDimension(67, 35);
 }
 
-OrGate.prototype = new draw2d.ImageFigure;
+OrGate.prototype = new TwoInputBasicGate;
 OrGate.prototype.constructor = OrGate;
 OrGate.prototype.type = 'OrGate';

@@ -1,10 +1,13 @@
 <script>
 Ext.onReady(function() {
-	buildWorkArea();
+	var mainController = new MainController();
+	mainController.buildWorkflow();
+	mainController.buildToolsPanel();
+	mainController.buildWorkArea();
 });
-
 </script>
-<div id="paintarea"
+<div
+	id="paintarea"
 	style="position: relative; width: 3000px; height: 3000px;"></div>
 <div id="AND_cover" class="gates_cover">
 <div id="AND" class="gate"><?php echo image_tag('AND.gif');?></div>
