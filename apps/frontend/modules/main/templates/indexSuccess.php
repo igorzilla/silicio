@@ -1,9 +1,11 @@
 <script>
 Ext.onReady(function() {
-	var mainController = new MainController();
+	mainController = new MainController();
 	mainController.buildWorkflow();
 	mainController.buildToolsPanel();
+	mainController.buildToolBar();
 	mainController.buildWorkArea();
+	mainController.turnOnDragAndDrop();
 });
 </script>
 <div

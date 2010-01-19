@@ -6,14 +6,12 @@ Design = function(components){
 Design.prototype.isValid = function(){
   //Rule 1: All ports of all components must be connected   
   for (var i = 0; i < this.components.getSize(); i++) {
-		alert(this.components.get(i).type);
     if (!this.components.get(i).arePortsConnected()) {
       this.errorMessage = 'Todos los componentes deben estar conectados';
       return false;
     }
   }
-  //Rule 2: Must be only one connection per input port (validated in real time through CommandListener)
-	
+  //Rule 2: There must be only one connection per input port (validated in real time through RealTimeValidator)
   return true;
 }
 
