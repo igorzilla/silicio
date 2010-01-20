@@ -32,8 +32,8 @@ Design.prototype.toXML = function(){
     componentsXml = componentsXml + figure.toXML();
     connectionsXml = connectionsXml + figure.outputConnectionsToXML();
   }
-  componentsXml = componentsXml + '<components>';
-  connectionsXml = connectionsXml + '<connections>';
+  componentsXml = componentsXml + '</components>';
+  connectionsXml = connectionsXml + '</connections>';
   xml = xml + componentsXml + connectionsXml;
   xml = xml + '</design>';
   return xml;

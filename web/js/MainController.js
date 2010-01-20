@@ -78,17 +78,18 @@ MainController.prototype.buildToolBar = function(){
       var design = new Design(workflow.getDocument().getFigures());
       var xmlDesignCode = design.toXML();
       if (xmlDesignCode != null) {
-        //        Ext.Msg.alert('Código XML', xmlDesignCode);
         Ext.Ajax.request({
           url: '/index.php/designsManagement/saveDesign',
           params: {
             xml_design_code: xmlDesignCode
           },
           success: function(result, request){
-						Ext.Msg.alert('Exito', result.responseText);          
+            if(result.responseText!='Ok') {
+							mainController.generateError(result.responseText);
+						}
           },
           failure: function(result, request){
-						mainController.generateError('Falló petición AJAX: '+result.statusText);        
+            mainController.generateError(result.statusText);
           }
         });
       }

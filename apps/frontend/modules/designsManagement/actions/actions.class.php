@@ -18,7 +18,14 @@ class designsManagementActions extends sfActions
   public function executeSaveDesign(sfWebRequest $request)
   {
     if($request->isMethod('post')) {
-      return $this->renderText($request->getParameter('xml_design_code'));
+      $xmlDesignCode = $request->getParameter('xml_design_code');
+      $wellFormed = XMLEngine::isWellFormed($xmlDesignCode);
+      if($wellFormed===true) {
+        return $this->renderText('Ok');
+      }
+      else {
+        return $this->renderText($wellFormed);
+      }
     }
     else {
       return sfView::NONE;
