@@ -7,3 +7,10 @@
 	cursor: move;
 	width: 67px;
 }
+
+input.x-form-invalid {
+	background-color: #FFFFFF;
+	border-color: #CB9494;
+	background-image: url(/images/invalid-text-bg.gif);
+	background-position: 0px 0px;
+}

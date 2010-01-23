@@ -9,17 +9,19 @@ AuthenticationController.prototype.buildForm = function(){
     id: 'form',
     url: 'authentication/login',
     frame: true,
-    title: 'SILICIO',
+    title: 'Bienvenido a SILICIO',
     width: 300,
     defaultType: 'textfield',
     labelWidth: 113,
     items: [{
       fieldLabel: 'Nombre de usuario',
-      name: 'username'
+      name: 'user[username]',
+			allowBlank: false
     }, {
       fieldLabel: 'Contraseña',
-      name: 'password',
-      inputType: 'password'
+      name: 'user[password]',
+      inputType: 'password',
+			allowBlank: false
     }],
     buttons: [{
       text: 'Crear cuenta'
@@ -28,10 +30,10 @@ AuthenticationController.prototype.buildForm = function(){
       handler: function(){
         form.getForm().submit({
           success: function(form, action){
-            Maincontroller.generateError(action.result.msg);
+            MainController.generateError(action.result.message);
           },
           failure: function(form, action){
-            Maincontroller.generateError(action.result.msg);
+            MainController.generateError(action.result.message);
           }
         });
       }
