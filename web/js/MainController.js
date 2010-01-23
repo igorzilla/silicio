@@ -84,12 +84,12 @@ MainController.prototype.buildToolBar = function(){
             xml_design_code: xmlDesignCode
           },
           success: function(result, request){
-            if(result.responseText!='Ok') {
-							mainController.generateError(result.responseText);
-						}
+            if (result.responseText != 'Ok') {
+              MainController.generateError(result.responseText);
+            }
           },
           failure: function(result, request){
-            mainController.generateError(result.statusText);
+            MainController.generateError(result.statusText);
           }
         });
       }
@@ -182,6 +182,6 @@ MainController.prototype.turnOnDragAndDrop = function(){
   });
 }
 
-MainController.prototype.generateError = function(message){
+MainController.generateError = function(message){
   Ext.Msg.alert('Error', message);
 }
