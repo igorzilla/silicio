@@ -26,8 +26,14 @@ class authenticationActions extends sfActions
       $form->bind($user);
       $result = array();
       if($form->isValid()) {
-        $result['success'] = true;
-        $result['message'] = 'Los datos son válidos';
+        if($user['username']=='pedroabp' && $user['password']=='contraseña') {
+          $this->getUser()->setAuthenticated(true);
+          $result['success'] = true;
+        }
+        else {
+          $result['success'] = false;
+          $result['message'] = 'El usuario y contraseña no coinciden';
+        }
       }
       else {
         $result['success'] = false;
@@ -43,5 +49,12 @@ class authenticationActions extends sfActions
     else {
       return sfView::NONE;
     }
+  }
+  
+  public function executeLogout(sfWebRequest $request) {
+  	if($this->getUser()->isAuthenticated()) {
+  	  $this->getUser()->setAuthenticated(false);
+  	}
+  	return sfView::NONE;
   }
 }

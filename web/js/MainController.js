@@ -95,8 +95,22 @@ MainController.prototype.buildToolBar = function(){
       }
       else {
         var errorMessage = design.getErrorMessage();
-        mainController.generateError(errorMessage);
+        MainController.generateError(errorMessage);
       }
+    }
+  });
+  var closeSessionAction = new Ext.Action({
+    text: 'Cerrar sesión',
+    handler: function(){
+      Ext.Ajax.request({
+        url: MainController.getAbsoluteUrl('authentication', 'logout'),
+        success: function(result, request){
+          document.location = MainController.getAbsoluteUrl('authentication', 'index');
+        },
+        failure: function(result, request){
+          MainController.generateError(result.statusText);
+        }
+      });
     }
   });
   this.toolBar = new Ext.Toolbar({
@@ -108,9 +122,7 @@ MainController.prototype.buildToolBar = function(){
         text: 'Nuevo diseño'
       }, {
         text: 'Abrir'
-      }, saveAction, {
-        text: 'Cerrar sesión'
-      }]
+      }, saveAction, closeSessionAction]
     }, '-', {
       xtype: 'button',
       text: 'Editar',
@@ -184,4 +196,8 @@ MainController.prototype.turnOnDragAndDrop = function(){
 
 MainController.generateError = function(message){
   Ext.Msg.alert('Error', message);
+}
+
+MainController.getAbsoluteUrl = function(moduleName, actionName){
+  return urlPrefix + moduleName + '/' + actionName;
 }

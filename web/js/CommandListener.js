@@ -12,7 +12,7 @@ CommandListener.prototype.stackChanged = function(event){
     var command = event.getCommand();
     if (!this.realTimeValidator.isValid(command)) {
       command.undo();
-			mainController.generateError('Solo una conexión por cada puerto de entrada');
+			MainController.generateError('Solo una conexión por cada puerto de entrada');
     }
   }
 }
