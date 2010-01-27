@@ -17,31 +17,42 @@ class authenticationActions extends sfActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-
+    if($this->getUser()->isAuthenticated()) {
+      $this->redirect('main/index');
+    }
   }
   public function executeLogin(sfWebRequest $request) {
-    if($request->isMethod('post')) {
+    $isPost = $request->isMethod('post');
+    if($isPost) {
       $form = new AuthenticationForm();
-      $user = $request->getParameter('user');
-      $form->bind($user);
+      $userData = $request->getParameter('user');
+      $form->bind($userData);
       $result = array();
-      if($form->isValid()) {
-        if($user['username']=='pedroabp' && $user['password']=='contraseña') {
-          $this->getUser()->setAuthenticated(true);
-          $result['success'] = true;
+      $isValid = $form->isValid();
+      if($isValid) {
+        $user = $this->getUser();
+        $isAuthenticated = $user->isAuthenticated();
+        if($isAuthenticated) {
+          return sfView::NONE;
         }
         else {
-          $result['success'] = false;
-          $result['message'] = 'El usuario y contraseña no coinciden';
+          if($userData['username']=='pedroabp' && $userData['password']=='contraseña'){ 
+            $user->setAuthenticated(true);
+            $result['success'] = true;
+          }
+          else {
+            $result['success'] = false;
+            $result['message'] = 'El usuario y contraseña no coinciden';
+          }
         }
       }
       else {
         $result['success'] = false;
         foreach ($form as $field) {
-        	if($field->hasError()) {
-        	  $result['message'] = $field->getError()->__toString();
-        	  break;        	  
-        	}
+          if($field->hasError()) {
+            $result['message'] = $field->getError()->__toString();
+            break;
+          }
         }
       }
       return $this->renderText(json_encode($result));
@@ -50,11 +61,11 @@ class authenticationActions extends sfActions
       return sfView::NONE;
     }
   }
-  
+
   public function executeLogout(sfWebRequest $request) {
-  	if($this->getUser()->isAuthenticated()) {
-  	  $this->getUser()->setAuthenticated(false);
-  	}
-  	return sfView::NONE;
+    if($this->getUser()->isAuthenticated()) {
+      $this->getUser()->setAuthenticated(false);
+    }
+    return sfView::NONE;
   }
 }

@@ -13,9 +13,9 @@ all:
     class:        sfPropelDatabase
     param:
       classname:  PropelPDO
-      dsn:        mysql:dbname=silicio;host=localhost
-      username:   root
-      password:   
+      dsn:        pgsql:dbname=silicio_db;host=localhost
+      username:   silicio_system
+      password:   silicio_password
       encoding:   utf8
       persistent: true
       pooling:    true

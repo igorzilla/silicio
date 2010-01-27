@@ -74,6 +74,7 @@ MainController.prototype.buildToolBar = function(){
   var workflow = this.workflow;
   var saveAction = new Ext.Action({
     text: 'Guardar',
+		iconCls: 'save_action',
     handler: function(){
       var design = new Design(workflow.getDocument().getFigures());
       var xmlDesignCode = design.toXML();
@@ -101,6 +102,7 @@ MainController.prototype.buildToolBar = function(){
   });
   var closeSessionAction = new Ext.Action({
     text: 'Cerrar sesión',
+		iconCls: 'close_session_action',
     handler: function(){
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),

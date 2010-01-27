@@ -7,10 +7,14 @@ AuthenticationController.prototype.buildForm = function(){
   
   var authenticateAction = new Ext.Action({
     text: 'Autenticar',
+		iconCls: 'authenticate_action',
+		iconAlign: 'top',
+		scale: 'large',
     handler: function(){
-      form.getForm().submit({
+			var basicForm = form.getForm();
+      basicForm.submit({
         success: function(form, action){
-					document.location = MainController.getAbsoluteUrl('main','index');
+          document.location = MainController.getAbsoluteUrl('main', 'index');
         },
         failure: function(form, action){
           var errorMessage = '';
@@ -30,10 +34,26 @@ AuthenticationController.prototype.buildForm = function(){
       });
     }
   });
+	
+  var createAccountAction = new Ext.Action({
+    text: 'Crear cuenta',
+		iconCls: 'create_account_action',
+		iconAlign: 'top',
+		scale: 'large',
+    handler: function(){
+			
+    }
+  });
+  
+  var onEnterPress = function(f, e){
+    if (e.getKey() == e.ENTER) {
+      authenticateAction.execute();
+    }
+  }
   
   var form = new Ext.FormPanel({
     id: 'form',
-		url: MainController.getAbsoluteUrl('authentication','login'),
+    url: MainController.getAbsoluteUrl('authentication', 'login'),
     frame: true,
     title: 'Bienvenido a SILICIO',
     width: 300,
@@ -42,16 +62,20 @@ AuthenticationController.prototype.buildForm = function(){
     items: [{
       fieldLabel: 'Nombre de usuario',
       name: 'user[username]',
-      allowBlank: false
+      allowBlank: false,
+      listeners: {
+        specialkey: onEnterPress
+      }
     }, {
       fieldLabel: 'Contraseña',
       name: 'user[password]',
       inputType: 'password',
-      allowBlank: false
+      allowBlank: false,
+      listeners: {
+        specialkey: onEnterPress
+      }
     }],
-    buttons: [{
-      text: 'Crear cuenta'
-    }, authenticateAction]
+    buttons: [createAccountAction, authenticateAction]
   });
   
   form.render(Ext.getBody());
