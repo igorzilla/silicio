@@ -4,3 +4,5 @@ Ext.onReady(function() {
 	authenticationController.buildForm();
 });
 </script>
+<div id="create_acount_div">
+</div>

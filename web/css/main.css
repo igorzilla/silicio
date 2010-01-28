@@ -30,3 +30,11 @@ input.x-form-invalid {
 .save_action {
   background-image: url(/images/floppy.png) !important;
 }
+
+.forgot_password_action {
+	background-image: url(/images/light.png) !important;
+}
+
+.cancel_action {
+  background-image: url(/images/cancel.png) !important;
+}

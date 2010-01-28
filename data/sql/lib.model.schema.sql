@@ -1,21 +1,22 @@
 
 -----------------------------------------------------------------------------
--- user
+-- system_user
 -----------------------------------------------------------------------------
 
-DROP TABLE "user" CASCADE;
+DROP TABLE "system_user" CASCADE;
 
 
-CREATE TABLE "user"
+CREATE TABLE "system_user"
 (
 	"username" VARCHAR(30)  NOT NULL,
+	"password" VARCHAR(40)  NOT NULL,
 	"first_name" VARCHAR(30)  NOT NULL,
 	"last_name" VARCHAR(30)  NOT NULL,
 	"email" VARCHAR(320)  NOT NULL,
 	PRIMARY KEY ("username")
 );
 
-COMMENT ON TABLE "user" IS '';
+COMMENT ON TABLE "system_user" IS '';
 
 
 SET search_path TO public;
@@ -38,4 +39,4 @@ COMMENT ON TABLE "design" IS '';
 
 
 SET search_path TO public;
-ALTER TABLE "design" ADD CONSTRAINT "design_FK_1" FOREIGN KEY ("owner") REFERENCES "user" ("username") ON DELETE CASCADE;
+ALTER TABLE "design" ADD CONSTRAINT "design_FK_1" FOREIGN KEY ("owner") REFERENCES "system_user" ("username") ON DELETE CASCADE;

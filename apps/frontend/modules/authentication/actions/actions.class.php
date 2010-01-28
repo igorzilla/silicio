@@ -36,7 +36,8 @@ class authenticationActions extends sfActions
           return sfView::NONE;
         }
         else {
-          if($userData['username']=='pedroabp' && $userData['password']=='contraseña'){ 
+          $coincide = UserPeer::coincide($userData['username'],$userData['password']);
+          if($coincide){
             $user->setAuthenticated(true);
             $result['success'] = true;
           }

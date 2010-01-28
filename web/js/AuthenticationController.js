@@ -5,16 +5,147 @@ AuthenticationController = function(){
 AuthenticationController.prototype.buildForm = function(){
   Ext.QuickTips.init();
   
+  //  var forgotPasswordAction = new Ext.Action({
+  //    text: '¿Olvidó su contraseña?',
+  //    iconCls: 'forgot_password_action',
+  //    iconAlign: 'top',
+  //    scale: 'large',
+  //    enableToggle: true,
+  //    handler: function(){
+  //      if (forgotPasswordForm.hidden) {
+  //        forgotPasswordForm.show();
+  //      }
+  //      else {
+  //        forgotPasswordForm.hide();
+  //      }
+  //    }
+  //  });
+  
+  var popup;
+  
+  var createAccountAction = new Ext.Action({
+    text: 'Crear cuenta',
+    iconCls: 'create_account_action',
+    iconAlign: 'top',
+    scale: 'large',
+    handler: function(){
+      if (!popup) {
+        var createAccountForm = new Ext.FormPanel({
+          id: 'create_account_form',
+          url: MainController.getAbsoluteUrl('authentication', 'createAccount'),
+          frame: true,
+          header: false,
+          width: 320,
+          defaultType: 'textfield',
+          labelWidth: 140,
+          items: [{
+            fieldLabel: 'Nombres',
+            name: 'user[first_name]',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            fieldLabel: 'Apellidos',
+            name: 'user[last_name]',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            fieldLabel: 'Email',
+            name: 'user[email]',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            fieldLabel: 'Repetir email',
+            name: 'user[email_repetition]',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            fieldLabel: 'Nombre de usuario',
+            name: 'user[username]',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            fieldLabel: 'Contraseña',
+            name: 'user[password]',
+            inputType: 'password',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            fieldLabel: 'Repetir contraseña',
+            name: 'user[password_repetition]',
+            inputType: 'password',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }, {
+            xtype: 'panel',
+            html: '<img src="/images/bgcaptcha.gif" style="padding-left: 145px; padding-top: 6px; padding-bottom: 10px;"></img>'
+          }, {
+            fieldLabel: 'Código de verificación',
+            name: 'user[captcha]',
+            allowBlank: false,
+            listeners: {
+              specialkey: onEnterPress
+            }
+          }]
+        });
+        popup = new Ext.Window({
+          applyTo: 'create_acount_div',
+          title: 'Crear cuenta de usuario',
+          layout: 'fit',
+          width: 340,
+          height: 380,
+					x: 0,
+					y: 0,
+          closeAction: 'hide',
+          resizable: false,
+          items: [createAccountForm],
+					buttonAlign: 'center',
+          buttons: [{
+            text: 'Cancelar',
+            iconCls: 'cancel_action',
+            iconAlign: 'top',
+            scale: 'large',
+          },{
+            text: 'Crear',
+            iconCls: 'create_account_action',
+            iconAlign: 'top',
+            scale: 'large',
+          }]
+        });
+      }
+      if (popup.hidden) {
+        popup.show('authenticate_form');
+      }
+      else {
+        popup.hide('authenticate_form');
+      }
+    }
+  });
+  
   var authenticateAction = new Ext.Action({
     text: 'Autenticar',
-		iconCls: 'authenticate_action',
-		iconAlign: 'top',
-		scale: 'large',
+    iconCls: 'authenticate_action',
+    iconAlign: 'top',
+    scale: 'large',
     handler: function(){
-			var basicForm = form.getForm();
+      var basicForm = authenticateForm.getForm();
       basicForm.submit({
         success: function(form, action){
-          document.location = MainController.getAbsoluteUrl('main', 'index');
+          var mainActionUrl = MainController.getAbsoluteUrl('main', 'index');
+          MainController.redirect(mainActionUrl);
         },
         failure: function(form, action){
           var errorMessage = '';
@@ -34,16 +165,6 @@ AuthenticationController.prototype.buildForm = function(){
       });
     }
   });
-	
-  var createAccountAction = new Ext.Action({
-    text: 'Crear cuenta',
-		iconCls: 'create_account_action',
-		iconAlign: 'top',
-		scale: 'large',
-    handler: function(){
-			
-    }
-  });
   
   var onEnterPress = function(f, e){
     if (e.getKey() == e.ENTER) {
@@ -51,14 +172,14 @@ AuthenticationController.prototype.buildForm = function(){
     }
   }
   
-  var form = new Ext.FormPanel({
-    id: 'form',
+  var authenticateForm = new Ext.FormPanel({
+    id: 'authenticate_form',
     url: MainController.getAbsoluteUrl('authentication', 'login'),
     frame: true,
     title: 'Bienvenido a SILICIO',
-    width: 300,
+    width: 320,
     defaultType: 'textfield',
-    labelWidth: 113,
+    labelWidth: 140,
     items: [{
       fieldLabel: 'Nombre de usuario',
       name: 'user[username]',
@@ -75,9 +196,34 @@ AuthenticationController.prototype.buildForm = function(){
         specialkey: onEnterPress
       }
     }],
-    buttons: [createAccountAction, authenticateAction]
+    buttonAlign: 'center',
+    buttons: [ //		forgotPasswordAction, 
+createAccountAction, authenticateAction]
   });
   
-  form.render(Ext.getBody());
-  Ext.get('form').center();
+  //  var forgotPasswordForm = new Ext.FormPanel({
+  //    id: 'forgot_password_form',
+  //    url: MainController.getAbsoluteUrl('authentication', 'login'),
+  //    frame: true,
+  //    title: '¿Olvidó su contraseña?',
+  //    width: 320,
+  //    labelWidth: 140,
+  //    defaultType: 'textfield',
+  //    hidden: true,
+  //    items: [{
+  //      fieldLabel: 'Email'
+  //    }]
+  //  });
+  
+  var panel = new Ext.Panel({
+    id: 'panel',
+    frame: true,
+    layout: 'form',
+    width: 332,
+    items: [authenticateForm, //		forgotPasswordForm
+ ]
+  });
+  
+  panel.render(Ext.getBody());
+  Ext.get('panel').center();
 }

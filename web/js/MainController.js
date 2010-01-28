@@ -107,7 +107,8 @@ MainController.prototype.buildToolBar = function(){
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
         success: function(result, request){
-          document.location = MainController.getAbsoluteUrl('authentication', 'index');
+					var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index'); 
+          document.location = authenticationAction;
         },
         failure: function(result, request){
           MainController.generateError(result.statusText);
@@ -202,4 +203,8 @@ MainController.generateError = function(message){
 
 MainController.getAbsoluteUrl = function(moduleName, actionName){
   return urlPrefix + moduleName + '/' + actionName;
+}
+
+MainController.redirect = function (url) {
+	document.location = url;
 }

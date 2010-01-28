@@ -1,12 +1,13 @@
 propel:
-  user:
+  system_user:
     _attributes: { phpName: User }
     username: { type: varchar(30), required: true, primaryKey: true }
+    password: { type: varchar(40), required: true }
     first_name: { type: varchar(30), required: true }
     last_name: { type: varchar(30), required: true }
     email: { type: varchar(320), required: true }
   design:
     _attributes: { phpName: Design }
     id: { type: integer, required: true, primaryKey: true, autoIncrement: true }
-    owner: { type: varchar(30), required: true, foreignTable: user, foreignReference: username, onDelete: cascade }
+    owner: { type: varchar(30), required: true, foreignTable: system_user, foreignReference: username, onDelete: cascade }
     xml_code: longvarchar
