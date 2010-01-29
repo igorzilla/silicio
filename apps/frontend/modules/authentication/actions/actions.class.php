@@ -69,4 +69,25 @@ class authenticationActions extends sfActions
     }
     return sfView::NONE;
   }
+  
+  public function executeGenerateCaptcha() {
+    $response = $this->getResponse();
+    $response->setContentType("image/gif");
+    $response->send();
+
+    $alphabet = "1234567890abcdefghijklmnopqrstuvwxyz";
+    $key = "";
+    $captcha_length = 8;
+    for($i=0;$i<$captcha_length;$i++) {
+      $key .= $alphabet{rand(0,strlen($alphabet)-1)};
+    }
+
+    $this->getUser()->setAttribute('captcha',$key);
+
+    $captcha = imagecreatefromgif("images/bgcaptcha.gif");
+    $colText = imagecolorallocate($captcha, 0, 0, 0);
+    imagestring($captcha, 5, 16, 7, $key, $colText);
+    imagegif($captcha);
+    return sfView::NONE;
+  }
 }

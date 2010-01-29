@@ -1,40 +1,46 @@
 .gates_cover {
-	padding-left: 66px !important;
-	padding-top: 32px !important;
+    padding-left: 66px !important;
+    padding-top: 32px !important;
 }
 
 .gate {
-	cursor: move !important;
-	width: 67px !important;
+    cursor: move !important;
+    width: 67px !important;
 }
 
 input.x-form-invalid {
-	background-color: #FFFFFF;
-	border-color: #CB9494;
-	background-image: url(/images/invalid-text-bg.gif);
-	background-position: 0px 0px;
+    background-color: #FFFFFF;
+    border-color: #CB9494;
+    background-image: url(/images/invalid-text-bg.gif);
+    background-position: 0px 0px;
 }
 
 .authenticate_action {
-	background-image: url(/images/key.png) !important;
+    background-image: url(/images/key.png) !important;
 }
 
 .create_account_action {
-	background-image: url(/images/create_account.png) !important;
+    background-image: url(/images/create_account.png) !important;
 }
 
 .close_session_action {
-	background-image: url(/images/closed.png) !important;
+    background-image: url(/images/closed.png) !important;
 }
 
 .save_action {
-  background-image: url(/images/floppy.png) !important;
+    background-image: url(/images/floppy.png) !important;
 }
 
 .forgot_password_action {
-	background-image: url(/images/light.png) !important;
+    background-image: url(/images/light.png) !important;
 }
 
 .cancel_action {
-  background-image: url(/images/cancel.png) !important;
+    background-image: url(/images/cancel.png) !important;
+}
+
+.captcha {
+    padding-left: 145px;
+    padding-top: 6px;
+    padding-bottom: 10px;
 }
