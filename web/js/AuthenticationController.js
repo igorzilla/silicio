@@ -85,7 +85,8 @@ AuthenticationController.prototype.buildForm = function(){
             html: '<img id="captcha" src="' + MainController.getAbsoluteUrl('authentication', 'generateCaptcha') + '" class="captcha"></img>'
           }, {
             fieldLabel: 'Código de verificación',
-            name: 'user[captcha]',
+						id: 'typed_captcha',
+            name: 'user[typed_captcha]',
             allowBlank: false,
             style: {
               'font-family': 'monospace',
@@ -108,16 +109,39 @@ AuthenticationController.prototype.buildForm = function(){
             popup.hide();
           }
         });
-				
-				var createAccountAction = new Ext.Action({
-					text: 'Crear cuenta',
+        
+        var createAccountAction = new Ext.Action({
+          text: 'Crear cuenta',
           iconCls: 'create_account_action',
           iconAlign: 'top',
           scale: 'large',
           handler: function(){
-            
+            var basicForm = createAccountForm.getForm();
+            basicForm.submit({
+              success: function(form, action){
+                alert('Exito');
+              },
+              failure: function(form, action){
+                var errorMessage = '';
+                switch (action.failureType) {
+                  case Ext.form.Action.CLIENT_INVALID:
+                    errorMessage = 'Los datos digitados son inválidos';
+                    break;
+                  case Ext.form.Action.CONNECT_FAILURE:
+                    errorMessage = 'No se pudo establecer comunicación con el servidor';
+                    break;
+                  default:
+                    errorMessage = action.result.message;
+                    break;
+                }
+								AuthenticationController.generateNewCaptcha();
+								var typedCaptcha = Ext.getCmp('typed_captcha');
+								typedCaptcha.setValue('');
+                MainController.generateError(errorMessage);
+              }
+            });
           }
-				});
+        });
         
         popup = new Ext.Window({
           applyTo: 'create_acount_div',
@@ -243,4 +267,11 @@ openCreateAccountFormAction, authenticateAction]
   
   panel.render(Ext.getBody());
   Ext.get('panel').center();
+}
+
+AuthenticationController.generateNewCaptcha = function () {
+	var captcha = Ext.get('captcha');
+	captcha.set({
+		src: MainController.getAbsoluteUrl('authentication', 'generateCaptcha')+'?param='+Math.random()
+	});
 }

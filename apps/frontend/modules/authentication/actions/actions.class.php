@@ -69,7 +69,7 @@ class authenticationActions extends sfActions
     }
     return sfView::NONE;
   }
-  
+
   public function executeGenerateCaptcha() {
     $response = $this->getResponse();
     $response->setContentType("image/gif");
@@ -89,5 +89,34 @@ class authenticationActions extends sfActions
     imagestring($captcha, 5, 16, 7, $key, $colText);
     imagegif($captcha);
     return sfView::NONE;
+  }
+
+  public function executeCreateAccount(sfWebRequest $request) {
+    $isPost = $request->isMethod('post');
+    if($isPost) {
+      $form = new CreateAccountForm();
+      $captchaValidator = new sfValidatorCaptcha(array());
+      $captcha = $this->getUser()->getAttribute('captcha');
+      $captchaValidator->addOption('captcha', $captcha);
+      $captchaValidator->addOption('length', 8);
+      $form->setValidator('typed_captcha', $captchaValidator);
+      $userData = $request->getParameter('user');
+      $form->bind($userData);
+      $result = array();
+      $isValid = $form->isValid();
+      if($isValid) {
+        $result['success'] = true;
+      }
+      else {
+        $result['success'] = false;
+        foreach ($form as $field) {
+          if($field->hasError()) {
+            $result['message'] = $field->getError()->__toString();
+            break;
+          }
+        }
+      }
+      return $this->renderText(json_encode($result));
+    }
   }
 }
