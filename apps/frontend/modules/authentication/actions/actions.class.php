@@ -105,6 +105,9 @@ class authenticationActions extends sfActions
       $result = array();
       $isValid = $form->isValid();
       if($isValid) {
+        $user = new User();
+        $user->fillData($userData);
+        $user->save();
         $result['success'] = true;
       }
       else {
