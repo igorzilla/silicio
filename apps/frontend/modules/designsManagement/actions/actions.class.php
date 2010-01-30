@@ -21,7 +21,13 @@ class designsManagementActions extends sfActions
       $xmlDesignCode = $request->getParameter('xml_design_code');
       $wellFormed = XMLEngine::isWellFormed($xmlDesignCode);
       if($wellFormed===true) {
-        return $this->renderText('Ok');
+        $isValidXML = XMLEngine::isValid($xmlDesignCode,'../data/design.xsd');
+        if($isValidXML===true) {
+          return $this->renderText('Ok');
+        }
+        else {
+          return $this->renderText($isValidXML);
+        }
       }
       else {
         return $this->renderText($wellFormed);

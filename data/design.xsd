@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.w3schools.com"
+	elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.w3schools.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<xs:element name="design">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="components" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="component" maxOccurs="unbounded"
+								minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="class" type="xs:token">
+										</xs:element>
+										<xs:element name="id" type="xs:token">
+										</xs:element>
+										<xs:element name="xCoordinate" type="xs:nonNegativeInteger">
+										</xs:element>
+										<xs:element name="yCoordinate" type="xs:nonNegativeInteger">
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="connections" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="connection" maxOccurs="unbounded"
+								minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="sourceId" type="xs:token">
+										</xs:element>
+										<xs:element name="sourcePortIndex" type="xs:nonNegativeInteger">
+										</xs:element>
+										<xs:element name="targetId" type="xs:token">
+										</xs:element>
+										<xs:element name="targetPortIndex" type="xs:nonNegativeInteger">
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

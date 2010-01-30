@@ -80,7 +80,7 @@ MainController.prototype.buildToolBar = function(){
       var xmlDesignCode = design.toXML();
       if (xmlDesignCode != null) {
         Ext.Ajax.request({
-          url: '/index.php/designsManagement/saveDesign',
+          url: MainController.getAbsoluteUrl('designsManagement','saveDesign'),
           params: {
             xml_design_code: xmlDesignCode
           },

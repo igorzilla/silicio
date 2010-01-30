@@ -14,6 +14,18 @@ class XMLEngine {
   public static function isValid($xmlCode, $schemafileName) {
     $xmlDocument = new DOMDocument();
     $xmlDocument->loadXML($xmlCode);
-    return $xmlDocument->schemaValidate($schemafileName);
+//    $temporaryFile = '../temp/'.time().'-'.rand().'.xml';
+//    $xmlDocument->save($temporaryFile);
+//    $temporaryXmlDocument = new DOMDocument();
+//    $temporaryXmlDocument->load($temporaryFile);
+//    unlink($temporaryFile);
+    libxml_use_internal_errors(true);
+//    $isValid = $temporaryXmlDocument->schemaValidate($schemafileName);
+    $isValid = $xmlDocument->schemaValidate($schemafileName);
+    if(!$isValid) {
+      $errors = libxml_get_errors();
+      return $errors[0]->message;  
+    }
+    return $isValid;
   }
 }
