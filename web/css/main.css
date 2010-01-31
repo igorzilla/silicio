@@ -8,6 +8,16 @@
     width: 67px !important;
 }
 
+.display_cover {
+    padding-left: 66px !important;
+    padding-top: 32px !important;
+}
+
+.display {
+    cursor: move !important;
+    width: 69px !important;
+}
+
 input.x-form-invalid {
     background-color: #FFFFFF;
     border-color: #CB9494;

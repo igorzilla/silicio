@@ -49,6 +49,13 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Entradas'
   });
+	inputs.add({
+		xtype: 'panel',
+		contentEl: 'display_cover',
+		width: 200,
+		height: 150,
+		border: false
+	});
   var outputs = new Ext.Panel({
     split: true,
     width: 200,
@@ -183,6 +190,11 @@ MainController.prototype.turnOnDragAndDrop = function(){
   new Ext.dd.DragSource("NOT", {
     dragData: {
       className: 'NotGate'
+    }
+  });
+	new Ext.dd.DragSource("display", {
+    dragData: {
+      className: 'Display'
     }
   });
   var workflow = this.workflow;
