@@ -1,6 +1,6 @@
 AndGate = function(workflow){
 	TwoInputBasicGate.call(this,workflow);
-	this.setImage("/images/AND.gif");
+	this.setImage("/images/AND.png");
 	this.setDimension(67, 35);
 }
 

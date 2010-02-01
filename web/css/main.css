@@ -10,12 +10,32 @@
 
 .display_cover {
     padding-left: 66px !important;
-    padding-top: 32px !important;
+    padding-top: 3px !important;
 }
 
 .display {
     cursor: move !important;
     width: 69px !important;
+}
+
+.light_cover {
+    padding-left: 76px !important;
+    padding-top: 26px !important;
+}
+
+.light {
+    cursor: move !important;
+    width: 48px !important;
+}
+
+.switch_cover {
+    padding-left: 70px !important;
+    padding-top: 21px !important;
+}
+
+.switch {
+    cursor: move !important;
+    width: 64px !important;
 }
 
 input.x-form-invalid {

@@ -49,18 +49,32 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Entradas'
   });
-	inputs.add({
-		xtype: 'panel',
-		contentEl: 'display_cover',
-		width: 200,
-		height: 150,
-		border: false
-	});
+  inputs.add({
+    xtype: 'panel',
+    contentEl: 'light_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  inputs.add({
+    xtype: 'panel',
+    contentEl: 'display_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
   var outputs = new Ext.Panel({
     split: true,
     width: 200,
     minSize: 200,
     title: 'Salidas'
+  });
+	outputs.add({
+    xtype: 'panel',
+    contentEl: 'switch_cover',
+    width: 200,
+    height: 100,
+    border: false
   });
   this.toolsPanel = new Ext.Panel({
     region: 'west',
@@ -81,13 +95,13 @@ MainController.prototype.buildToolBar = function(){
   var workflow = this.workflow;
   var saveAction = new Ext.Action({
     text: 'Guardar',
-		iconCls: 'save_action',
+    iconCls: 'save_action',
     handler: function(){
       var design = new Design(workflow.getDocument().getFigures());
       var xmlDesignCode = design.toXML();
       if (xmlDesignCode != null) {
         Ext.Ajax.request({
-          url: MainController.getAbsoluteUrl('designsManagement','saveDesign'),
+          url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
           params: {
             xml_design_code: xmlDesignCode
           },
@@ -109,12 +123,12 @@ MainController.prototype.buildToolBar = function(){
   });
   var closeSessionAction = new Ext.Action({
     text: 'Cerrar sesión',
-		iconCls: 'close_session_action',
+    iconCls: 'close_session_action',
     handler: function(){
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
         success: function(result, request){
-					var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index'); 
+          var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index');
           document.location = authenticationAction;
         },
         failure: function(result, request){
@@ -192,9 +206,19 @@ MainController.prototype.turnOnDragAndDrop = function(){
       className: 'NotGate'
     }
   });
-	new Ext.dd.DragSource("display", {
+  new Ext.dd.DragSource("display", {
     dragData: {
       className: 'Display'
+    }
+  });
+  new Ext.dd.DragSource("light", {
+    dragData: {
+      className: 'Light'
+    }
+  });
+	  new Ext.dd.DragSource("switch", {
+    dragData: {
+      className: 'Switch'
     }
   });
   var workflow = this.workflow;
@@ -217,6 +241,6 @@ MainController.getAbsoluteUrl = function(moduleName, actionName){
   return urlPrefix + moduleName + '/' + actionName;
 }
 
-MainController.redirect = function (url) {
-	document.location = url;
+MainController.redirect = function(url){
+  document.location = url;
 }
