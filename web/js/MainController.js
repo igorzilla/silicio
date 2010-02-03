@@ -69,7 +69,7 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Salidas'
   });
-	outputs.add({
+  outputs.add({
     xtype: 'panel',
     contentEl: 'switch_cover',
     width: 200,
@@ -94,31 +94,43 @@ MainController.prototype.buildToolsPanel = function(){
 MainController.prototype.buildToolBar = function(){
   var workflow = this.workflow;
   var saveAction = new Ext.Action({
-    text: 'Guardar',
+    text: 'Guardar diseño',
     iconCls: 'save_action',
     handler: function(){
       var design = new Design(workflow.getDocument().getFigures());
       var xmlDesignCode = design.toXML();
-      if (xmlDesignCode != null) {
-        Ext.Ajax.request({
-          url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
-          params: {
-            xml_design_code: xmlDesignCode
-          },
-          success: function(result, request){
-            if (result.responseText != 'Ok') {
-              MainController.generateError(result.responseText);
+      Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
+        if (button == 'ok') {
+          if (answer != '') {
+            if (xmlDesignCode != null) {
+              Ext.Ajax.request({
+                url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
+                params: {
+                  design_name: answer,
+                  xml_design_code: xmlDesignCode
+                },
+                success: function(result, request){
+                  if (result.responseText != 'Ok') {
+                    MainController.generateError(result.responseText);
+                  }
+                },
+                failure: function(result, request){
+                  MainController.generateError(result.statusText);
+                }
+              });
             }
-          },
-          failure: function(result, request){
-            MainController.generateError(result.statusText);
+            else {
+              var errorMessage = design.getErrorMessage();
+              MainController.generateError(errorMessage);
+            }
           }
-        });
-      }
-      else {
-        var errorMessage = design.getErrorMessage();
-        MainController.generateError(errorMessage);
-      }
+          else {
+            MainController.generateError('Debe digitar un nombre para el diseño', function(){
+              saveAction.execute();
+            });
+          }
+        }
+      });
     }
   });
   var closeSessionAction = new Ext.Action({
@@ -216,7 +228,7 @@ MainController.prototype.turnOnDragAndDrop = function(){
       className: 'Light'
     }
   });
-	  new Ext.dd.DragSource("switch", {
+  new Ext.dd.DragSource("switch", {
     dragData: {
       className: 'Switch'
     }
@@ -233,8 +245,8 @@ MainController.prototype.turnOnDragAndDrop = function(){
   });
 }
 
-MainController.generateError = function(message){
-  Ext.Msg.alert('Error', message);
+MainController.generateError = function(message, callback){
+  Ext.Msg.alert('Error', message, callback);
 }
 
 MainController.getAbsoluteUrl = function(moduleName, actionName){

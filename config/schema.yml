@@ -9,5 +9,6 @@ propel:
   design:
     _attributes: { phpName: Design }
     id: { type: integer, required: true, primaryKey: true, autoIncrement: true }
+    name: { type: varchar(30), required: true }
     owner: { type: varchar(30), required: true, foreignTable: system_user, foreignReference: username, onDelete: cascade }
     xml_code: longvarchar

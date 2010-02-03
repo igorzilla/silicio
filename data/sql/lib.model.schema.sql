@@ -30,6 +30,7 @@ DROP TABLE "design" CASCADE;
 CREATE TABLE "design"
 (
 	"id" serial  NOT NULL,
+	"name" VARCHAR(30)  NOT NULL,
 	"owner" VARCHAR(30)  NOT NULL,
 	"xml_code" TEXT,
 	PRIMARY KEY ("id")

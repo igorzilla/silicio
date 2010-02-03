@@ -39,6 +39,7 @@ class authenticationActions extends sfActions
           $coincide = UserPeer::coincide($userData['username'],$userData['password']);
           if($coincide){
             $user->setAuthenticated(true);
+            $user->setAttribute('username',$userData['username']);
             $result['success'] = true;
           }
           else {
@@ -64,8 +65,10 @@ class authenticationActions extends sfActions
   }
 
   public function executeLogout(sfWebRequest $request) {
-    if($this->getUser()->isAuthenticated()) {
-      $this->getUser()->setAuthenticated(false);
+    $user = $this->getUser();
+    if($user->isAuthenticated()) {
+      $user->setAuthenticated(false);
+      $user->setAttribute('username', null);
     }
     return sfView::NONE;
   }
