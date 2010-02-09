@@ -29,9 +29,9 @@ Design.prototype.toXML = function(){
   var componentsXml = '<components>';
   var connectionsXml = '<connections>';
   for (var i = 0; i < this.components.getSize(); i++) {
-    var figure = this.components.get(i);
-    componentsXml = componentsXml + figure.toXML();
-    connectionsXml = connectionsXml + figure.outputConnectionsToXML();
+    var component = this.components.get(i);
+    componentsXml = componentsXml + component.toXML();
+    connectionsXml = connectionsXml + component.outputConnectionsToXML();
   }
   componentsXml = componentsXml + '</components>';
   connectionsXml = connectionsXml + '</connections>';
