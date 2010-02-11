@@ -8,7 +8,8 @@ propel:
     email: { type: varchar(320), required: true }
   design:
     _attributes: { phpName: Design }
-    id: { type: integer, required: true, primaryKey: true, autoIncrement: true }
-    name: { type: varchar(30), required: true }
+    name: { type: varchar(30), required: true, primaryKey: true }
     owner: { type: varchar(30), required: true, foreignTable: system_user, foreignReference: username, onDelete: cascade }
     xml_code: longvarchar
+    created_at:
+    updated_at:

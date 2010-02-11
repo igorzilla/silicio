@@ -29,11 +29,12 @@ DROP TABLE "design" CASCADE;
 
 CREATE TABLE "design"
 (
-	"id" serial  NOT NULL,
 	"name" VARCHAR(30)  NOT NULL,
 	"owner" VARCHAR(30)  NOT NULL,
 	"xml_code" TEXT,
-	PRIMARY KEY ("id")
+	"created_at" TIMESTAMP,
+	"updated_at" TIMESTAMP,
+	PRIMARY KEY ("name")
 );
 
 COMMENT ON TABLE "design" IS '';

@@ -93,6 +93,54 @@ MainController.prototype.buildToolsPanel = function(){
 
 MainController.prototype.buildToolBar = function(){
   var workflow = this.workflow;
+  
+  var manageDesignsGrid = new Ext.grid.GridPanel({
+    frame: true,
+    header: false,
+    width: 400,
+    height: 300,
+    columns: [{
+      header: 'Nombre',
+      dataIndex: 'name'
+    }, {
+      header: 'Creado en',
+      dataIndex: 'created_at'
+    }, {
+      header: 'Última modificación',
+      dataIndex: 'updated_at'
+    }],
+    store: new Ext.data.Store()
+  });
+  
+  var loadAction = new Ext.Action({
+    text: 'Abrir',
+    handler: function(){
+			    
+    }
+  });
+  
+  var manageDesignsPopup = new Ext.Window({
+    applyTo: 'manage_designs_div',
+    title: 'Administración de diseños',
+    layout: 'fit',
+    width: 400,
+    height: 300,
+    closeAction: 'hide',
+    resizable: false,
+    items: [manageDesignsGrid],
+    buttonAlign: 'center',
+    buttons: [loadAction]
+  });
+	
+  var manageDesignsAction = new Ext.Action({
+    text: 'Administrar diseños',
+    handler: function(){
+      if (manageDesignsPopup.hidden) {
+        manageDesignsPopup.show('file_menu');
+      }
+    }
+  });
+	
   var saveAction = new Ext.Action({
     text: 'Guardar diseño',
     iconCls: 'save_action',
@@ -152,13 +200,12 @@ MainController.prototype.buildToolBar = function(){
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
+      id: 'file_menu',
       xtype: 'button',
       text: 'Archivo',
       menu: [{
         text: 'Nuevo diseño'
-      }, {
-        text: 'Abrir'
-      }, saveAction, closeSessionAction]
+      }, manageDesignsAction, saveAction, closeSessionAction]
     }, '-', {
       xtype: 'button',
       text: 'Editar',

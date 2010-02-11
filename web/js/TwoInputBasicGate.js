@@ -18,6 +18,7 @@ TwoInputBasicGate = function(workflow){
   this.outputPorts[0].setBackgroundColor(new draw2d.Color(255, 255, 255));
   this.outputPorts[0].setName(this.getId());
   this.addPort(this.outputPorts[0], 67, 17);
+	
 }
 
 TwoInputBasicGate.prototype = new Component;
