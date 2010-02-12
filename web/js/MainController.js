@@ -94,6 +94,19 @@ MainController.prototype.buildToolsPanel = function(){
 MainController.prototype.buildToolBar = function(){
   var workflow = this.workflow;
   
+  var designsStore = new Ext.data.Store({
+    url: MainController.getAbsoluteUrl('designsManagement', 'listDesigns'),
+    reader: new Ext.data.JsonReader({
+      root: 'designs'
+    }, [{
+      name: 'name'
+    }, {
+      name: 'created_at'
+    }, {
+      name: 'updated_at'
+    }])
+  });
+  
   var manageDesignsGrid = new Ext.grid.GridPanel({
     frame: true,
     header: false,
@@ -104,18 +117,47 @@ MainController.prototype.buildToolBar = function(){
       dataIndex: 'name'
     }, {
       header: 'Creado en',
-      dataIndex: 'created_at'
+      dataIndex: 'created_at',
+      width: 110
     }, {
       header: 'Última modificación',
-      dataIndex: 'updated_at'
+      dataIndex: 'updated_at',
+      width: 110
     }],
-    store: new Ext.data.Store()
+    store: designsStore
+  });
+  
+  var cancelAction = new Ext.Action({
+    text: 'Cancelar',
+    iconCls: 'cancel_action',
+    iconAlign: 'top',
+    scale: 'large',
+    handler: function(){
+      manageDesignsPopup.hide();
+    }
+  });
+  
+  var deleteAction = new Ext.Action({
+    text: 'Eliminar diseño',
+    iconCls: 'delete_action',
+    iconAlign: 'top',
+    scale: 'large',
+    handler: function(){
+      Ext.Msg.show({
+        title: 'Eliminar diseño',
+        msg: '¿Está seguro(a) de eliminar este diseño?<br></br>Esta operación no puede revertirse',
+        buttons: Ext.Msg.YESNO
+      });
+    }
   });
   
   var loadAction = new Ext.Action({
-    text: 'Abrir',
+    text: 'Abrir diseño',
+    iconCls: 'load_action',
+    iconAlign: 'top',
+    scale: 'large',
     handler: function(){
-			    
+    
     }
   });
   
@@ -129,18 +171,22 @@ MainController.prototype.buildToolBar = function(){
     resizable: false,
     items: [manageDesignsGrid],
     buttonAlign: 'center',
-    buttons: [loadAction]
+    buttons: [cancelAction, deleteAction, loadAction]
   });
-	
+  
   var manageDesignsAction = new Ext.Action({
     text: 'Administrar diseños',
     handler: function(){
       if (manageDesignsPopup.hidden) {
-        manageDesignsPopup.show('file_menu');
+        designsStore.load({
+          callback: function(){
+            manageDesignsPopup.show('file_menu');
+          }
+        });
       }
     }
   });
-	
+  
   var saveAction = new Ext.Action({
     text: 'Guardar diseño',
     iconCls: 'save_action',

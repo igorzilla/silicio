@@ -74,3 +74,11 @@ input.x-form-invalid {
     padding-top: 6px;
     padding-bottom: 10px;
 }
+
+.load_action {
+    background-image: url(/images/open.png) !important;
+}
+
+.delete_action {
+    background-image: url(/images/trash.png) !important;
+}

@@ -51,4 +51,30 @@ class designsManagementActions extends sfActions
       return sfView::NONE;
     }
   }
+
+  public function executeListDesigns() {
+    $user = $this->getUser();
+    $designOwner = $user->getAttribute('username');
+    
+    $conditions = new Criteria();
+    $conditions->add(DesignPeer::OWNER, $designOwner);
+    
+    $designs = DesignPeer::doSelect($conditions);
+    
+    $responseArray = array();
+    $responseArray['success'] = true;
+    
+    $designsArray = array();
+    foreach($designs as $design) {
+      $designArray = array();
+      $designArray['name'] = $design->getName();
+      $designArray['created_at'] = $design->getCreatedAt();
+      $designArray['updated_at'] = $design->getUpdatedAt();
+      $designsArray[] = $designArray;
+    }
+    
+    $responseArray['designs'] = $designsArray;
+    
+    return $this->renderText(json_encode($responseArray));
+  }
 }
