@@ -124,7 +124,10 @@ MainController.prototype.buildToolBar = function(){
       dataIndex: 'updated_at',
       width: 110
     }],
-    store: designsStore
+    store: designsStore,
+    sm: new Ext.grid.RowSelectionModel({
+      singleSelect: true
+    })
   });
   
   var cancelAction = new Ext.Action({
@@ -143,11 +146,40 @@ MainController.prototype.buildToolBar = function(){
     iconAlign: 'top',
     scale: 'large',
     handler: function(){
-      Ext.Msg.show({
-        title: 'Eliminar diseño',
-        msg: '¿Está seguro(a) de eliminar este diseño?<br></br>Esta operación no puede revertirse',
-        buttons: Ext.Msg.YESNO
-      });
+      var selectionModel = manageDesignsGrid.getSelectionModel();
+      if (selectionModel.getCount() < 1) {
+        MainController.generateError('Debe seleccionar un diseño');
+      }
+      else {
+        var selectedRow = selectionModel.getSelected();
+        var selectedDesignName = selectedRow.get('name');
+        Ext.Msg.show({
+          title: 'Eliminar diseño',
+          msg: '¿Está seguro(a) de eliminar este diseño?<br></br>Esta operación no puede revertirse',
+          buttons: Ext.Msg.YESNO,
+          fn: function(button){
+            if (button == 'yes') {
+              Ext.Msg.wait('Deleting...');
+              Ext.Ajax.request({
+                url: MainController.getAbsoluteUrl('designsManagement', 'deleteDesign'),
+                params: {
+                  'design_name': selectedDesignName
+                },
+                success: function(result, request){
+                  designsStore.load({
+                    callback: function(){
+                      Ext.Msg.hide();
+                    }
+                  });
+                },
+                failure: function(result, request){
+                  MainController.generateError(result.statusText);
+                }
+              });
+            }
+          }
+        });
+      }
     }
   });
   

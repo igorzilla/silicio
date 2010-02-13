@@ -77,4 +77,27 @@ class designsManagementActions extends sfActions
     
     return $this->renderText(json_encode($responseArray));
   }
+  public function executeDeleteDesign(sfWebRequest $request) {
+  	if($request->isMethod('post')) {
+  	  $designName = $request->getParameter('design_name');
+  	  $user = $this->getUser();
+  	  $designOwner = $user->getAttribute('username');
+  	  
+  	  $condition = new Criteria();
+  	  $condition->add(DesignPeer::NAME,$designName);
+  	  $condition->add(DesignPeer::OWNER,$designOwner);
+  	  
+  	  $design = DesignPeer::doSelectOne($condition);
+  	  
+  	  if($design!=null) {
+  	    $design->delete();
+  	    return $this->renderText('Ok');
+  	  }
+  	  
+  	  return $this->renderText('El diseño especificado no existe');
+  	}
+  	else {
+  	  return sfView::NONE;
+  	}
+  }
 }
