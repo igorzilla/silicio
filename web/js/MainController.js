@@ -86,6 +86,9 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Herramientas',
     layout: 'accordion',
+    layoutConfig: {
+      animate: true
+    },
     items: [basicGatesPanel, inputs, outputs]
   });
   this.toolsPanel.doLayout();
