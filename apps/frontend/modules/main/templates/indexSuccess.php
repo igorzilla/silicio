@@ -1,16 +1,17 @@
 <script>
 Ext.onReady(function() {
 	mainController = new MainController();
-	mainController.buildWorkflow();
+//	mainController.buildWorkflow();
+  mainController.buildTabsPanel();
 	mainController.buildToolsPanel();
 	mainController.buildToolBar();
 	mainController.buildWorkArea();
-	mainController.turnOnDragAndDrop();
+	mainController.turnOnDrag();
 });
 </script>
-<div
-	id="paintarea"
-	style="position: relative; width: 3000px; height: 3000px;"></div>
+<!--<div-->
+<!--	id="paintarea"-->
+<!--	style="position: relative; width: 3000px; height: 3000px;"></div>-->
 <div id="manage_designs_div"></div>
 <div id="AND_cover" class="gates_cover">
 <div id="AND" class="gate"><?php echo image_tag('AND.png');?></div>

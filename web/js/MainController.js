@@ -1,9 +1,11 @@
 MainController = function(){
   //TODO: Implementing the singleton pattern here
-  this.workflow = null;
-  this.paintArea = null;
+  //  this.workflow = new Array();
+  //  this.paintArea = new Array();
   this.toolsPanel = null;
   this.toolBar = null;
+  this.tabsPanel = null;
+  this.maximumPaintAreaId = 0;
 }
 
 MainController.prototype.buildWorkflow = function(){
@@ -94,8 +96,64 @@ MainController.prototype.buildToolsPanel = function(){
   this.toolsPanel.doLayout();
 }
 
+MainController.prototype.buildTabsPanel = function(){
+  this.tabsPanel = new Ext.TabPanel({
+    region: 'center',
+    activeItem: 0,
+    defaults: {
+      autoScroll: true
+    },
+    items: [{
+      title: 'Bienvenido',
+      html: 'Bienvenido'
+    }, {
+      title: 'Bienvenido2',
+      html: 'Bienvenido2'
+    }]
+  });
+}
+
+MainController.prototype.generatePaintAreaId = function(){
+  var newPaintAreaId = this.maximumPaintAreaId;
+  this.maximumPaintAreaId = this.maximumPaintAreaId + 1;
+  return newPaintAreaId;
+}
+
+MainController.turnOnDrop = function(workflow, paintAreaId){
+  new Ext.dd.DropTarget(paintAreaId, {
+    notifyDrop: function(source, event, data){
+      var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
+      var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
+      var figure = eval('new ' + data.className + '(workflow)');
+      workflow.addFigure(figure, xCoordinate, yCoordinate);
+      return true;
+    }
+  });
+}
+
 MainController.prototype.buildToolBar = function(){
-  var workflow = this.workflow;
+  //  var workflow = this.workflow;
+  
+  var tabsPanel = this.tabsPanel;
+  
+  var mainController = this;
+  
+  var newDesignAction = new Ext.Action({
+    text: 'Nuevo diseño',
+    handler: function(){
+      var newPaintAreaId = 'paint_area_' + mainController.generatePaintAreaId();
+      var newTab = new Ext.Panel({
+        title: newPaintAreaId,
+        closable: true,
+        html: '<div id="' + newPaintAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
+      });
+      tabsPanel.add(newTab);
+      newTab.show();
+      var newWorkflow = new draw2d.Workflow(newPaintAreaId);
+      newWorkflow.setBackgroundImage("/images/grid.png", true);
+			MainController.turnOnDrop(newWorkflow,newPaintAreaId);
+    }
+  });
   
   var designsStore = new Ext.data.Store({
     url: MainController.getAbsoluteUrl('designsManagement', 'listDesigns'),
@@ -284,9 +342,7 @@ MainController.prototype.buildToolBar = function(){
       id: 'file_menu',
       xtype: 'button',
       text: 'Archivo',
-      menu: [{
-        text: 'Nuevo diseño'
-      }, manageDesignsAction, saveAction, closeSessionAction]
+      menu: [newDesignAction, manageDesignsAction, saveAction, closeSessionAction]
     }, '-', {
       xtype: 'button',
       text: 'Editar',
@@ -324,13 +380,13 @@ MainController.prototype.buildWorkArea = function(){
       title: 'SILICIO',
       height: 53,
       items: [this.toolBar]
-    }, this.toolsPanel, this.paintArea]
+    }, this.toolsPanel, //		this.paintArea
+ this.tabsPanel]
   });
-  //    workflow.scrollArea = document.getElementById("paintarea").parentNode;
-  this.workflow.getCommandStack().addCommandStackEventListener(new CommandListener());
+  //  this.workflow.getCommandStack().addCommandStackEventListener(new CommandListener());
 }
 
-MainController.prototype.turnOnDragAndDrop = function(){
+MainController.prototype.turnOnDrag = function(){
   new Ext.dd.DragSource("AND", {
     dragData: {
       className: 'AndGate'
@@ -359,16 +415,6 @@ MainController.prototype.turnOnDragAndDrop = function(){
   new Ext.dd.DragSource("switch", {
     dragData: {
       className: 'Switch'
-    }
-  });
-  var workflow = this.workflow;
-  new Ext.dd.DropTarget("paintarea", {
-    notifyDrop: function(source, event, data){
-      var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
-      var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
-      var figure = eval('new ' + data.className + '(workflow)');
-      workflow.addFigure(figure, xCoordinate, yCoordinate);
-      return true;
     }
   });
 }
