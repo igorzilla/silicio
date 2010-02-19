@@ -151,6 +151,7 @@ MainController.prototype.buildToolBar = function(){
       newTab.show();
       var newWorkflow = new draw2d.Workflow(newPaintAreaId);
       newWorkflow.setBackgroundImage("/images/grid.png", true);
+			newWorkflow.getCommandStack().addCommandStackEventListener(new CommandListener());
 			MainController.turnOnDrop(newWorkflow,newPaintAreaId);
     }
   });
@@ -380,10 +381,9 @@ MainController.prototype.buildWorkArea = function(){
       title: 'SILICIO',
       height: 53,
       items: [this.toolBar]
-    }, this.toolsPanel, //		this.paintArea
+    }, this.toolsPanel,
  this.tabsPanel]
   });
-  //  this.workflow.getCommandStack().addCommandStackEventListener(new CommandListener());
 }
 
 MainController.prototype.turnOnDrag = function(){
