@@ -1,6 +1,6 @@
 DesignArea = function(id, isNew){
   draw2d.Workflow.call(this, id);
-  
+	
   this.setBackgroundImage("/images/grid.png", true);
   this.getCommandStack().addCommandStackEventListener(new CommandListener());
 	
@@ -13,14 +13,14 @@ DesignArea = function(id, isNew){
 	}
   this.errorMessage = null;
   
-	designArea = this;
+	var designArea = this;
 	
   new Ext.dd.DropTarget(id, {
     notifyDrop: function(source, event, data){
-      var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
-      var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
+      var xCoordinate = event.xy[0] - designArea.getAbsoluteX();
+      var yCoordinate = event.xy[1] - designArea.getAbsoluteY();
       var figure = eval('new ' + data.className + '(designArea)');
-      workflow.addFigure(figure, xCoordinate, yCoordinate);
+      designArea.addFigure(figure, xCoordinate, yCoordinate);
       return true;
     }
   });
@@ -32,10 +32,10 @@ DesignArea.prototype.type = 'DesignArea';
 
 DesignArea.maximumDesignAreaId = 0;
 
-DesignArea.generateDesignAreaId = function(){
+DesignArea.generateNewDesignAreaId = function(){
   var newDesignAreaId = DesignArea.maximumDesignAreaId;
   DesignArea.maximumDesignAreaId = DesignArea.maximumDesignAreaId + 1;
-  return newDesignAreaId;
+  return 'design_area_'+newDesignAreaId;
 }
 
 DesignArea.prototype.isValid = function(){

@@ -100,6 +100,15 @@ MainController.prototype.buildTabsPanel = function(){
   this.tabsPanel = new Ext.TabPanel({
     region: 'center',
     activeItem: 0,
+    listeners: {
+      tabchange: function(tabPanel, newActivePanel){
+				if(newActivePanel.designArea) {
+					// This line is to improve compatibility with Google Chrome when you press 'Del' key
+					// over a component after changing the tab
+					newActivePanel.designArea.html.focus();
+				}
+      }
+    },
     defaults: {
       autoScroll: true
     },
@@ -113,23 +122,23 @@ MainController.prototype.buildTabsPanel = function(){
   });
 }
 
-MainController.prototype.generatePaintAreaId = function(){
-  var newPaintAreaId = this.maximumPaintAreaId;
-  this.maximumPaintAreaId = this.maximumPaintAreaId + 1;
-  return newPaintAreaId;
-}
+//MainController.prototype.generatePaintAreaId = function(){
+//  var newPaintAreaId = this.maximumPaintAreaId;
+//  this.maximumPaintAreaId = this.maximumPaintAreaId + 1;
+//  return newPaintAreaId;
+//}
 
-MainController.turnOnDrop = function(workflow, paintAreaId){
-  new Ext.dd.DropTarget(paintAreaId, {
-    notifyDrop: function(source, event, data){
-      var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
-      var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
-      var figure = eval('new ' + data.className + '(workflow)');
-      workflow.addFigure(figure, xCoordinate, yCoordinate);
-      return true;
-    }
-  });
-}
+//MainController.turnOnDrop = function(workflow, paintAreaId){
+//  new Ext.dd.DropTarget(paintAreaId, {
+//    notifyDrop: function(source, event, data){
+//      var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
+//      var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
+//      var figure = eval('new ' + data.className + '(workflow)');
+//      workflow.addFigure(figure, xCoordinate, yCoordinate);
+//      return true;
+//    }
+//  });
+//}
 
 MainController.prototype.buildToolBar = function(){
   //  var workflow = this.workflow;
@@ -141,18 +150,16 @@ MainController.prototype.buildToolBar = function(){
   var newDesignAction = new Ext.Action({
     text: 'Nuevo diseño',
     handler: function(){
-      var newPaintAreaId = 'paint_area_' + mainController.generatePaintAreaId();
+      var newDesignAreaId = DesignArea.generateNewDesignAreaId();
       var newTab = new Ext.Panel({
-        title: newPaintAreaId,
+        title: newDesignAreaId,
         closable: true,
-        html: '<div id="' + newPaintAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
+        html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
       });
       tabsPanel.add(newTab);
       newTab.show();
-      var newWorkflow = new draw2d.Workflow(newPaintAreaId);
-      newWorkflow.setBackgroundImage("/images/grid.png", true);
-			newWorkflow.getCommandStack().addCommandStackEventListener(new CommandListener());
-			MainController.turnOnDrop(newWorkflow,newPaintAreaId);
+      var newDesignArea = new DesignArea(newDesignAreaId, true);
+      newTab.designArea = newDesignArea;
     }
   });
   
@@ -381,8 +388,7 @@ MainController.prototype.buildWorkArea = function(){
       title: 'SILICIO',
       height: 53,
       items: [this.toolBar]
-    }, this.toolsPanel,
- this.tabsPanel]
+    }, this.toolsPanel, this.tabsPanel]
   });
 }
 
