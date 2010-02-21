@@ -4,7 +4,7 @@ Ext.onReady(function() {
 //	mainController.buildWorkflow();
   mainController.buildTabsPanel();
 	mainController.buildToolsPanel();
-	mainController.buildToolBar();
+	mainController.buildMenuBar();
 	mainController.buildWorkArea();
 	mainController.turnOnDrag();
 });

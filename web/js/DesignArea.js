@@ -1,3 +1,9 @@
+/**
+ * Crea una nueva área de diseño
+ * @class Área de diseño de circuitos donde es posible insertar gráficamente los componentes
+ * @param {String} id Identificador del elemento &lt;div&gt; que se usará como área de diseño
+ * @param {Boolean} isNew Especifica si el diseño es nuevo o ha sido cargado
+ */
 DesignArea = function(id, isNew){
   draw2d.Workflow.call(this, id);
 	
@@ -32,12 +38,20 @@ DesignArea.prototype.type = 'DesignArea';
 
 DesignArea.maximumDesignAreaId = 0;
 
+/**
+ * Genera un identificador único para un área de diseño
+ * @returns {String} Identificador único
+ */
 DesignArea.generateNewDesignAreaId = function(){
   var newDesignAreaId = DesignArea.maximumDesignAreaId;
   DesignArea.maximumDesignAreaId = DesignArea.maximumDesignAreaId + 1;
   return 'design_area_'+newDesignAreaId;
 }
 
+/**
+ * Verifica si el diseño presente en esta área de diseño es sintácticamente válido
+ * @returns {Boolean} Devuelve TRUE solo si el diseño es sintácticamente válido
+ */
 DesignArea.prototype.isValid = function(){
 	var components = this.getDocument().getFigures();
 	
@@ -51,11 +65,19 @@ DesignArea.prototype.isValid = function(){
   //Rule 2: There must be only one connection per input port (validated in real time through RealTimeValidator)
   return true;
 }
-
+/**
+ * Devuelve el mensaje de error por el cual este diseño no es considerado válido.
+ * El uso de este método siempre debe ser posterior a una invocación al método isValid()
+ * @returns {String} Mensaje de error
+ */
 DesignArea.prototype.getErrorMessage = function(){
   return this.errorMessage;
 }
 
+/**
+ * Serializa el diseño actual utilizando lenguaje XML
+ * @returns {String} Serialización XML del diseño actual
+ */
 DesignArea.prototype.toXML = function(){
 	var components = this.getDocument().getFigures();
   var xml = '<?xml version="1.0" encoding="UTF-8"?>';

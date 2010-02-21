@@ -1,3 +1,7 @@
+/**
+ * Crea un nuevo controlador principal
+ * @class Controlador principal de la aplicación(solo se puede instanciar una vez por cada aplicación)
+ */
 MainController = function(){
   //TODO: Implementing the singleton pattern here
   //  this.workflow = new Array();
@@ -8,16 +12,10 @@ MainController = function(){
   this.maximumPaintAreaId = 0;
 }
 
-MainController.prototype.buildWorkflow = function(){
-  this.workflow = new draw2d.Workflow("paintarea");
-  this.workflow.setBackgroundImage("/images/grid.png", true);
-  this.paintArea = new Ext.Panel({
-    region: 'center',
-    xtype: 'panel',
-    contentEl: "paintarea"
-  });
-}
-
+/**
+ * Construye el panel de herramientas. En este lugar se situarán todos los componentes
+ * disponibles para la construcción de los circuitos
+ */
 MainController.prototype.buildToolsPanel = function(){
   var basicGatesPanel = new Ext.Panel({
     split: true,
@@ -96,6 +94,10 @@ MainController.prototype.buildToolsPanel = function(){
   this.toolsPanel.doLayout();
 }
 
+/**
+ * Construye el panel de pestañas. En este lugar estarán todos los diseños
+ * en los cuales esté trabajando el usuario(una pestaña por cada diseño).
+ */
 MainController.prototype.buildTabsPanel = function(){
   this.tabsPanel = new Ext.TabPanel({
     region: 'center',
@@ -122,25 +124,10 @@ MainController.prototype.buildTabsPanel = function(){
   });
 }
 
-//MainController.prototype.generatePaintAreaId = function(){
-//  var newPaintAreaId = this.maximumPaintAreaId;
-//  this.maximumPaintAreaId = this.maximumPaintAreaId + 1;
-//  return newPaintAreaId;
-//}
-
-//MainController.turnOnDrop = function(workflow, paintAreaId){
-//  new Ext.dd.DropTarget(paintAreaId, {
-//    notifyDrop: function(source, event, data){
-//      var xCoordinate = event.xy[0] - workflow.getAbsoluteX();
-//      var yCoordinate = event.xy[1] - workflow.getAbsoluteY();
-//      var figure = eval('new ' + data.className + '(workflow)');
-//      workflow.addFigure(figure, xCoordinate, yCoordinate);
-//      return true;
-//    }
-//  });
-//}
-
-MainController.prototype.buildToolBar = function(){
+/**
+ * Construye la barra de menú.
+ */
+MainController.prototype.buildMenuBar = function(){
   //  var workflow = this.workflow;
   
   var tabsPanel = this.tabsPanel;
@@ -377,6 +364,10 @@ MainController.prototype.buildToolBar = function(){
   });
 }
 
+/**
+ * Construye el área de trabajo principal. En este lugar se situan: el panel de herramientas,
+ * la barra de menú y el área de diseño.
+ */
 MainController.prototype.buildWorkArea = function(){
   this.viewport = new Ext.Viewport({
     layout: 'border',
@@ -392,6 +383,10 @@ MainController.prototype.buildWorkArea = function(){
   });
 }
 
+/**
+ * Habilita la característica Drag(arrastrar), que permite deslizar los componentes desde
+ * el panel de herramientas hasta el área de diseño.
+ */
 MainController.prototype.turnOnDrag = function(){
   new Ext.dd.DragSource("AND", {
     dragData: {
@@ -425,14 +420,28 @@ MainController.prototype.turnOnDrag = function(){
   });
 }
 
+/**
+ * Muestra una ventana con un mensaje de error
+ * @param {String} message Mensaje de error que será mostrado
+ * @param {Function} callback Función que será invocada después de cerrar la ventana del mensaje de error
+ */
 MainController.generateError = function(message, callback){
   Ext.Msg.alert('Error', message, callback);
 }
 
+/**
+ * Genera la URL absoluta para una acción determinada de Symfony
+ * @param {String} moduleName Nombre del módulo
+ * @param {String} actionName Nombre de la acción
+ */
 MainController.getAbsoluteUrl = function(moduleName, actionName){
   return urlPrefix + moduleName + '/' + actionName;
 }
 
+/**
+ * Redirecciona el navegador del usuario a una URL especificada
+ * @param {String} url Dirección URL donde se va a redirigir el navegador del usuario 
+ */
 MainController.redirect = function(url){
   document.location = url;
 }
