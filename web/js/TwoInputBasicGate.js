@@ -1,3 +1,10 @@
+/**
+ * Crea una compuerta lógica de dos entradas
+ * @class Representa una compuerta lógica de dos entradas. Es la super clase de todas las compuertas
+ * lógicas cuyo funcionamiento depende de dos entradas.
+ * @augments Component
+ * @param {DesignArea} workflow Área de diseño donde será adicionada la compuerta
+ */
 TwoInputBasicGate = function(workflow){
 	Component.call(this);
 

@@ -1,6 +1,7 @@
 /**
- * Crea un nuevo controlador principal
- * @class Controlador principal de la aplicación(solo se puede instanciar una vez por cada aplicación)
+ * Crea un controlador principal
+ * @class Controlador principal de la aplicación(solo se puede instanciar una vez)
+ * @author Pedro Bonilla &lt;pedroabp5@gmail.com&gt;
  */
 MainController = function(){
   //TODO: Implementing the singleton pattern here

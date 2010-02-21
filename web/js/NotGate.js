@@ -1,3 +1,9 @@
+/**
+ * Crea una compuerta lógica NOT
+ * @class Representa una compuerta lógica NOT
+ * @augments Component
+ * @param {Object} workflow Área de diseño donde será adicionada la compuerta
+ */
 NotGate = function(workflow){
   Component.call(this);
   

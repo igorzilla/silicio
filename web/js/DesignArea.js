@@ -1,5 +1,5 @@
 /**
- * Crea una nueva área de diseño
+ * Crea una área de diseño
  * @class Área de diseño de circuitos donde es posible insertar gráficamente los componentes
  * @param {String} id Identificador del elemento &lt;div&gt; que se usará como área de diseño
  * @param {Boolean} isNew Especifica si el diseño es nuevo o ha sido cargado

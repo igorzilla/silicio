@@ -1,3 +1,9 @@
+/**
+ * Crea una lámpara
+ * @class Representa una lámpara cuyo estado de encendido depende de la señal de entrada
+ * @augments Component
+ * @param {Object} workflow Área de diseño donde será adicionada la lámpara
+ */
 Light = function (workflow) {
   Component.call(this);
   

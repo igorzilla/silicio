@@ -1,3 +1,9 @@
+/**
+ * Crea una pantalla numérica
+ * @class Representa una pantalla que puede desplegar números enteros en el rango [0-9]
+ * @augments Component
+ * @param {Object} workflow Área de diseño donde será adicionada la pantalla
+ */
 Display = function (workflow) {
 	Component.call(this);
 	
