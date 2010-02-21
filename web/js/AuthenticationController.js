@@ -1,7 +1,14 @@
+/**
+ * Crea un controlador del módulo de autenticación
+ * @class Controlador responsable de la autenticación de usuarios(solo se puede instanciar una vez)
+ */
 AuthenticationController = function(){
-
+	//TODO: Implementing the singleton pattern here
 }
 
+/**
+ * Construye los formularios de autenticación y creación de cuentas de usuario
+ */
 AuthenticationController.prototype.buildForms = function(){
   Ext.QuickTips.init();
   
@@ -251,6 +258,9 @@ openCreateAccountFormAction, authenticateAction]
   Ext.get('panel').center();
 }
 
+/**
+ * Genera un nuevo CAPTCHA para el formulario de creación de cuentas de usuario
+ */
 AuthenticationController.generateNewCaptcha = function(){
   var captcha = Ext.get('captcha');
   captcha.set({

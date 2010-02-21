@@ -2,6 +2,7 @@
  * Crea un componente de un circuito
  * @class Representa un componente de un circuito. Es la super clase de todos los componentes
  * disponibles para el diseño de circuitos.
+ * @augments draw2d.ImageFigure
  */
 Component = function(){
   draw2d.ImageFigure.call(this);
