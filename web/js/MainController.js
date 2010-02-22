@@ -5,12 +5,24 @@
  */
 MainController = function(){
   //TODO: Implementing the singleton pattern here
-  //  this.workflow = new Array();
-  //  this.paintArea = new Array();
+  /**
+   * Panel de herramientas
+   * @type Ext.Panel
+   * @private
+   */
   this.toolsPanel = null;
-  this.toolBar = null;
+  /**
+   * Barra de menú
+   * @type Ext.Toolbar
+   * @private
+   */
+  this.menuBar = null;
+  /**
+   * Panel de pestañas
+   * @type Ext.TabPanel
+   * @private
+   */
   this.tabsPanel = null;
-  this.maximumPaintAreaId = 0;
 }
 
 /**
@@ -105,11 +117,11 @@ MainController.prototype.buildTabsPanel = function(){
     activeItem: 0,
     listeners: {
       tabchange: function(tabPanel, newActivePanel){
-				if(newActivePanel.designArea) {
-					// This line is to improve compatibility with Google Chrome when you press 'Del' key
-					// over a component after changing the tab
-					newActivePanel.designArea.html.focus();
-				}
+        if (newActivePanel.designArea) {
+          // This line is to improve compatibility with Google Chrome when you press 'Del' key
+          // over a component after changing the tab
+          newActivePanel.designArea.html.focus();
+        }
       }
     },
     defaults: {
@@ -441,7 +453,7 @@ MainController.getAbsoluteUrl = function(moduleName, actionName){
 
 /**
  * Redirecciona el navegador del usuario a una URL especificada
- * @param {String} url Dirección URL donde se va a redirigir el navegador del usuario 
+ * @param {String} url Dirección URL donde se va a redirigir el navegador del usuario
  */
 MainController.redirect = function(url){
   document.location = url;

@@ -6,8 +6,17 @@
  */
 Component = function(){
   draw2d.ImageFigure.call(this);
-  
+  /**
+   * Puertos de entrada del componente
+   * @type Array
+   * @private
+   */
   this.inputPorts = new Array();
+  /**
+   * Puertos de salida del componente
+   * @type Array
+   * @private
+   */
   this.outputPorts = new Array();
 }
 

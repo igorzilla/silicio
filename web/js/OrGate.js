@@ -2,10 +2,10 @@
  * Crea una compuerta lógica OR
  * @class Representa una compuerta lógica OR
  * @augments TwoInputBasicGate
- * @param {Object} workflow Área de diseño donde será adicionada la compuerta
+ * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
  */
-OrGate = function(workflow){
-    TwoInputBasicGate.call(this,workflow);
+OrGate = function(designArea){
+    TwoInputBasicGate.call(this,designArea);
     this.setImage("/images/OR.png");
 		this.setDimension(67, 35);
 }
