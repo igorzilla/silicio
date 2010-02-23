@@ -72,7 +72,7 @@ DesignArea.prototype.isValid = function(){
   var components = this.getDocument().getFigures();
   
   //Rule 1: All ports of all components must be connected   
-  for (var i = 0; i < this.components.getSize(); i++) {
+  for (var i = 0; i < components.getSize(); i++) {
     if (!this.components.get(i).arePortsConnected()) {
       this.errorMessage = 'Todos los componentes deben estar conectados';
       return false;
@@ -104,8 +104,8 @@ DesignArea.prototype.toXML = function(){
   xml = xml + '>';
   var componentsXml = '<components>';
   var connectionsXml = '<connections>';
-  for (var i = 0; i < this.components.getSize(); i++) {
-    var component = this.components.get(i);
+  for (var i = 0; i < components.getSize(); i++) {
+    var component = components.get(i);
     componentsXml = componentsXml + component.toXML();
     connectionsXml = connectionsXml + component.outputConnectionsToXML();
   }

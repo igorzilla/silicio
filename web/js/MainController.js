@@ -292,8 +292,8 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Guardar diseño',
     iconCls: 'save_action',
     handler: function(){
-      var design = new Design(workflow.getDocument().getFigures());
-      var xmlDesignCode = design.toXML();
+      var activeDesignArea = tabsPanel.getActiveTab().designArea;
+      var xmlDesignCode = activeDesignArea.toXML();
       Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
         if (button == 'ok') {
           if (answer != '') {

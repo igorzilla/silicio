@@ -62,12 +62,15 @@ Component.prototype.outputConnectionsToXML = function(){
     var outputConnections = this.outputPorts[j].getConnections();
     for (var i = 0; i < outputConnections.getSize(); i++) {
       var outputConnection = outputConnections.get(i);
-      var target = outputConnection.getTarget().getParent();
-      var inputPortId = target.getId();
+			var inputPort = outputConnection.getTarget();
+			var inputPortId = inputPort.getId();
+      var target = inputPort.getParent();
+			var targetId = target.getId();
       xml = xml + '<connection>';
       xml = xml + '<sourceId>' + this.getId() + '</sourceId>';
       xml = xml + '<sourcePortIndex>' + j + '</sourcePortIndex>';
-      xml = xml + '<targetId>' + inputPortId + '</targetId>';
+      xml = xml + '<targetId>' + targetId + '</targetId>';
+			// TODO: Avoid search index of target port, setting the index equal to the identifier(using associative arrays)
       xml = xml + '<targetPortIndex>' + target.getIndexOfInputPort(inputPortId) + '</targetPortIndex>';
       xml = xml + '</connection>';
     }

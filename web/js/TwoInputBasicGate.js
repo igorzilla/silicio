@@ -5,7 +5,7 @@
  * @augments Component
  * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
  */
-TwoInputBasicGate = function(depende){
+TwoInputBasicGate = function(designArea){
 	Component.call(this);
 
   this.inputPorts[0] = new draw2d.InputPort();
