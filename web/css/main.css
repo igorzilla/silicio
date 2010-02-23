@@ -82,3 +82,11 @@ input.x-form-invalid {
 .delete_action {
     background-image: url(/images/trash.png) !important;
 }
+
+.new_action {
+    background-image: url(/images/new.png);
+}
+
+.design_area_tab {
+    background-image: url(/images/design_area.png);
+}

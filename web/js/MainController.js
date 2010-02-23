@@ -115,6 +115,7 @@ MainController.prototype.buildTabsPanel = function(){
   this.tabsPanel = new Ext.TabPanel({
     region: 'center',
     activeItem: 0,
+		enableTabScroll: true,
     listeners: {
       tabchange: function(tabPanel, newActivePanel){
         if (newActivePanel.designArea) {
@@ -149,10 +150,12 @@ MainController.prototype.buildMenuBar = function(){
   
   var newDesignAction = new Ext.Action({
     text: 'Nuevo diseño',
+		iconCls: 'new_action',
     handler: function(){
       var newDesignAreaId = DesignArea.generateNewDesignAreaId();
       var newTab = new Ext.Panel({
         title: newDesignAreaId,
+				iconCls: 'design_area_tab',
         closable: true,
         html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
       });
