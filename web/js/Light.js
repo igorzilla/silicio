@@ -11,10 +11,10 @@ Light = function (designArea) {
   this.inputPorts[0].setWorkflow(designArea);
   this.inputPorts[0].setBackgroundColor(new draw2d.Color(255, 255, 255));
   this.inputPorts[0].setName(this.getId());
-  this.addPort(this.inputPorts[0], 24, 47);
+  this.addPort(this.inputPorts[0], 24, 58);
 	
   this.setImage("/images/light_off.png");
-  this.setDimension(48, 48);
+  this.setDimension(48, 61);
 }
 
 Light.prototype = new Component;
