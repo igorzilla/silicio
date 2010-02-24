@@ -3,7 +3,7 @@
  * @class Controlador responsable de la autenticación de usuarios(solo se puede instanciar una vez)
  */
 AuthenticationController = function(){
-	//TODO: Implementing the singleton pattern here
+  //TODO: Implementing the singleton pattern here
 }
 
 /**
@@ -21,8 +21,9 @@ AuthenticationController.prototype.buildForms = function(){
       var basicForm = authenticateForm.getForm();
       basicForm.submit({
         success: function(form, action){
-          var mainActionUrl = MainController.getAbsoluteUrl('main', 'index');
-          MainController.redirect(mainActionUrl);
+          //TODO: Transforming the application in a pure AJAX application
+          //          var mainActionUrl = MainController.getAbsoluteUrl('main', 'index');
+          //          MainController.redirect(mainActionUrl);
         },
         failure: function(form, action){
           var errorMessage = '';
