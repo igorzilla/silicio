@@ -70,7 +70,7 @@ Component.prototype.outputConnectionsToXML = function(){
       xml = xml + '<sourceId>' + this.getId() + '</sourceId>';
       xml = xml + '<sourcePortIndex>' + j + '</sourcePortIndex>';
       xml = xml + '<targetId>' + targetId + '</targetId>';
-			// TODO: Avoid search index of target port, setting the index equal to the identifier(using associative arrays)
+			//TODO: Avoid search of index of target port, setting the index equal to the identifier(using associative arrays)
       xml = xml + '<targetPortIndex>' + target.getIndexOfInputPort(inputPortId) + '</targetPortIndex>';
       xml = xml + '</connection>';
     }
@@ -78,20 +78,21 @@ Component.prototype.outputConnectionsToXML = function(){
   return xml;
 }
 
-/**
- * Verifica si todos los puertos de este componente están conectados
- * @returns Devuelve TRUE solo si todos los puertos del componente están conectados
- */
-Component.prototype.arePortsConnected = function(){
-  for (var i = 0; i < this.inputPorts.length; i++) {
-    if (this.inputPorts[i].getConnections().getSize() == 0) {
-      return false;
-    }
-  }
-  for (var i = 0; i < this.outputPorts.length; i++) {
-    if (this.outputPorts[i].getConnections().getSize() == 0) {
-      return false;
-    }
-  }
-  return true;
-}
+//TODO: This method might be used to avoid the simulation of the component?
+///**
+// * Verifica si todos los puertos de este componente están conectados
+// * @returns Devuelve TRUE solo si todos los puertos del componente están conectados
+// */
+//Component.prototype.arePortsConnected = function(){
+//  for (var i = 0; i < this.inputPorts.length; i++) {
+//    if (this.inputPorts[i].getConnections().getSize() == 0) {
+//      return false;
+//    }
+//  }
+//  for (var i = 0; i < this.outputPorts.length; i++) {
+//    if (this.outputPorts[i].getConnections().getSize() == 0) {
+//      return false;
+//    }
+//  }
+//  return true;
+//}

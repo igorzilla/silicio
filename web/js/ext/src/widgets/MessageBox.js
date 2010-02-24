@@ -128,7 +128,6 @@ Ext.MessageBox = function(){
                 });
                 buttons = {};
                 var bt = this.buttonText;
-                //TODO: refactor this block into a buttons config to pass into the Window constructor
                 buttons["ok"] = dlg.addButton(bt["ok"], handleButton.createCallback("ok"));
                 buttons["yes"] = dlg.addButton(bt["yes"], handleButton.createCallback("yes"));
                 buttons["no"] = dlg.addButton(bt["no"], handleButton.createCallback("no"));

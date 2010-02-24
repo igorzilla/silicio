@@ -7,7 +7,7 @@
 Display = function(designArea){
   Component.call(this);
 	
-  // TODO: Make a method to create input ports
+  //TODO: Make a method to create input ports
   this.inputPorts[0] = new draw2d.InputPort();
   this.inputPorts[0].setWorkflow(designArea);
   this.inputPorts[0].setBackgroundColor(new draw2d.Color(255, 255, 255));

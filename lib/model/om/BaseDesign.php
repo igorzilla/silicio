@@ -401,7 +401,6 @@ abstract class BaseDesign extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 5; // 5 = DesignPeer::NUM_COLUMNS - DesignPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {

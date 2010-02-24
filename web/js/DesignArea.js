@@ -28,12 +28,12 @@ DesignArea = function(id, isNew){
     this.isSaved = true;
   }
   
-  /**
-   * Mensaje de error de validación
-   * @type String
-   * @private
-   */
-  this.errorMessage = null;
+//  /**
+//   * Mensaje de error de validación
+//   * @type String
+//   * @private
+//   */
+//  this.errorMessage = null;
   
   var designArea = this;
   
@@ -64,31 +64,32 @@ DesignArea.generateNewDesignAreaId = function(){
   return 'design_area_' + newDesignAreaId;
 }
 
-/**
- * Verifica si el diseño presente en esta área de diseño es sintácticamente válido
- * @returns {Boolean} Devuelve TRUE solo si el diseño es sintácticamente válido
- */
-DesignArea.prototype.isValid = function(){
-  var components = this.getDocument().getFigures();
-  
-  //Rule 1: All ports of all components must be connected   
-  for (var i = 0; i < components.getSize(); i++) {
-    if (!this.components.get(i).arePortsConnected()) {
-      this.errorMessage = 'Todos los componentes deben estar conectados';
-      return false;
-    }
-  }
-  //Rule 2: There must be only one connection per input port (validated in real time through RealTimeValidator)
-  return true;
-}
-/**
- * Devuelve el mensaje de error por el cual este diseño no es considerado válido.
- * El uso de este método siempre debe ser posterior a una invocación al método isValid()
- * @returns {String} Mensaje de error
- */
-DesignArea.prototype.getErrorMessage = function(){
-  return this.errorMessage;
-}
+//TODO: Is required any form of validation?
+///**
+// * Verifica si el diseño presente en esta área de diseño es sintácticamente válido
+// * @returns {Boolean} Devuelve TRUE solo si el diseño es sintácticamente válido
+// */
+//DesignArea.prototype.isValid = function(){
+//  var components = this.getDocument().getFigures();
+//  
+//  //Rule 1: All ports of all components must be connected   
+//  for (var i = 0; i < components.getSize(); i++) {
+//    if (!this.components.get(i).arePortsConnected()) {
+//      this.errorMessage = 'Todos los componentes deben estar conectados';
+//      return false;
+//    }
+//  }
+//  //Rule 2: There must be only one connection per input port (validated in real time through RealTimeValidator)
+//  return true;
+//}
+///**
+// * Devuelve el mensaje de error por el cual este diseño no es considerado válido.
+// * El uso de este método siempre debe ser posterior a una invocación al método isValid()
+// * @returns {String} Mensaje de error
+// */
+//DesignArea.prototype.getErrorMessage = function(){
+//  return this.errorMessage;
+//}
 
 /**
  * Serializa el diseño actual utilizando lenguaje XML
