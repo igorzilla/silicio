@@ -24,6 +24,21 @@ AuthenticationController.prototype.buildForms = function(){
           //TODO: Transforming the application in a pure AJAX application
           //          var mainActionUrl = MainController.getAbsoluteUrl('main', 'index');
           //          MainController.redirect(mainActionUrl);
+					Ext.Msg.wait('Ingresando...');
+          Ext.Ajax.request({
+            url: MainController.getAbsoluteUrl('main', 'indexAjax'),
+            success: function(result, request){
+              document.body.innerHTML = result.responseText;
+							
+              mainController = new MainController();
+							
+							Ext.Msg.hide();
+            },
+            failure: function(result, request){
+              //TODO: try to logout user after a failure
+              MainController.generateError(result.statusText);
+            }
+          });
         },
         failure: function(form, action){
           var errorMessage = '';
