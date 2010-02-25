@@ -341,13 +341,37 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
     handler: function(){
+      //      Ext.Ajax.request({
+      //        url: MainController.getAbsoluteUrl('authentication', 'logout'),
+      //        success: function(result, request){
+      //          var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index');
+      //          document.location = authenticationAction;
+      //        },
+      //        failure: function(result, request){
+      //          MainController.generateError(result.statusText);
+      //        }
+      //      });
+      Ext.Msg.wait('Cerrando la aplicación...');
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
         success: function(result, request){
-          var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index');
-          document.location = authenticationAction;
+          Ext.Ajax.request({
+            url: MainController.getAbsoluteUrl('authentication', 'indexAjax'),
+            success: function(result, request){
+              document.body.innerHTML = result.responseText;
+              
+              authenticationController = new AuthenticationController();
+              
+              Ext.Msg.hide();
+            },
+            failure: function(result, request){
+              //TODO: redirect to authentication page
+              MainController.generateError(result.statusText);
+            }
+          });
         },
         failure: function(result, request){
+          //TODO: redirect to authentication page
           MainController.generateError(result.statusText);
         }
       });

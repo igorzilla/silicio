@@ -4,6 +4,8 @@
  */
 AuthenticationController = function(){
   //TODO: Implementing the singleton pattern here
+	Ext.getBody().setStyle('background-color','#FFFFFF');
+  this.buildForms();
 }
 
 /**
@@ -21,18 +23,15 @@ AuthenticationController.prototype.buildForms = function(){
       var basicForm = authenticateForm.getForm();
       basicForm.submit({
         success: function(form, action){
-          //TODO: Transforming the application in a pure AJAX application
-          //          var mainActionUrl = MainController.getAbsoluteUrl('main', 'index');
-          //          MainController.redirect(mainActionUrl);
-					Ext.Msg.wait('Ingresando...');
+          Ext.Msg.wait('Ingresando...');
           Ext.Ajax.request({
             url: MainController.getAbsoluteUrl('main', 'indexAjax'),
             success: function(result, request){
               document.body.innerHTML = result.responseText;
-							
+              
               mainController = new MainController();
-							
-							Ext.Msg.hide();
+              
+              Ext.Msg.hide();
             },
             failure: function(result, request){
               //TODO: try to logout user after a failure

@@ -20,7 +20,7 @@ class mainActions extends sfActions
 
   }
   public function executeIndexAjax($request) {
-    $this->renderPartial('main');
+    $this->renderPartial('indexBody');
     return sfView::NONE;
   }
 }

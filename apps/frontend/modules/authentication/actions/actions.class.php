@@ -21,6 +21,10 @@ class authenticationActions extends sfActions
       $this->redirect('main/index');
     }
   }
+  public function executeIndexAjax(sfWebRequest $request) {
+    $this->renderPartial('indexBody');
+    return sfView::NONE;
+  }
   public function executeLogin(sfWebRequest $request) {
     $isPost = $request->isMethod('post');
     if($isPost) {

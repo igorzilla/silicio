@@ -1,1 +1,1 @@
-<?php include_partial('main')?>
+<?php include_partial('indexBody')?>
