@@ -78,6 +78,24 @@ Component.prototype.outputConnectionsToXML = function(){
   return xml;
 }
 
+Component.prototype.createInputPort = function (designArea, xCoordinate, yCoordinate) {
+	var newInputPort = new draw2d.InputPort(); 
+  newInputPort.setWorkflow(designArea);
+  newInputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
+  newInputPort.setName(this.getId());
+	this.inputPorts.push(newInputPort);
+  this.addPort(newInputPort, xCoordinate, yCoordinate);
+}
+
+Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordinate){
+	var newOutputPort = new draw2d.OutputPort();
+  newOutputPort.setWorkflow(designArea);
+  newOutputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
+  newOutputPort.setName(this.getId());
+	this.outputPorts.push(newOutputPort);
+  this.addPort(newOutputPort, xCoordinate, yCoordinate);
+}
+
 //TODO: This method might be used to avoid the simulation of the component?
 ///**
 // * Verifica si todos los puertos de este componente están conectados
