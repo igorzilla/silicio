@@ -6,129 +6,89 @@
  */
 Display = function(designArea){
   Component.call(this);
-	
-  //TODO: Make a method to create input ports
-  this.inputPorts[0] = new draw2d.InputPort();
-  this.inputPorts[0].setWorkflow(designArea);
-  this.inputPorts[0].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[0].setName(this.getId());
-  this.addPort(this.inputPorts[0], 13, 0);
-	
-	this.inputPorts[1] = new draw2d.InputPort();
-  this.inputPorts[1].setWorkflow(designArea);
-  this.inputPorts[1].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[1].setName(this.getId());
-  this.addPort(this.inputPorts[1], 25, 0);
-	
-	this.inputPorts[2] = new draw2d.InputPort();
-  this.inputPorts[2].setWorkflow(designArea);
-  this.inputPorts[2].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[2].setName(this.getId());
-  this.addPort(this.inputPorts[2], 38, 0);
-	
-	this.inputPorts[3] = new draw2d.InputPort();
-  this.inputPorts[3].setWorkflow(designArea);
-  this.inputPorts[3].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[3].setName(this.getId());
-  this.addPort(this.inputPorts[3], 50, 0);
-	
-	this.inputPorts[4] = new draw2d.InputPort();
-  this.inputPorts[4].setWorkflow(designArea);
-  this.inputPorts[4].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[4].setName(this.getId());
-  this.addPort(this.inputPorts[4], 13, 121);
   
-  this.inputPorts[5] = new draw2d.InputPort();
-  this.inputPorts[5].setWorkflow(designArea);
-  this.inputPorts[5].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[5].setName(this.getId());
-  this.addPort(this.inputPorts[5], 25, 121);
-  
-  this.inputPorts[6] = new draw2d.InputPort();
-  this.inputPorts[6].setWorkflow(designArea);
-  this.inputPorts[6].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[6].setName(this.getId());
-  this.addPort(this.inputPorts[6], 38, 121);
-  
-  this.inputPorts[7] = new draw2d.InputPort();
-  this.inputPorts[7].setWorkflow(designArea);
-  this.inputPorts[7].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.inputPorts[7].setName(this.getId());
-  this.addPort(this.inputPorts[7], 50, 121);
+  this.createInputPort(designArea, 13, 0);
+  this.createInputPort(designArea, 25, 0);
+  this.createInputPort(designArea, 38, 0);
+  this.createInputPort(designArea, 50, 0);
+  this.createInputPort(designArea, 13, 121);
+	this.createInputPort(designArea, 25, 121);
+	this.createInputPort(designArea, 38, 121);
+	this.createInputPort(designArea, 50, 121);
   
   this.setImage("/images/display-bg.png");
   this.setDimension(63, 121);
-	
-	/**
-	 * Segmentos de la pantalla que se iluminan
-	 * @type Array
-	 * @private
-	 */
-	this.segments = new Array();
-	
-	this.segments[0] = document.createElement('img');
-	this.segments[0].src = '/images/a-segment.png';
-	this.segments[0].style.position = 'absolute';
-	this.segments[0].style.top = '17px';
-	this.segments[0].style.left = '4px';
-	this.segments[0].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[0]);
-	
-	this.segments[1] = document.createElement('img');
-	this.segments[1].src = '/images/b-segment.png';
-	this.segments[1].style.position = 'absolute';
-	this.segments[1].style.top = '19px';
-	this.segments[1].style.left = '40px';
-	this.segments[1].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[1]);
-	
-	this.segments[2] = document.createElement('img');
-	this.segments[2].src = '/images/c-segment.png';
-	this.segments[2].style.position = 'absolute';
-	this.segments[2].style.top = '61px';
-	this.segments[2].style.left = '40px';
-	this.segments[2].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[2]);
-	
-	this.segments[3] = document.createElement('img');
-	this.segments[3].src = '/images/d-segment.png';
-	this.segments[3].style.position = 'absolute';
-	this.segments[3].style.top = '96px';
-	this.segments[3].style.left = '4px';
-	this.segments[3].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[3]);
-	
-	this.segments[4] = document.createElement('img');
-	this.segments[4].src = '/images/e-segment.png';
-	this.segments[4].style.position = 'absolute';
-	this.segments[4].style.top = '61px';
-	this.segments[4].style.left = '2px';
-	this.segments[4].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[4]);
-	
-	this.segments[5] = document.createElement('img');
-	this.segments[5].src = '/images/f-segment.png';
-	this.segments[5].style.position = 'absolute';
-	this.segments[5].style.top = '19px';
-	this.segments[5].style.left = '2px';
-	this.segments[5].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[5]);
-	
-	this.segments[6] = document.createElement('img');
-	this.segments[6].src = '/images/g-segment.png';
-	this.segments[6].style.position = 'absolute';
-	this.segments[6].style.top = '56px';
-	this.segments[6].style.left = '6px';
-	this.segments[6].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[6]);
-	
-	this.segments[7] = document.createElement('img');
-	this.segments[7].src = '/images/decimal-point.png';
-	this.segments[7].style.position = 'absolute';
-	this.segments[7].style.top = '95px';
-	this.segments[7].style.left = '52px';
-	this.segments[7].style.visibility = 'hidden';
-	this.html.appendChild(this.segments[7]);
+  
+  /**
+   * Segmentos de la pantalla que se iluminan
+   * @type Array
+   * @private
+   */
+  this.segments = new Array();
+  
+  this.segments[0] = document.createElement('img');
+  this.segments[0].src = '/images/a-segment.png';
+  this.segments[0].style.position = 'absolute';
+  this.segments[0].style.top = '17px';
+  this.segments[0].style.left = '4px';
+  this.segments[0].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[0]);
+  
+  this.segments[1] = document.createElement('img');
+  this.segments[1].src = '/images/b-segment.png';
+  this.segments[1].style.position = 'absolute';
+  this.segments[1].style.top = '19px';
+  this.segments[1].style.left = '40px';
+  this.segments[1].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[1]);
+  
+  this.segments[2] = document.createElement('img');
+  this.segments[2].src = '/images/c-segment.png';
+  this.segments[2].style.position = 'absolute';
+  this.segments[2].style.top = '61px';
+  this.segments[2].style.left = '40px';
+  this.segments[2].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[2]);
+  
+  this.segments[3] = document.createElement('img');
+  this.segments[3].src = '/images/d-segment.png';
+  this.segments[3].style.position = 'absolute';
+  this.segments[3].style.top = '96px';
+  this.segments[3].style.left = '4px';
+  this.segments[3].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[3]);
+  
+  this.segments[4] = document.createElement('img');
+  this.segments[4].src = '/images/e-segment.png';
+  this.segments[4].style.position = 'absolute';
+  this.segments[4].style.top = '61px';
+  this.segments[4].style.left = '2px';
+  this.segments[4].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[4]);
+  
+  this.segments[5] = document.createElement('img');
+  this.segments[5].src = '/images/f-segment.png';
+  this.segments[5].style.position = 'absolute';
+  this.segments[5].style.top = '19px';
+  this.segments[5].style.left = '2px';
+  this.segments[5].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[5]);
+  
+  this.segments[6] = document.createElement('img');
+  this.segments[6].src = '/images/g-segment.png';
+  this.segments[6].style.position = 'absolute';
+  this.segments[6].style.top = '56px';
+  this.segments[6].style.left = '6px';
+  this.segments[6].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[6]);
+  
+  this.segments[7] = document.createElement('img');
+  this.segments[7].src = '/images/decimal-point.png';
+  this.segments[7].style.position = 'absolute';
+  this.segments[7].style.top = '95px';
+  this.segments[7].style.left = '52px';
+  this.segments[7].style.visibility = 'hidden';
+  this.html.appendChild(this.segments[7]);
 }
 
 Display.prototype = new Component;

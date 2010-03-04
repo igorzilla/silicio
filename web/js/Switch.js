@@ -8,11 +8,7 @@
 Switch = function(designArea){
   Component.call(this);
   
-  this.outputPorts[0] = new draw2d.OutputPort();
-  this.outputPorts[0].setWorkflow(designArea);
-  this.outputPorts[0].setBackgroundColor(new draw2d.Color(255, 255, 255));
-  this.outputPorts[0].setName(this.getId());
-  this.addPort(this.outputPorts[0], 72, 30);
+	this.createOutputPort(designArea, 72, 30);
   
   this.setImage("/images/switch-off.png");
   this.setDimension(72, 58);
