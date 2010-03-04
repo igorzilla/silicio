@@ -37,7 +37,8 @@ class designsManagementActions extends sfActions
             $design = new Design();
             $design->setName($designName);
             $design->setOwner($designOwner);
-            $design->setXmlCode($xmlDesignCode);
+            $design->setComponentsXml($componentsXml);
+            $design->setConnectionsXml($connectionsXml);
             $design->save();
             return $this->renderText('Ok');
           }
@@ -88,18 +89,18 @@ class designsManagementActions extends sfActions
       $designName = $request->getParameter('design_name');
       $user = $this->getUser();
       $designOwner = $user->getAttribute('username');
-      	
+       
       $condition = new Criteria();
       $condition->add(DesignPeer::NAME,$designName);
       $condition->add(DesignPeer::OWNER,$designOwner);
-      	
+       
       $design = DesignPeer::doSelectOne($condition);
-      	
+       
       if($design!=null) {
         $design->delete();
         return $this->renderText('Ok');
       }
-      	
+       
       return $this->renderText('El diseño especificado no existe');
     }
     else {

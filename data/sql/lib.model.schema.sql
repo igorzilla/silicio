@@ -31,7 +31,8 @@ CREATE TABLE "design"
 (
 	"name" VARCHAR(30)  NOT NULL,
 	"owner" VARCHAR(30)  NOT NULL,
-	"xml_code" TEXT,
+	"components_xml" TEXT,
+	"connections_xml" TEXT,
 	"created_at" TIMESTAMP,
 	"updated_at" TIMESTAMP,
 	PRIMARY KEY ("name")
