@@ -21,10 +21,16 @@ class designsManagementActions extends sfActions
       $user = $this->getUser();
       $isAuthenticated = $user->isAuthenticated();
       if($isAuthenticated) {
-        $xmlDesignCode = $request->getParameter('xml_design_code');
+        $componentsXml = $request->getParameter('components_xml');
+        $connectionsXml = $request->getParameter('connections_xml');
+        $schemafileName = 'design.xsd';
+        $xmlHeaders = XMLEngine::generateHeaders('design',$schemafileName);
+        $xmlDesignCode = $xmlDesignCode.$xmlHeaders;
+        $xmlDesignCode = $xmlDesignCode.$componentsXml.$connectionsXml;
+        $xmlDesignCode = $xmlDesignCode.'</design>';
         $wellFormed = XMLEngine::isWellFormed($xmlDesignCode);
         if($wellFormed===true) {
-          $isValidXML = XMLEngine::isValid($xmlDesignCode,'../data/design.xsd');
+          $isValidXML = XMLEngine::isValid($xmlDesignCode,'../data/'.$schemafileName);
           if($isValidXML===true) {
             $designName = $request->getParameter('design_name');
             $designOwner = $user->getAttribute('username');
@@ -55,15 +61,15 @@ class designsManagementActions extends sfActions
   public function executeListDesigns() {
     $user = $this->getUser();
     $designOwner = $user->getAttribute('username');
-    
+
     $conditions = new Criteria();
     $conditions->add(DesignPeer::OWNER, $designOwner);
-    
+
     $designs = DesignPeer::doSelect($conditions);
-    
+
     $responseArray = array();
     $responseArray['success'] = true;
-    
+
     $designsArray = array();
     foreach($designs as $design) {
       $designArray = array();
@@ -72,32 +78,32 @@ class designsManagementActions extends sfActions
       $designArray['updated_at'] = $design->getUpdatedAt();
       $designsArray[] = $designArray;
     }
-    
+
     $responseArray['designs'] = $designsArray;
-    
+
     return $this->renderText(json_encode($responseArray));
   }
   public function executeDeleteDesign(sfWebRequest $request) {
-  	if($request->isMethod('post')) {
-  	  $designName = $request->getParameter('design_name');
-  	  $user = $this->getUser();
-  	  $designOwner = $user->getAttribute('username');
-  	  
-  	  $condition = new Criteria();
-  	  $condition->add(DesignPeer::NAME,$designName);
-  	  $condition->add(DesignPeer::OWNER,$designOwner);
-  	  
-  	  $design = DesignPeer::doSelectOne($condition);
-  	  
-  	  if($design!=null) {
-  	    $design->delete();
-  	    return $this->renderText('Ok');
-  	  }
-  	  
-  	  return $this->renderText('El diseño especificado no existe');
-  	}
-  	else {
-  	  return sfView::NONE;
-  	}
+    if($request->isMethod('post')) {
+      $designName = $request->getParameter('design_name');
+      $user = $this->getUser();
+      $designOwner = $user->getAttribute('username');
+      	
+      $condition = new Criteria();
+      $condition->add(DesignPeer::NAME,$designName);
+      $condition->add(DesignPeer::OWNER,$designOwner);
+      	
+      $design = DesignPeer::doSelectOne($condition);
+      	
+      if($design!=null) {
+        $design->delete();
+        return $this->renderText('Ok');
+      }
+      	
+      return $this->renderText('El diseño especificado no existe');
+    }
+    else {
+      return sfView::NONE;
+    }
   }
 }

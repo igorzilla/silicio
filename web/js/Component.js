@@ -78,6 +78,13 @@ Component.prototype.outputConnectionsToXML = function(){
   return xml;
 }
 
+/**
+ * Crea un puerto de entrada y lo inserta dentro de este componente
+ * @param {DesignArea} designArea Área de diseño donde será insertado el puerto de entrada(debe ser la misma que la del componente)
+ * @param {Integer} xCoordinate Coordenada X de la posición donde será ubicado el puerto de entrada(relativo al componente)
+ * @param {Integer} yCoordinate Coordenada Y de la posición donde será ubicado el puerto de entrada(relativo al componente)
+ * @private
+ */
 Component.prototype.createInputPort = function (designArea, xCoordinate, yCoordinate) {
 	var newInputPort = new draw2d.InputPort(); 
   newInputPort.setWorkflow(designArea);
@@ -87,6 +94,13 @@ Component.prototype.createInputPort = function (designArea, xCoordinate, yCoordi
   this.addPort(newInputPort, xCoordinate, yCoordinate);
 }
 
+/**
+ * Crea un puerto de salida y lo inserta dentro de este componente
+ * @param {DesignArea} designArea Área de diseño donde será insertado el puerto de salida(debe ser la misma que la del componente)
+ * @param {Integer} xCoordinate Coordenada X de la posición donde será ubicado el puerto de salida(relativo al componente)
+ * @param {Integer} yCoordinate Coordenada Y de la posición donde será ubicado el puerto de salida(relativo al componente)
+ * @private
+ */
 Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordinate){
 	var newOutputPort = new draw2d.OutputPort();
   newOutputPort.setWorkflow(designArea);

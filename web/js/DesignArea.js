@@ -92,6 +92,30 @@ DesignArea.generateNewDesignAreaId = function(){
 //}
 
 /**
+ * Serializa el diseño actual utilizando lenguaje XML, pero  el código XML generado
+ * está dividido en la parte de los componentes y la parte de las conexiones.
+ * @returns {Object} Objeto literal que contiene las dos partes del código XML del diseño. Las
+ * propiedades de este objeto son: componentsXml y connectionsXml.
+ */
+DesignArea.prototype.toSplittedXML = function() {
+	var components = this.getDocument().getFigures();
+	var componentsXml = '<components>';
+  var connectionsXml = '<connections>';
+  for (var i = 0; i < components.getSize(); i++) {
+    var component = components.get(i);
+    componentsXml = componentsXml + component.toXML();
+    connectionsXml = connectionsXml + component.outputConnectionsToXML();
+  }
+  componentsXml = componentsXml + '</components>';
+  connectionsXml = connectionsXml + '</connections>';
+	var xmlContainer = {
+		componentsXml: componentsXml,
+		connectionsXml: connectionsXml		
+	};
+	return xmlContainer;
+}
+
+/**
  * Serializa el diseño actual utilizando lenguaje XML
  * @returns {String} Serialización XML del diseño actual
  */
@@ -103,15 +127,9 @@ DesignArea.prototype.toXML = function(){
   xml = xml + 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
   xml = xml + 'xsi:schemaLocation="http://www.w3schools.com design.xsd"';
   xml = xml + '>';
-  var componentsXml = '<components>';
-  var connectionsXml = '<connections>';
-  for (var i = 0; i < components.getSize(); i++) {
-    var component = components.get(i);
-    componentsXml = componentsXml + component.toXML();
-    connectionsXml = connectionsXml + component.outputConnectionsToXML();
-  }
-  componentsXml = componentsXml + '</components>';
-  connectionsXml = connectionsXml + '</connections>';
+	var xmlContainer = this.toSplittedXML();
+	var componentsXml = xmlContainer.componentsXml;
+  var connectionsXml = xmlContainer.connectionsXml;
   xml = xml + componentsXml + connectionsXml;
   xml = xml + '</design>';
   return xml;

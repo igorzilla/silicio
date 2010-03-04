@@ -302,31 +302,29 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'save_action',
     handler: function(){
       var activeDesignArea = tabsPanel.getActiveTab().designArea;
-      var xmlDesignCode = activeDesignArea.toXML();
+      //TODO: Split the XML code in two parts: components's part and connections's part
+      var xmlContainer = activeDesignArea.toSplittedXML();
+      var componentsXml = xmlContainer.componentsXml;
+      var connectionsXml = xmlContainer.connectionsXml;
       Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
         if (button == 'ok') {
           if (answer != '') {
-            if (xmlDesignCode != null) {
-              Ext.Ajax.request({
-                url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
-                params: {
-                  design_name: answer,
-                  xml_design_code: xmlDesignCode
-                },
-                success: function(result, request){
-                  if (result.responseText != 'Ok') {
-                    MainController.generateError(result.responseText);
-                  }
-                },
-                failure: function(result, request){
-                  MainController.generateError(result.statusText);
+            Ext.Ajax.request({
+              url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
+              params: {
+                design_name: answer,
+                components_xml: componentsXml,
+                connections_xml: connectionsXml
+              },
+              success: function(result, request){
+                if (result.responseText != 'Ok') {
+                  MainController.generateError(result.responseText);
                 }
-              });
-            }
-            else {
-              var errorMessage = design.getErrorMessage();
-              MainController.generateError(errorMessage);
-            }
+              },
+              failure: function(result, request){
+                MainController.generateError(result.statusText);
+              }
+            });
           }
           else {
             MainController.generateError('Debe digitar un nombre para el diseño', function(){
