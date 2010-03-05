@@ -14,8 +14,8 @@ all:
     param:
       classname:  PropelPDO
       dsn:        pgsql:dbname=silicio_db;host=localhost
-      username:   silicio_system
-      password:   silicio_password
+      username:   silicio_db
+      password:   silicio_db
       encoding:   utf8
       persistent: true
       pooling:    true

@@ -6,8 +6,7 @@
 <?php include_title() ?>
 <link rel="shortcut icon" href="/favicon.ico" />
 <script>
-  var mainActionUrl = '<?php echo url_for('main/index',true)?>';
-  var urlPrefix = mainActionUrl.substring(0,mainActionUrl.lastIndexOf('/')+1);    
+  var urlPrefix = '<?php echo url_for('main/index',true)?>';
 </script>
 </head>
 <body>
