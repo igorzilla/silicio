@@ -35,7 +35,7 @@ CREATE TABLE "design"
 	"connections_xml" TEXT,
 	"created_at" TIMESTAMP,
 	"updated_at" TIMESTAMP,
-	PRIMARY KEY ("name")
+	PRIMARY KEY ("name","owner")
 );
 
 COMMENT ON TABLE "design" IS '';

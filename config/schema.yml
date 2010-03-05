@@ -9,7 +9,7 @@ propel:
   design:
     _attributes: { phpName: Design }
     name: { type: varchar(30), required: true, primaryKey: true }
-    owner: { type: varchar(30), required: true, foreignTable: system_user, foreignReference: username, onDelete: cascade }
+    owner: { type: varchar(30), required: true, foreignTable: system_user, foreignReference: username, onDelete: cascade, primaryKey: true }
     components_xml: longvarchar
     connections_xml: longvarchar
     created_at:

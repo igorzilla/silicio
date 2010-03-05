@@ -145,11 +145,28 @@ MainController.prototype.buildTabsPanel = function(){
 }
 
 /**
+ * @private
+ */
+MainController.prototype.createNewDesignArea = function(){
+  var newDesignAreaId = DesignArea.generateNewDesignAreaId();
+  var newTab = new Ext.Panel({
+    title: newDesignAreaId,
+    iconCls: 'design_area_tab',
+    closable: true,
+    html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
+  });
+  this.tabsPanel.add(newTab);
+  newTab.show();
+  var newDesignArea = new DesignArea(newDesignAreaId, true);
+  newTab.designArea = newDesignArea;
+  return newDesignArea;
+}
+
+/**
  * Construye la barra de menú.
  */
 MainController.prototype.buildMenuBar = function(){
-  //  var workflow = this.workflow;
-  
+  //TODO: Configure the scope of the actions
   var tabsPanel = this.tabsPanel;
   
   var mainController = this;
@@ -157,18 +174,9 @@ MainController.prototype.buildMenuBar = function(){
   var newDesignAction = new Ext.Action({
     text: 'Nuevo diseño',
     iconCls: 'new_action',
+    scope: this,
     handler: function(){
-      var newDesignAreaId = DesignArea.generateNewDesignAreaId();
-      var newTab = new Ext.Panel({
-        title: newDesignAreaId,
-        iconCls: 'design_area_tab',
-        closable: true,
-        html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
-      });
-      tabsPanel.add(newTab);
-      newTab.show();
-      var newDesignArea = new DesignArea(newDesignAreaId, true);
-      newTab.designArea = newDesignArea;
+      this.createNewDesignArea();
     }
   });
   
@@ -266,8 +274,46 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'load_action',
     iconAlign: 'top',
     scale: 'large',
+    scope: this,
     handler: function(){
-    
+      var selectionModel = manageDesignsGrid.getSelectionModel();
+      if (selectionModel.getCount() < 1) {
+        MainController.generateError('Debe seleccionar un diseño');
+      }
+      else {
+        Ext.Msg.wait('Cargando diseño...');
+        var selectedRow = selectionModel.getSelected();
+        var selectedDesignName = selectedRow.get('name');
+        var record = Ext.data.Record.create(['class', 'id', 'xCoordinate', 'yCoordinate']);
+        var designStore = new Ext.data.Store({
+          url: MainController.getAbsoluteUrl('designsManagement', 'getComponentsXML'),
+          reader: new Ext.data.XmlReader({
+            record: 'component'
+          }, record)
+        });
+        var designArea = this.createNewDesignArea();
+        designStore.load({
+          params: {
+            design_name: selectedDesignName
+          },
+          callback: function(records, options, success){
+            if (success) {
+              for (var i = 0; i < records.length; i++) {
+                var record = records[i];
+                var class = record.get('class');
+                var id = record.get('id');
+                var xCoordinate = record.get('xCoordinate');
+                var yCoordinate = record.get('yCoordinate');
+                var component = eval('new ' + class + '(designArea)');
+                designArea.addFigure(component, xCoordinate, yCoordinate);
+                //TODO: Set the 'id' for loaded components
+                //TODO: Load connections
+              }
+              Ext.Msg.hide();
+            }
+          }
+        });
+      }
     }
   });
   
@@ -302,7 +348,6 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'save_action',
     handler: function(){
       var activeDesignArea = tabsPanel.getActiveTab().designArea;
-      //TODO: Split the XML code in two parts: components's part and connections's part
       var xmlContainer = activeDesignArea.toSplittedXML();
       var componentsXml = xmlContainer.componentsXml;
       var connectionsXml = xmlContainer.connectionsXml;
