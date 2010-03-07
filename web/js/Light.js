@@ -4,10 +4,8 @@
  * @augments Component
  * @param {DesignArea} designArea Área de diseño donde será adicionada la lámpara
  */
-Light = function (designArea) {
+Light = function () {
   Component.call(this);
-  
-	this.createInputPort(designArea, 24, 58);
 	
   this.setImage("/images/light_off.png");
   this.setDimension(48, 61);
@@ -16,3 +14,7 @@ Light = function (designArea) {
 Light.prototype = new Component;
 Light.prototype.constructor = Light;
 Light.prototype.type = 'Light';
+
+Light.prototype.setDesignArea = function (designArea) {
+	this.createInputPort(designArea, 24, 58);
+}

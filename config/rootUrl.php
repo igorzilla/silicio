@@ -1,3 +1,3 @@
 <?php
 
-$ROOT_URL = '/~pedroabp/web';
+$ROOT_URL = '';

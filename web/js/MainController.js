@@ -137,20 +137,19 @@ MainController.prototype.buildTabsPanel = function(){
     items: [{
       title: 'Bienvenido',
       html: 'Bienvenido'
-    }, {
-      title: 'Bienvenido2',
-      html: 'Bienvenido2'
     }]
   });
 }
 
 /**
+ * Crea una nueva pestaña de diseño dentro de la aplicación y le asigna el foco
+ * @returns {DesignArea} Área de diseño que fue empotrada dentro de la pestaña
  * @private
  */
-MainController.prototype.createNewDesignArea = function(){
+MainController.prototype.createNewTab = function(title){
   var newDesignAreaId = DesignArea.generateNewDesignAreaId();
   var newTab = new Ext.Panel({
-    title: newDesignAreaId,
+    title: title,
     iconCls: 'design_area_tab',
     closable: true,
     html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
@@ -176,7 +175,7 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'new_action',
     scope: this,
     handler: function(){
-      this.createNewDesignArea();
+      this.createNewTab('(Sin título)');
     }
   });
   
@@ -281,6 +280,7 @@ MainController.prototype.buildMenuBar = function(){
         MainController.generateError('Debe seleccionar un diseño');
       }
       else {
+				manageDesignsPopup.hide();
         Ext.Msg.wait('Cargando diseño...');
         var selectedRow = selectionModel.getSelected();
         var selectedDesignName = selectedRow.get('name');
@@ -291,7 +291,7 @@ MainController.prototype.buildMenuBar = function(){
             record: 'component'
           }, record)
         });
-        var designArea = this.createNewDesignArea();
+        var designArea = this.createNewTab(selectedDesignName);
         designStore.load({
           params: {
             design_name: selectedDesignName
@@ -302,9 +302,9 @@ MainController.prototype.buildMenuBar = function(){
                 var record = records[i];
                 var class = record.get('class');
                 var id = record.get('id');
-                var xCoordinate = record.get('xCoordinate');
-                var yCoordinate = record.get('yCoordinate');
-                var component = eval('new ' + class + '(designArea)');
+                var xCoordinate = Number(record.get('xCoordinate'));
+                var yCoordinate = Number(record.get('yCoordinate'));
+                var component = eval('new ' + class + '()');
                 designArea.addFigure(component, xCoordinate, yCoordinate);
                 //TODO: Set the 'id' for loaded components
                 //TODO: Load connections
@@ -384,16 +384,6 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
     handler: function(){
-      //      Ext.Ajax.request({
-      //        url: MainController.getAbsoluteUrl('authentication', 'logout'),
-      //        success: function(result, request){
-      //          var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index');
-      //          document.location = authenticationAction;
-      //        },
-      //        failure: function(result, request){
-      //          MainController.generateError(result.statusText);
-      //        }
-      //      });
       Ext.Msg.wait('Cerrando la aplicación...');
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
@@ -420,6 +410,7 @@ MainController.prototype.buildMenuBar = function(){
       });
     }
   });
+  
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{

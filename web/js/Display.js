@@ -7,15 +7,6 @@
 Display = function(designArea){
   Component.call(this);
   
-  this.createInputPort(designArea, 13, 0);
-  this.createInputPort(designArea, 25, 0);
-  this.createInputPort(designArea, 38, 0);
-  this.createInputPort(designArea, 50, 0);
-  this.createInputPort(designArea, 13, 121);
-	this.createInputPort(designArea, 25, 121);
-	this.createInputPort(designArea, 38, 121);
-	this.createInputPort(designArea, 50, 121);
-  
   this.setImage("/images/display-bg.png");
   this.setDimension(63, 121);
   
@@ -94,3 +85,14 @@ Display = function(designArea){
 Display.prototype = new Component;
 Display.prototype.constructor = Display;
 Display.prototype.type = 'Display';
+
+Display.prototype.setDesignArea = function(designArea){
+  this.createInputPort(designArea, 13, 0);
+  this.createInputPort(designArea, 25, 0);
+  this.createInputPort(designArea, 38, 0);
+  this.createInputPort(designArea, 50, 0);
+  this.createInputPort(designArea, 13, 121);
+  this.createInputPort(designArea, 25, 121);
+  this.createInputPort(designArea, 38, 121);
+  this.createInputPort(designArea, 50, 121);
+}

@@ -42,7 +42,7 @@ DesignArea = function(id, isNew){
       var xCoordinate = event.xy[0] - designArea.getAbsoluteX();
       var yCoordinate = event.xy[1] - designArea.getAbsoluteY();
       //TODO: Variable 'figure' should be called 'component'
-      var figure = eval('new ' + data.className + '(designArea)');
+      var figure = eval('new ' + data.className + '()');
       designArea.addFigure(figure, xCoordinate, yCoordinate);
       return true;
     }

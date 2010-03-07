@@ -4,8 +4,8 @@
  * @augments TwoInputBasicGate
  * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
  */
-OrGate = function(designArea){
-    TwoInputBasicGate.call(this,designArea);
+OrGate = function(){
+    TwoInputBasicGate.call(this);
     this.setImage("/images/OR.png");
 		this.setDimension(67, 35);
 }

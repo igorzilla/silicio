@@ -5,10 +5,8 @@
  * @augments Component
  * @param {DesignArea} designArea Área de diseño donde será adicionado el interruptor
  */
-Switch = function(designArea){
+Switch = function(){
   Component.call(this);
-  
-	this.createOutputPort(designArea, 72, 30);
   
   this.setImage("/images/switch-off.png");
   this.setDimension(72, 58);
@@ -24,6 +22,10 @@ Switch = function(designArea){
 Switch.prototype = new Component;
 Switch.prototype.constructor = Switch;
 Switch.prototype.type = 'Switch';
+
+Switch.prototype.setDesignArea = function(designArea){
+	this.createOutputPort(designArea, 72, 30);
+}
 
 /**
  * Invierte el estado del interruptor

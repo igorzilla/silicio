@@ -62,15 +62,15 @@ Component.prototype.outputConnectionsToXML = function(){
     var outputConnections = this.outputPorts[j].getConnections();
     for (var i = 0; i < outputConnections.getSize(); i++) {
       var outputConnection = outputConnections.get(i);
-			var inputPort = outputConnection.getTarget();
-			var inputPortId = inputPort.getId();
+      var inputPort = outputConnection.getTarget();
+      var inputPortId = inputPort.getId();
       var target = inputPort.getParent();
-			var targetId = target.getId();
+      var targetId = target.getId();
       xml = xml + '<connection>';
       xml = xml + '<sourceId>' + this.getId() + '</sourceId>';
       xml = xml + '<sourcePortIndex>' + j + '</sourcePortIndex>';
       xml = xml + '<targetId>' + targetId + '</targetId>';
-			//TODO: Avoid search of index of target port, setting the index equal to the identifier(using associative arrays)
+      //TODO: Avoid search of index of target port, setting the index equal to the identifier(using associative arrays)
       xml = xml + '<targetPortIndex>' + target.getIndexOfInputPort(inputPortId) + '</targetPortIndex>';
       xml = xml + '</connection>';
     }
@@ -85,12 +85,12 @@ Component.prototype.outputConnectionsToXML = function(){
  * @param {Integer} yCoordinate Coordenada Y de la posición donde será ubicado el puerto de entrada(relativo al componente)
  * @private
  */
-Component.prototype.createInputPort = function (designArea, xCoordinate, yCoordinate) {
-	var newInputPort = new draw2d.InputPort(); 
+Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordinate){
+  var newInputPort = new draw2d.InputPort();
   newInputPort.setWorkflow(designArea);
   newInputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
   newInputPort.setName(this.getId());
-	this.inputPorts.push(newInputPort);
+  this.inputPorts.push(newInputPort);
   this.addPort(newInputPort, xCoordinate, yCoordinate);
 }
 
@@ -102,12 +102,32 @@ Component.prototype.createInputPort = function (designArea, xCoordinate, yCoordi
  * @private
  */
 Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordinate){
-	var newOutputPort = new draw2d.OutputPort();
+  var newOutputPort = new draw2d.OutputPort();
   newOutputPort.setWorkflow(designArea);
   newOutputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
   newOutputPort.setName(this.getId());
-	this.outputPorts.push(newOutputPort);
+  this.outputPorts.push(newOutputPort);
   this.addPort(newOutputPort, xCoordinate, yCoordinate);
+}
+
+/**
+ * Asigna un workflow al componente
+ * @private
+ * @param {Workflow} workflow
+ */
+Component.prototype.setWorkflow = function(workflow){
+	draw2d.ImageFigure.prototype.setWorkflow.call(this,workflow);
+  this.setDesignArea(workflow);
+}
+
+/**
+ * Asigna un área de diseño al componente(este método debería ser
+ * implementado en las sub-clases para permitir la inserción de
+ * puertos de entrada y salida)
+ * @param {DesignArea} designArea
+ */
+Component.prototype.setDesignArea = function (designArea) {
+	
 }
 
 //TODO: This method might be used to avoid the simulation of the component?

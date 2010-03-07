@@ -4,8 +4,8 @@
  * @augments TwoInputBasicGate
  * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
  */
-AndGate = function(designArea){
-	TwoInputBasicGate.call(this,designArea);
+AndGate = function(){
+	TwoInputBasicGate.call(this);
 	this.setImage("/images/AND.png");
 	this.setDimension(67, 35);
 }
