@@ -323,18 +323,18 @@ MainController.prototype.buildMenuBar = function(){
                   if (success) {
                     for (var i = 0; i < connectionRecords.length; i++) {
                       var connectionRecord = connectionRecords[i];
-											var document = designArea.getDocument();
+                      var document = designArea.getDocument();
                       var sourceId = connectionRecord.get('sourceId');
-											var sourceComponent = document.getFigure(sourceId);
+                      var sourceComponent = document.getFigure(sourceId);
                       var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
-											var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
+                      var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
                       var targetId = connectionRecord.get('targetId');
-											var targetComponent = document.getFigure(targetId);
+                      var targetComponent = document.getFigure(targetId);
                       var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
-											var targetPort = targetComponent.getInputPort(targetPortIndex);
-											var connection = new draw2d.Connection();
-											connection.setSource(sourcePort);
-											connection.setTarget(targetPort);
+                      var targetPort = targetComponent.getInputPort(targetPortIndex);
+                      var connection = new draw2d.Connection();
+                      connection.setSource(sourcePort);
+                      connection.setTarget(targetPort);
                       designArea.addFigure(connection);
                     }
                   }
@@ -363,7 +363,7 @@ MainController.prototype.buildMenuBar = function(){
   
   var manageDesignsAction = new Ext.Action({
     text: 'Administrar diseños',
-		iconCls: 'manage_designs_action',
+    iconCls: 'manage_designs_action',
     handler: function(){
       if (manageDesignsPopup.hidden) {
         designsStore.load({
@@ -380,36 +380,41 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'save_action',
     handler: function(){
       var activeDesignArea = tabsPanel.getActiveTab().designArea;
-      var xmlContainer = activeDesignArea.toSplittedXML();
-      var componentsXml = xmlContainer.componentsXml;
-      var connectionsXml = xmlContainer.connectionsXml;
-      Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
-        if (button == 'ok') {
-          if (answer != '') {
-            Ext.Ajax.request({
-              url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
-              params: {
-                design_name: answer,
-                components_xml: componentsXml,
-                connections_xml: connectionsXml
-              },
-              success: function(result, request){
-                if (result.responseText != 'Ok') {
-                  MainController.generateError(result.responseText);
+      if (!activeDesignArea) {
+        MainController.generateError('Debe seleccionar un área de diseño');
+      }
+      else {
+        var xmlContainer = activeDesignArea.toSplittedXML();
+        var componentsXml = xmlContainer.componentsXml;
+        var connectionsXml = xmlContainer.connectionsXml;
+        Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
+          if (button == 'ok') {
+            if (answer != '') {
+              Ext.Ajax.request({
+                url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
+                params: {
+                  design_name: answer,
+                  components_xml: componentsXml,
+                  connections_xml: connectionsXml
+                },
+                success: function(result, request){
+                  if (result.responseText != 'Ok') {
+                    MainController.generateError(result.responseText);
+                  }
+                },
+                failure: function(result, request){
+                  MainController.generateError(result.statusText);
                 }
-              },
-              failure: function(result, request){
-                MainController.generateError(result.statusText);
-              }
-            });
+              });
+            }
+            else {
+              MainController.generateError('Debe digitar un nombre para el diseño', function(){
+                saveAction.execute();
+              });
+            }
           }
-          else {
-            MainController.generateError('Debe digitar un nombre para el diseño', function(){
-              saveAction.execute();
-            });
-          }
-        }
-      });
+        });
+      }
     }
   });
   var closeSessionAction = new Ext.Action({
