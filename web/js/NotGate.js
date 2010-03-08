@@ -9,7 +9,7 @@ NotGate = function(id){
   Component.call(this,id);
   
   this.setDimension(67, 34);
-  this.setImage("/images/NOT.png");
+  this.setImage(rootUrl+'/images/NOT.png');
 }
 
 NotGate.prototype = new Component;

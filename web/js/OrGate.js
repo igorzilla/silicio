@@ -7,7 +7,7 @@
  */
 OrGate = function(id){
     TwoInputBasicGate.call(this,id);
-    this.setImage("/images/OR.png");
+    this.setImage(rootUrl+'/images/OR.png');
 		this.setDimension(67, 35);
 }
 

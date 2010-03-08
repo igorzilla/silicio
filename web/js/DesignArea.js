@@ -7,7 +7,7 @@
 DesignArea = function(id, isNew){
   draw2d.Workflow.call(this, id);
   
-  this.setBackgroundImage("/images/grid.png", true);
+  this.setBackgroundImage(rootUrl+'/images/grid.png', true);
   this.getCommandStack().addCommandStackEventListener(new RealTimeValidator());
   
   if (!isNew) {

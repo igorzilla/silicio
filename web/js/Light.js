@@ -8,7 +8,7 @@
 Light = function (id) {
   Component.call(this,id);
 	
-  this.setImage("/images/light_off.png");
+  this.setImage(rootUrl+'/images/light_off.png');
   this.setDimension(48, 61);
 }
 

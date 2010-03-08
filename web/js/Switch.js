@@ -9,7 +9,7 @@
 Switch = function(id){
   Component.call(this,id);
   
-  this.setImage("/images/switch-off.png");
+  this.setImage(rootUrl+'/images/switch-off.png');
   this.setDimension(72, 58);
 	
 	/**
@@ -34,11 +34,11 @@ Switch.prototype.setDesignArea = function(designArea){
 Switch.prototype.toggle = function(){
   if (this.isOn) {
     this.isOn = false;
-    this.setImage("/images/switch-off.png");
+    this.setImage(rootUrl+'/images/switch-off.png');
   }
   else {
     this.isOn = true;
-    this.setImage("/images/switch-on.png");
+    this.setImage(rootUrl+'/images/switch-on.png');
   }
 }
 

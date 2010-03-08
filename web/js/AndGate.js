@@ -7,7 +7,7 @@
  */
 AndGate = function(id){
 	TwoInputBasicGate.call(this,id);
-	this.setImage("/images/AND.png");
+	this.setImage(rootUrl+'/images/AND.png');
 	this.setDimension(67, 35);
 }
 

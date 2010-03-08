@@ -7,9 +7,11 @@
 <link rel="shortcut icon" href="/favicon.ico" />
 <script>
   var urlPrefix = '<?php echo url_for('main/index',true)?>';
+  <?php require_once(dirname(__FILE__).'/../../../config/rootUrl.php');?>
+  var rootUrl = '<?php echo $ROOT_URL ?>';
 </script>
 </head>
 <body>
-<?php echo $sf_content ?>
+  <?php echo $sf_content ?>
 </body>
 </html>
