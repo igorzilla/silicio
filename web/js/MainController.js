@@ -280,35 +280,66 @@ MainController.prototype.buildMenuBar = function(){
         MainController.generateError('Debe seleccionar un diseño');
       }
       else {
-				manageDesignsPopup.hide();
+        manageDesignsPopup.hide();
         Ext.Msg.wait('Cargando diseño...');
         var selectedRow = selectionModel.getSelected();
         var selectedDesignName = selectedRow.get('name');
-        var record = Ext.data.Record.create(['class', 'id', 'xCoordinate', 'yCoordinate']);
-        var designStore = new Ext.data.Store({
+        var componentRecord = Ext.data.Record.create(['class', 'id', 'xCoordinate', 'yCoordinate']);
+        var componentsStore = new Ext.data.Store({
           url: MainController.getAbsoluteUrl('designsManagement', 'getComponentsXML'),
           reader: new Ext.data.XmlReader({
             record: 'component'
-          }, record)
+          }, componentRecord)
         });
         var designArea = this.createNewTab(selectedDesignName);
-        designStore.load({
+        componentsStore.load({
           params: {
             design_name: selectedDesignName
           },
-          callback: function(records, options, success){
+          callback: function(componentRecords, options, success){
             if (success) {
-              for (var i = 0; i < records.length; i++) {
-                var record = records[i];
-                var class = record.get('class');
-                var id = record.get('id');
-                var xCoordinate = Number(record.get('xCoordinate'));
-                var yCoordinate = Number(record.get('yCoordinate'));
-                var component = eval('new ' + class + '()');
+              for (var i = 0; i < componentRecords.length; i++) {
+                var componentRecord = componentRecords[i];
+                var class = componentRecord.get('class');
+                var id = componentRecord.get('id');
+                var xCoordinate = Number(componentRecord.get('xCoordinate'));
+                var yCoordinate = Number(componentRecord.get('yCoordinate'));
+                var component = eval('new ' + class + '(id)');
                 designArea.addFigure(component, xCoordinate, yCoordinate);
-                //TODO: Set the 'id' for loaded components
-                //TODO: Load connections
               }
+              //TODO: Load connections
+              var connectionRecord = Ext.data.Record.create(['sourceId', 'sourcePortIndex', 'targetId', 'targetPortIndex']);
+              var connectionsStore = new Ext.data.Store({
+                url: MainController.getAbsoluteUrl('designsManagement', 'getConnectionsXML'),
+                reader: new Ext.data.XmlReader({
+                  record: 'connection'
+                }, connectionRecord)
+              });
+              connectionsStore.load({
+                params: {
+                  design_name: selectedDesignName
+                },
+                callback: function(connectionRecords, options, success){
+                  if (success) {
+                    for (var i = 0; i < connectionRecords.length; i++) {
+                      var connectionRecord = connectionRecords[i];
+											var document = designArea.getDocument();
+                      var sourceId = connectionRecord.get('sourceId');
+											var sourceComponent = document.getFigure(sourceId);
+                      var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
+											var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
+                      var targetId = connectionRecord.get('targetId');
+											var targetComponent = document.getFigure(targetId);
+                      var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
+											var targetPort = targetComponent.getInputPort(targetPortIndex);
+											var connection = new draw2d.Connection();
+											connection.setSource(sourcePort);
+											connection.setTarget(targetPort);
+                      designArea.addFigure(connection);
+                    }
+                  }
+                }
+              });
               Ext.Msg.hide();
             }
           }
@@ -332,6 +363,7 @@ MainController.prototype.buildMenuBar = function(){
   
   var manageDesignsAction = new Ext.Action({
     text: 'Administrar diseños',
+		iconCls: 'manage_designs_action',
     handler: function(){
       if (manageDesignsPopup.hidden) {
         designsStore.load({

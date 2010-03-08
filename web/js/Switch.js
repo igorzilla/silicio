@@ -3,10 +3,11 @@
  * @class Representa un interruptor de voltaje cuyo estado puede cambiar, interactivamente,
  * haciendo doble click sobre él
  * @augments Component
- * @param {DesignArea} designArea Área de diseño donde será adicionado el interruptor
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-Switch = function(){
-  Component.call(this);
+Switch = function(id){
+  Component.call(this,id);
   
   this.setImage("/images/switch-off.png");
   this.setDimension(72, 58);

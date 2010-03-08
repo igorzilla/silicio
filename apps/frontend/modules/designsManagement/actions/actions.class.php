@@ -123,4 +123,28 @@ class designsManagementActions extends sfActions
       return sfView::NONE;
     }
   }
+
+  public function executeGetConnectionsXML(sfWebRequest $request) {
+    if($request->isMethod('post')) {
+      $designName = $request->getParameter('design_name');
+      $user = $this->getUser();
+      $designOwner = $user->getAttribute('username');
+
+      $design = DesignPeer::retrieveByPK($designName, $designOwner);
+
+      if($design!=null) {
+        $response = $this->getResponse();
+        $response->setContentType("text/xml");
+        $connectionsXml = $design->getConnectionsXml();
+        return $this->renderText($connectionsXml);
+      }
+      else {
+        //TODO: This message isn't enough to alert the client-side
+        return $this->renderText('El diseño especificado no existe');
+      }
+    }
+    else {
+      return sfView::NONE;
+    }
+  }
 }

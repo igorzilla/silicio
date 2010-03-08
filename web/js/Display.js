@@ -2,10 +2,11 @@
  * Crea una pantalla numérica
  * @class Representa una pantalla que puede desplegar números enteros en el rango [0-9]
  * @augments Component
- * @param {DesignArea} designArea Área de diseño donde será adicionada la pantalla
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-Display = function(designArea){
-  Component.call(this);
+Display = function(id){
+  Component.call(this,id);
   
   this.setImage("/images/display-bg.png");
   this.setDimension(63, 121);

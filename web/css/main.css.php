@@ -93,3 +93,7 @@ input.x-form-invalid {
 .design_area_tab {
     background-image: url(<?php echo $ROOT_URL; ?>/images/design_area.png);
 }
+
+.manage_designs_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/manage.png);
+}

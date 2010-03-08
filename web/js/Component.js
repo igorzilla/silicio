@@ -3,8 +3,20 @@
  * @class Representa un componente de un circuito. Es la super clase de todos los componentes
  * disponibles para el diseño de circuitos.
  * @augments draw2d.ImageFigure
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-Component = function(){
+Component = function(id){
+  if (id) {
+    /**
+     * Genera un identificador único
+     * @private
+     * @returns Identificador aleatorio de 10 caracteres
+     */
+    this.generateUId = function(){
+      return id;
+    }
+  }
   draw2d.ImageFigure.call(this);
   /**
    * Puertos de entrada del componente
@@ -116,7 +128,7 @@ Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordi
  * @param {Workflow} workflow
  */
 Component.prototype.setWorkflow = function(workflow){
-	draw2d.ImageFigure.prototype.setWorkflow.call(this,workflow);
+  draw2d.ImageFigure.prototype.setWorkflow.call(this, workflow);
   this.setDesignArea(workflow);
 }
 
@@ -126,8 +138,8 @@ Component.prototype.setWorkflow = function(workflow){
  * puertos de entrada y salida)
  * @param {DesignArea} designArea
  */
-Component.prototype.setDesignArea = function (designArea) {
-	
+Component.prototype.setDesignArea = function(designArea){
+
 }
 
 //TODO: This method might be used to avoid the simulation of the component?
@@ -148,3 +160,19 @@ Component.prototype.setDesignArea = function (designArea) {
 //  }
 //  return true;
 //}
+
+/**
+ * Devuelve el puerto de salida con el índice especificado
+ * @param {Integer} index Índice del puerto de salida
+ */
+Component.prototype.getOutputPort = function(index){
+  return this.outputPorts[index];
+}
+
+/**
+ * Devuelve el puerto de entrada con el índice especificado
+ * @param {Integer} index Índice del puerto de entrada
+ */
+Component.prototype.getInputPort = function(index){
+  return this.inputPorts[index];
+}

@@ -2,10 +2,11 @@
  * Crea una lámpara
  * @class Representa una lámpara cuyo estado de encendido depende de la señal de entrada
  * @augments Component
- * @param {DesignArea} designArea Área de diseño donde será adicionada la lámpara
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-Light = function () {
-  Component.call(this);
+Light = function (id) {
+  Component.call(this,id);
 	
   this.setImage("/images/light_off.png");
   this.setDimension(48, 61);

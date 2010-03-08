@@ -3,10 +3,11 @@
  * @class Representa una compuerta lógica de dos entradas. Es la super clase de todas las compuertas
  * lógicas cuyo funcionamiento depende de dos entradas.
  * @augments Component
- * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-TwoInputBasicGate = function(){
-  Component.call(this);
+TwoInputBasicGate = function(id){
+  Component.call(this,id);
 }
 
 TwoInputBasicGate.prototype = new Component;

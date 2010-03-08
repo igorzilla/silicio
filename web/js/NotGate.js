@@ -2,10 +2,11 @@
  * Crea una compuerta lógica NOT
  * @class Representa una compuerta lógica NOT
  * @augments Component
- * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-NotGate = function(){
-  Component.call(this);
+NotGate = function(id){
+  Component.call(this,id);
   
   this.setDimension(67, 34);
   this.setImage("/images/NOT.png");
