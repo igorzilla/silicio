@@ -4,29 +4,11 @@
  * @param {String} id Identificador del elemento &lt;div&gt; que se usará como área de diseño
  * @param {Boolean} isNew Especifica si el diseño es nuevo
  */
-DesignArea = function(id, isNew){
+DesignArea = function(id){
   draw2d.Workflow.call(this, id);
   
-  this.setBackgroundImage(rootUrl+'/images/grid.png', true);
+  this.setBackgroundImage(rootUrl + '/images/grid.png', true);
   this.getCommandStack().addCommandStackEventListener(new RealTimeValidator());
-  
-  if (!isNew) {
-    /**
-     * Indica si el diseño es nuevo, es decir, que no se ha guardado por primera vez
-     * @type Boolean
-     * @private
-     */
-    this.isNew = true;
-    /**
-     * Indica si el diseño no ha sufrido cambios desde la última vez que se guardó
-     * @type Boolean
-     * @private
-     */
-    this.isSaved = false;
-  }
-  else {
-    this.isSaved = true;
-  }
   
   //  /**
   //   * Mensaje de error de validación
@@ -135,3 +117,7 @@ DesignArea.prototype.toXML = function(){
   xml = xml + '</design>';
   return xml;
 }
+
+//DesignArea.prototype.setIsNew = function(isNew){
+//  this.isNew = isNew;
+//}

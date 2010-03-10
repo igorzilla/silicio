@@ -141,25 +141,28 @@ MainController.prototype.buildTabsPanel = function(){
   });
 }
 
-/**
- * Crea una nueva pestaña de diseño dentro de la aplicación y le asigna el foco
- * @returns {DesignArea} Área de diseño que fue empotrada dentro de la pestaña
- * @private
- */
-MainController.prototype.createNewTab = function(title){
-  var newDesignAreaId = DesignArea.generateNewDesignAreaId();
-  var newTab = new Ext.Panel({
-    title: title,
-    iconCls: 'design_area_tab',
-    closable: true,
-    html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
-  });
-  this.tabsPanel.add(newTab);
-  newTab.show();
-  var newDesignArea = new DesignArea(newDesignAreaId, true);
-  newTab.designArea = newDesignArea;
-  return newDesignArea;
-}
+///**
+// * Crea una nueva pestaña de diseño dentro de la aplicación y le asigna el foco
+// * @returns {DesignArea} Área de diseño que fue empotrada dentro de la pestaña
+// * @private
+// */
+//MainController.prototype.createNewTab = function(title, isNew){
+//  var newDesignAreaId = DesignArea.generateNewDesignAreaId();
+//	if(isNew) {
+//		title = "*" + title;
+//	}
+//  var newTab = new Ext.Panel({
+//    title: title,
+//    iconCls: 'design_area_tab',
+//    closable: true,
+//    html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
+//  });
+//  this.tabsPanel.add(newTab);
+//  newTab.show();
+//  var newDesignArea = new DesignArea(newDesignAreaId, isNew);
+//  newTab.designArea = newDesignArea;
+//  return newDesignArea;
+//}
 
 /**
  * Construye la barra de menú.
@@ -175,7 +178,9 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'new_action',
     scope: this,
     handler: function(){
-      this.createNewTab('(Sin título)');
+      var title = '(Sin título)';
+      var isNew = true;
+      this.createNewTab(title, isNew);
     }
   });
   
@@ -291,7 +296,13 @@ MainController.prototype.buildMenuBar = function(){
             record: 'component'
           }, componentRecord)
         });
-        var designArea = this.createNewTab(selectedDesignName);
+        
+        var designTab = new DesignTab(selectedDesignName);
+        this.tabsPanel.add(designTab.getPanel());
+        designTab.show();
+				
+        var designArea = designTab.getDesignArea();
+				
         componentsStore.load({
           params: {
             design_name: selectedDesignName
