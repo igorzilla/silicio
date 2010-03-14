@@ -2,11 +2,12 @@
  * Crea una compuerta lógica AND
  * @class Representa una compuerta lógica AND
  * @augments TwoInputBasicGate
- * @param {DesignArea} designArea Área de diseño donde será adicionada la compuerta
+ * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
+ * es generado aleatoriamente.
  */
-AndGate = function(designArea){
-	TwoInputBasicGate.call(this,designArea);
-	this.setImage("/images/AND.png");
+AndGate = function(id){
+	TwoInputBasicGate.call(this,id);
+	this.setImage(rootUrl+'/images/AND.png');
 	this.setDimension(67, 35);
 }
 

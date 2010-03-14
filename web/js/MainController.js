@@ -137,19 +137,38 @@ MainController.prototype.buildTabsPanel = function(){
     items: [{
       title: 'Bienvenido',
       html: 'Bienvenido'
-    }, {
-      title: 'Bienvenido2',
-      html: 'Bienvenido2'
     }]
   });
 }
+
+///**
+// * Crea una nueva pestaña de diseño dentro de la aplicación y le asigna el foco
+// * @returns {DesignArea} Área de diseño que fue empotrada dentro de la pestaña
+// * @private
+// */
+//MainController.prototype.createNewTab = function(title, isNew){
+//  var newDesignAreaId = DesignArea.generateNewDesignAreaId();
+//	if(isNew) {
+//		title = "*" + title;
+//	}
+//  var newTab = new Ext.Panel({
+//    title: title,
+//    iconCls: 'design_area_tab',
+//    closable: true,
+//    html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
+//  });
+//  this.tabsPanel.add(newTab);
+//  newTab.show();
+//  var newDesignArea = new DesignArea(newDesignAreaId, isNew);
+//  newTab.designArea = newDesignArea;
+//  return newDesignArea;
+//}
 
 /**
  * Construye la barra de menú.
  */
 MainController.prototype.buildMenuBar = function(){
-  //  var workflow = this.workflow;
-  
+  //TODO: Configure the scope of the actions
   var tabsPanel = this.tabsPanel;
   
   var mainController = this;
@@ -157,18 +176,11 @@ MainController.prototype.buildMenuBar = function(){
   var newDesignAction = new Ext.Action({
     text: 'Nuevo diseño',
     iconCls: 'new_action',
+    scope: this,
     handler: function(){
-      var newDesignAreaId = DesignArea.generateNewDesignAreaId();
-      var newTab = new Ext.Panel({
-        title: newDesignAreaId,
-        iconCls: 'design_area_tab',
-        closable: true,
-        html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
-      });
-      tabsPanel.add(newTab);
-      newTab.show();
-      var newDesignArea = new DesignArea(newDesignAreaId, true);
-      newTab.designArea = newDesignArea;
+      var title = '(Sin título)';
+      var isNew = true;
+      this.createNewTab(title, isNew);
     }
   });
   
@@ -266,8 +278,84 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'load_action',
     iconAlign: 'top',
     scale: 'large',
+    scope: this,
     handler: function(){
-    
+      var selectionModel = manageDesignsGrid.getSelectionModel();
+      if (selectionModel.getCount() < 1) {
+        MainController.generateError('Debe seleccionar un diseño');
+      }
+      else {
+        manageDesignsPopup.hide();
+        Ext.Msg.wait('Cargando diseño...');
+        var selectedRow = selectionModel.getSelected();
+        var selectedDesignName = selectedRow.get('name');
+        var componentRecord = Ext.data.Record.create(['class', 'id', 'xCoordinate', 'yCoordinate']);
+        var componentsStore = new Ext.data.Store({
+          url: MainController.getAbsoluteUrl('designsManagement', 'getComponentsXML'),
+          reader: new Ext.data.XmlReader({
+            record: 'component'
+          }, componentRecord)
+        });
+        
+        var designTab = new DesignTab(selectedDesignName);
+        this.tabsPanel.add(designTab.getPanel());
+        designTab.show();
+				
+        var designArea = designTab.getDesignArea();
+				
+        componentsStore.load({
+          params: {
+            design_name: selectedDesignName
+          },
+          callback: function(componentRecords, options, success){
+            if (success) {
+              for (var i = 0; i < componentRecords.length; i++) {
+                var componentRecord = componentRecords[i];
+                var class = componentRecord.get('class');
+                var id = componentRecord.get('id');
+                var xCoordinate = Number(componentRecord.get('xCoordinate'));
+                var yCoordinate = Number(componentRecord.get('yCoordinate'));
+                var component = eval('new ' + class + '(id)');
+                designArea.addFigure(component, xCoordinate, yCoordinate);
+              }
+              //TODO: Load connections
+              var connectionRecord = Ext.data.Record.create(['sourceId', 'sourcePortIndex', 'targetId', 'targetPortIndex']);
+              var connectionsStore = new Ext.data.Store({
+                url: MainController.getAbsoluteUrl('designsManagement', 'getConnectionsXML'),
+                reader: new Ext.data.XmlReader({
+                  record: 'connection'
+                }, connectionRecord)
+              });
+              connectionsStore.load({
+                params: {
+                  design_name: selectedDesignName
+                },
+                callback: function(connectionRecords, options, success){
+                  if (success) {
+                    for (var i = 0; i < connectionRecords.length; i++) {
+                      var connectionRecord = connectionRecords[i];
+                      var document = designArea.getDocument();
+                      var sourceId = connectionRecord.get('sourceId');
+                      var sourceComponent = document.getFigure(sourceId);
+                      var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
+                      var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
+                      var targetId = connectionRecord.get('targetId');
+                      var targetComponent = document.getFigure(targetId);
+                      var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
+                      var targetPort = targetComponent.getInputPort(targetPortIndex);
+                      var connection = new draw2d.Connection();
+                      connection.setSource(sourcePort);
+                      connection.setTarget(targetPort);
+                      designArea.addFigure(connection);
+                    }
+                  }
+                }
+              });
+              Ext.Msg.hide();
+            }
+          }
+        });
+      }
     }
   });
   
@@ -286,6 +374,7 @@ MainController.prototype.buildMenuBar = function(){
   
   var manageDesignsAction = new Ext.Action({
     text: 'Administrar diseños',
+    iconCls: 'manage_designs_action',
     handler: function(){
       if (manageDesignsPopup.hidden) {
         designsStore.load({
@@ -302,16 +391,22 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'save_action',
     handler: function(){
       var activeDesignArea = tabsPanel.getActiveTab().designArea;
-      var xmlDesignCode = activeDesignArea.toXML();
-      Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
-        if (button == 'ok') {
-          if (answer != '') {
-            if (xmlDesignCode != null) {
+      if (!activeDesignArea) {
+        MainController.generateError('Debe seleccionar un área de diseño');
+      }
+      else {
+        var xmlContainer = activeDesignArea.toSplittedXML();
+        var componentsXml = xmlContainer.componentsXml;
+        var connectionsXml = xmlContainer.connectionsXml;
+        Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
+          if (button == 'ok') {
+            if (answer != '') {
               Ext.Ajax.request({
                 url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
                 params: {
                   design_name: answer,
-                  xml_design_code: xmlDesignCode
+                  components_xml: componentsXml,
+                  connections_xml: connectionsXml
                 },
                 success: function(result, request){
                   if (result.responseText != 'Ok') {
@@ -324,33 +419,19 @@ MainController.prototype.buildMenuBar = function(){
               });
             }
             else {
-              var errorMessage = design.getErrorMessage();
-              MainController.generateError(errorMessage);
+              MainController.generateError('Debe digitar un nombre para el diseño', function(){
+                saveAction.execute();
+              });
             }
           }
-          else {
-            MainController.generateError('Debe digitar un nombre para el diseño', function(){
-              saveAction.execute();
-            });
-          }
-        }
-      });
+        });
+      }
     }
   });
   var closeSessionAction = new Ext.Action({
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
     handler: function(){
-      //      Ext.Ajax.request({
-      //        url: MainController.getAbsoluteUrl('authentication', 'logout'),
-      //        success: function(result, request){
-      //          var authenticationAction = MainController.getAbsoluteUrl('authentication', 'index');
-      //          document.location = authenticationAction;
-      //        },
-      //        failure: function(result, request){
-      //          MainController.generateError(result.statusText);
-      //        }
-      //      });
       Ext.Msg.wait('Cerrando la aplicación...');
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
@@ -377,6 +458,7 @@ MainController.prototype.buildMenuBar = function(){
       });
     }
   });
+  
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
