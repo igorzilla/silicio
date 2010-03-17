@@ -1,44 +1,38 @@
-DesignTab = function(title, isNew){
+DesignTab = function(title){
   this.designAreaId = DesignArea.generateNewDesignAreaId();
   
   this.panel = new Ext.Panel({
     title: title,
     iconCls: 'design_area_tab',
     closable: true,
-    html: '<div id="' + this.designAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
-    //		,
-    //    listeners: {
-    //      afterrender: function(designTab){
-    //        designTab.designArea = new DesignArea(designAreaId);
-    //      }
+    html: '<div id="' + this.designAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>',
+		designTab: this
   });
   
-  //  /**
-  //   * Indica si el diseño es nuevo, es decir, que no se ha guardado por primera vez
-  //   * @type Boolean
-  //   * @private
-  //   */
-  //  this.isNew = isNew;
-  //  
-  //  /**
-  //   * Indica si el diseño no ha sufrido cambios desde la última vez que se guardó
-  //   * @type Boolean
-  //   * @private
-  //   */
-  //  this.isSaved = true;
-  //  
-  //  if (isNew) {
-  //    this.setNotSaved();
-  //  }
+  if (title) {
+    /**
+     * Indica si el diseño es nuevo, es decir, que no se ha guardado por primera vez
+     * @type Boolean
+     * @private
+     */
+    this.isNew = false;
+    /**
+     * Indica si el diseño no ha sufrido cambios desde la última vez que se guardó
+     * @type Boolean
+     * @private
+     */
+    this.isSaved = true;
+  }
+  else {
+    this.isNew = true;
+    this.panel.title = '(Sin título)';
+    this.setNotSaved();
+  }
 }
 
-//DesignTab.prototype = new Ext.Panel();
-//DesignTab.prototype.constructor = DesignTab;
-//DesignTab.prototype.type = 'DesignTab';
-
-DesignTab.prototype.show = function() {
-	this.panel.show();
-	this.designArea = new DesignArea(this.designAreaId);
+DesignTab.prototype.show = function(){
+  this.panel.show();
+  this.designArea = new DesignArea(this.designAreaId);
 }
 
 DesignTab.prototype.setIsSaved = function(){
@@ -48,13 +42,17 @@ DesignTab.prototype.setIsSaved = function(){
 
 DesignTab.prototype.setNotSaved = function(){
   this.isSaved = false;
-  this.title += '*';
+  this.panel.title += '*';
 }
 
-DesignTab.prototype.getPanel = function() {
-	return this.panel;
+DesignTab.prototype.getPanel = function(){
+  return this.panel;
 }
 
 DesignTab.prototype.getDesignArea = function(){
   return this.designArea;
+}
+
+DesignTab.prototype.getIsSaved = function(){
+  return this.isSaved;
 }

@@ -137,7 +137,15 @@ MainController.prototype.buildTabsPanel = function(){
     items: [{
       title: 'Bienvenido',
       html: 'Bienvenido'
-    }]
+    }],
+    listeners: {
+      beforeremove: function(tabsPanel, designTabToClose){
+        if (!designTabToClose.designTab.getIsSaved()) {
+          var closeTab = confirm('Este diseño no ha sido guardado. ¿Está seguro(a) de cerrarlo?');
+          return closeTab;
+        }
+      }
+    }
   });
 }
 
@@ -178,9 +186,9 @@ MainController.prototype.buildMenuBar = function(){
     iconCls: 'new_action',
     scope: this,
     handler: function(){
-      var title = '(Sin título)';
-      var isNew = true;
-      this.createNewTab(title, isNew);
+      var designTab = new DesignTab();
+      this.tabsPanel.add(designTab.getPanel());
+      designTab.show();
     }
   });
   
@@ -300,9 +308,9 @@ MainController.prototype.buildMenuBar = function(){
         var designTab = new DesignTab(selectedDesignName);
         this.tabsPanel.add(designTab.getPanel());
         designTab.show();
-				
+        
         var designArea = designTab.getDesignArea();
-				
+        
         componentsStore.load({
           params: {
             design_name: selectedDesignName

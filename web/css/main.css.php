@@ -12,13 +12,13 @@
 }
 
 .display_cover {
-    padding-left: 66px !important;
+    padding-left: 84px !important;
     padding-top: 3px !important;
 }
 
 .display {
     cursor: move !important;
-    width: 69px !important;
+    width: 48px !important;
 }
 
 .light_cover {

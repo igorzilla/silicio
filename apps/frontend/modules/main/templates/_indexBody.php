@@ -14,11 +14,11 @@ Ext.onReady(function() {
 <div id="NOT" class="gate"><?php echo image_tag('NOT.png');?></div>
 </div>
 <div id="display_cover" class="display_cover">
-<div id="display" class="display"><?php echo image_tag('display.gif');?></div>
+<div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>
 <div id="light_cover" class="light_cover">
 <div id="light" class="light"><?php echo image_tag('light.png');?></div>
 </div>
 <div id="switch_cover" class="switch_cover">
-<div id="switch" class="switch"><?php echo image_tag('switch.png');?></div>
+<div id="switch" class="switch"><?php echo image_tag('switch_icon.png');?></div>
 </div>
