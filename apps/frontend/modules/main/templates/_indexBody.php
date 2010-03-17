@@ -3,6 +3,9 @@ Ext.onReady(function() {
   mainController = new MainController();
 });
 </script>
+<?php
+//TODO: Put tooltip to icons
+?>
 <div id="manage_designs_div"></div>
 <div id="AND_cover" class="gates_cover">
 <div id="AND" class="gate"><?php echo image_tag('AND.png');?></div>

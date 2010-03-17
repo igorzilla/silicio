@@ -6,7 +6,7 @@ DesignTab = function(title){
     iconCls: 'design_area_tab',
     closable: true,
     html: '<div id="' + this.designAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>',
-		designTab: this
+    designTab: this
   });
   
   if (title) {
@@ -35,9 +35,16 @@ DesignTab.prototype.show = function(){
   this.designArea = new DesignArea(this.designAreaId);
 }
 
-DesignTab.prototype.setIsSaved = function(){
+DesignTab.prototype.setIsSaved = function(designName){
   this.isSaved = true;
-  this.title = this.title.substring(0, this.title.length);
+  var newTitle = '';
+  if (designName) {
+    newTitle = designName;
+  }
+  else {
+    newTitle = newTitle.substring(0, newTitle.length);
+  }
+  this.panel.setTitle(newTitle);
 }
 
 DesignTab.prototype.setNotSaved = function(){

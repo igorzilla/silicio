@@ -23,6 +23,7 @@ class designsManagementActions extends sfActions
       $connectionsXml = $request->getParameter('connections_xml');
       $schemafileName = 'design.xsd';
       $xmlHeaders = XMLEngine::generateHeaders('design',$schemafileName);
+      $xmlDesignCode = '';
       $xmlDesignCode = $xmlDesignCode.$xmlHeaders;
       $xmlDesignCode = $xmlDesignCode.$componentsXml.$connectionsXml;
       $xmlDesignCode = $xmlDesignCode.'</design>';

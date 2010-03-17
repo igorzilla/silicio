@@ -398,11 +398,12 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Guardar diseño',
     iconCls: 'save_action',
     handler: function(){
-      var activeDesignArea = tabsPanel.getActiveTab().designArea;
-      if (!activeDesignArea) {
+      var activeDesignTab = tabsPanel.getActiveTab().designTab;
+      if (!activeDesignTab) {
         MainController.generateError('Debe seleccionar un área de diseño');
       }
       else {
+        var activeDesignArea = activeDesignTab.getDesignArea();
         var xmlContainer = activeDesignArea.toSplittedXML();
         var componentsXml = xmlContainer.componentsXml;
         var connectionsXml = xmlContainer.connectionsXml;
@@ -419,6 +420,10 @@ MainController.prototype.buildMenuBar = function(){
                 success: function(result, request){
                   if (result.responseText != 'Ok') {
                     MainController.generateError(result.responseText);
+                  }
+                  else {
+                    var designName = answer;
+                    activeDesignTab.setIsSaved(designName);
                   }
                 },
                 failure: function(result, request){
