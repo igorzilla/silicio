@@ -402,43 +402,67 @@ MainController.prototype.buildMenuBar = function(){
       if (!activeDesignTab) {
         MainController.generateError('Debe seleccionar un área de diseño');
       }
-      else {
-        var activeDesignArea = activeDesignTab.getDesignArea();
-        var xmlContainer = activeDesignArea.toSplittedXML();
-        var componentsXml = xmlContainer.componentsXml;
-        var connectionsXml = xmlContainer.connectionsXml;
-        Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
-          if (button == 'ok') {
-            if (answer != '') {
-              Ext.Ajax.request({
-                url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
-                params: {
-                  design_name: answer,
-                  components_xml: componentsXml,
-                  connections_xml: connectionsXml
-                },
-                success: function(result, request){
-                  if (result.responseText != 'Ok') {
-                    MainController.generateError(result.responseText);
-                  }
-                  else {
-                    var designName = answer;
-                    activeDesignTab.setIsSaved(designName);
-                  }
-                },
-                failure: function(result, request){
-                  MainController.generateError(result.statusText);
+      else 
+        if (!activeDesignTab.getIsSaved()) {
+          var activeDesignArea = activeDesignTab.getDesignArea();
+          var xmlContainer = activeDesignArea.toSplittedXML();
+          var componentsXml = xmlContainer.componentsXml;
+          var connectionsXml = xmlContainer.connectionsXml;
+          if (activeDesignTab.getIsNew()) {
+            Ext.Msg.prompt('Guardar diseño', 'Digite el nombre del diseño', function(button, answer){
+              if (button == 'ok') {
+                if (answer != '') {
+                  Ext.Ajax.request({
+                    url: MainController.getAbsoluteUrl('designsManagement', 'saveDesign'),
+                    params: {
+                      design_name: answer,
+                      components_xml: componentsXml,
+                      connections_xml: connectionsXml
+                    },
+                    success: function(result, request){
+                      if (result.responseText != 'Ok') {
+                        MainController.generateError(result.responseText);
+                      }
+                      else {
+                        var designName = answer;
+                        activeDesignTab.setIsSaved(designName);
+                      }
+                    },
+                    failure: function(result, request){
+                      MainController.generateError(result.statusText);
+                    }
+                  });
                 }
-              });
-            }
-            else {
-              MainController.generateError('Debe digitar un nombre para el diseño', function(){
-                saveAction.execute();
-              });
-            }
+                else {
+                  MainController.generateError('Debe digitar un nombre para el diseño', function(){
+                    saveAction.execute();
+                  });
+                }
+              }
+            });
           }
-        });
-      }
+          else {
+            Ext.Ajax.request({
+              url: MainController.getAbsoluteUrl('designsManagement', 'updateDesign'),
+              params: {
+                design_name: activeDesignTab.getTitle(),
+                components_xml: componentsXml,
+                connections_xml: connectionsXml
+              },
+              success: function(result, request){
+                if (result.responseText != 'Ok') {
+                  MainController.generateError(result.responseText);
+                }
+                else {
+                  activeDesignTab.setIsSaved();
+                }
+              },
+              failure: function(result, request){
+                MainController.generateError(result.statusText);
+              }
+            });
+          }
+        }
     }
   });
   var closeSessionAction = new Ext.Action({

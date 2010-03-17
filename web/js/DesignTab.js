@@ -63,3 +63,11 @@ DesignTab.prototype.getDesignArea = function(){
 DesignTab.prototype.getIsSaved = function(){
   return this.isSaved;
 }
+
+DesignTab.prototype.getIsNew = function () {
+	return this.isNew;
+}
+
+DesignTab.prototype.getTitle() {
+	return this.panel.title;
+}
