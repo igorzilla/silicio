@@ -8,15 +8,8 @@ DesignArea = function(id){
   draw2d.Workflow.call(this, id);
   
   this.setBackgroundImage(rootUrl + '/images/grid.png', true);
-  this.getCommandStack().addCommandStackEventListener(new RealTimeValidator());
-  
-  //  /**
-  //   * Mensaje de error de validación
-  //   * @type String
-  //   * @private
-  //   */
-  //  this.errorMessage = null;
-  
+//  this.getCommandStack().addCommandStackEventListener(new CommandListener());
+   
   var designArea = this;
   
   new Ext.dd.DropTarget(id, {
@@ -118,6 +111,27 @@ DesignArea.prototype.toXML = function(){
   return xml;
 }
 
-//DesignArea.prototype.setIsNew = function(isNew){
-//  this.isNew = isNew;
-//}
+/**
+ * No hubo error en la validación
+ * @static
+ */
+DesignArea.NO_ERROR = 0;
+
+/**
+ * Solo puede haber una conexión por cada puerto de entrada
+ * @static
+ */
+DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT = 1;
+
+/**
+ * Verifica si un comando invalida un diseño
+ * @param {draw2d.Command} command Comando ejecutado sobre el área de diseño
+ * @returns {Integer} Código del error que invalida el diseño
+ */
+DesignArea.prototype.validate = function(command){
+  // Rule 1: There must be only one connection per input port
+  if (command instanceof draw2d.CommandConnect && command.target.getConnections().getSize() > 1) {
+    return DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT;
+  }
+  return DesignArea.NO_ERROR;
+}

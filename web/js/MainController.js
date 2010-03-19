@@ -594,6 +594,16 @@ MainController.generateError = function(message, callback){
   Ext.Msg.alert('Error', message, callback);
 }
 
+MainController.generateValidationError = function(errorCode){
+	var errorMessage = '';
+  switch (errorCode) {
+    case DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT:
+      errorMessage = 'Solo una conexión por cada puerto de entrada';
+      break;
+  }
+	MainController.generateError(errorMessage);
+}
+
 /**
  * Genera la URL absoluta para una acción determinada de Symfony
  * @param {String} moduleName Nombre del módulo

@@ -32,7 +32,9 @@ DesignTab = function(title){
 
 DesignTab.prototype.show = function(){
   this.panel.show();
+	//TODO: Set the focus to the new design area
   this.designArea = new DesignArea(this.designAreaId);
+	new CommandListener(this);
 }
 
 DesignTab.prototype.setIsSaved = function(designName){
@@ -68,6 +70,6 @@ DesignTab.prototype.getIsNew = function () {
 	return this.isNew;
 }
 
-DesignTab.prototype.getTitle() {
+DesignTab.prototype.getTitle = function() {
 	return this.panel.title;
 }
