@@ -1,15 +1,16 @@
-DesignTab = function(title){
+DesignTab = function(designName){
   this.designAreaId = DesignArea.generateNewDesignAreaId();
-  
-  this.panel = new Ext.Panel({
-    title: title,
-    iconCls: 'design_area_tab',
-    closable: true,
-    html: '<div id="' + this.designAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>',
-    designTab: this
-  });
-  
-  if (title) {
+	
+	/**
+	 * Nombre del diseño cargado dentro de la pestaña
+	 * @type String
+	 * @private
+	 */
+	this.designName = designName;
+	
+	var title = '';
+	
+  if (this.designName) {
     /**
      * Indica si el diseño es nuevo, es decir, que no se ha guardado por primera vez
      * @type Boolean
@@ -22,12 +23,24 @@ DesignTab = function(title){
      * @private
      */
     this.isSaved = true;
+		
+		title = this.designName;
   }
   else {
     this.isNew = true;
-    this.panel.title = '(Sin título)';
-    this.setNotSaved();
+		this.isSaved = false;
+		this.designName = '(Sin nombre)';
+		title = this.designName + '*';
   }
+  
+  this.panel = new Ext.Panel({
+    title: title,
+    iconCls: 'design_area_tab',
+    closable: true,
+    html: '<div id="' + this.designAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>',
+    designTab: this
+  });
+  
 }
 
 DesignTab.prototype.show = function(){
@@ -37,22 +50,16 @@ DesignTab.prototype.show = function(){
   new CommandListener(this);
 }
 
-DesignTab.prototype.setIsSaved = function(designName){
+DesignTab.prototype.setIsSaved = function(){
   this.isSaved = true;
-  var newTitle = '';
-  if (designName) {
-    newTitle = designName;
-  }
-  else {
-    newTitle = newTitle.substring(0, newTitle.length);
-  }
+  var newTitle = this.designName;
   this.panel.setTitle(newTitle);
 }
 
 DesignTab.prototype.setNotSaved = function(){
   if (this.isSaved) {
     this.isSaved = false;
-    var newTitle = this.panel.title + '*';
+    var newTitle = this.designName + '*';
     this.panel.setTitle(newTitle);
   }
 }
@@ -73,6 +80,10 @@ DesignTab.prototype.getIsNew = function(){
   return this.isNew;
 }
 
-DesignTab.prototype.getTitle = function(){
-  return this.panel.title;
+DesignTab.prototype.setDesignName = function(designName) {
+	this.designName = designName;
+}
+
+DesignTab.prototype.getDesignName = function(){
+  return this.designName;
 }

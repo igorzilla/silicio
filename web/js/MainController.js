@@ -425,7 +425,8 @@ MainController.prototype.buildMenuBar = function(){
                       }
                       else {
                         var designName = answer;
-                        activeDesignTab.setIsSaved(designName);
+                        activeDesignArea.setDesignName(designName);
+                        activeDesignTab.setIsSaved();
                       }
                     },
                     failure: function(result, request){
@@ -445,7 +446,7 @@ MainController.prototype.buildMenuBar = function(){
             Ext.Ajax.request({
               url: MainController.getAbsoluteUrl('designsManagement', 'updateDesign'),
               params: {
-                design_name: activeDesignTab.getTitle(),
+                design_name: activeDesignTab.getDesignName(),
                 components_xml: componentsXml,
                 connections_xml: connectionsXml
               },
@@ -595,13 +596,13 @@ MainController.generateError = function(message, callback){
 }
 
 MainController.generateValidationError = function(errorCode){
-	var errorMessage = '';
+  var errorMessage = '';
   switch (errorCode) {
     case DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT:
       errorMessage = 'Solo una conexión por cada puerto de entrada';
       break;
   }
-	MainController.generateError(errorMessage);
+  MainController.generateError(errorMessage);
 }
 
 /**
