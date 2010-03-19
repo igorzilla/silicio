@@ -36,7 +36,10 @@ CommandListener.prototype.stackChanged = function(event){
   if (event.isPostChangeEvent()) {
     var command = event.getCommand();
     var errorCode = this.designArea.validate(command);
-    if (errorCode != DesignArea.NO_ERROR) {
+    if (errorCode == DesignArea.NO_ERROR) {
+			this.designTab.setNotSaved();
+    }
+    else {
       command.undo();
       MainController.generateValidationError(errorCode);
     }

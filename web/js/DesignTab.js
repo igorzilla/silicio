@@ -32,9 +32,9 @@ DesignTab = function(title){
 
 DesignTab.prototype.show = function(){
   this.panel.show();
-	//TODO: Set the focus to the new design area
+  //TODO: Set the focus to the new design area
   this.designArea = new DesignArea(this.designAreaId);
-	new CommandListener(this);
+  new CommandListener(this);
 }
 
 DesignTab.prototype.setIsSaved = function(designName){
@@ -50,8 +50,11 @@ DesignTab.prototype.setIsSaved = function(designName){
 }
 
 DesignTab.prototype.setNotSaved = function(){
-  this.isSaved = false;
-  this.panel.title += '*';
+  if (this.isSaved) {
+    this.isSaved = false;
+    var newTitle = this.panel.title + '*';
+    this.panel.setTitle(newTitle);
+  }
 }
 
 DesignTab.prototype.getPanel = function(){
@@ -66,10 +69,10 @@ DesignTab.prototype.getIsSaved = function(){
   return this.isSaved;
 }
 
-DesignTab.prototype.getIsNew = function () {
-	return this.isNew;
+DesignTab.prototype.getIsNew = function(){
+  return this.isNew;
 }
 
-DesignTab.prototype.getTitle = function() {
-	return this.panel.title;
+DesignTab.prototype.getTitle = function(){
+  return this.panel.title;
 }
