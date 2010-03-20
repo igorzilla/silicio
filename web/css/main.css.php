@@ -57,11 +57,11 @@ input.x-form-invalid {
 }
 
 .close_session_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/closed.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/system-shutdown.png) !important;
 }
 
 .save_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/floppy.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/document-save.png) !important;
 }
 
 .forgot_password_action {
@@ -69,7 +69,7 @@ input.x-form-invalid {
 }
 
 .cancel_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/cancel.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/gtk-cancel.png) !important;
 }
 
 .captcha {
@@ -79,21 +79,25 @@ input.x-form-invalid {
 }
 
 .load_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/open.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/document-open.png) !important;
 }
 
 .delete_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/trash.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/gtk-delete.png) !important;
 }
 
 .new_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/new.png);
+    background-image: url(<?php echo $ROOT_URL; ?>/images/add.png) !important;
 }
 
 .design_area_tab {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/design_area.png);
+    background-image: url(<?php echo $ROOT_URL; ?>/images/accessories-text-editor.png);
 }
 
 .manage_designs_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/manage.png);
+    background-image: url(<?php echo $ROOT_URL; ?>/images/gtk-dnd-multiple.png) !important;
+}
+
+.simulate_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/media-playback-start.png) !important;
 }

@@ -141,7 +141,7 @@ MainController.prototype.buildTabsPanel = function(){
     listeners: {
       beforeremove: function(tabsPanel, designTabToClose){
         if (!designTabToClose.designTab.getIsSaved()) {
-          var closeTab = confirm('Este diseño no ha sido guardado. ¿Está seguro(a) de cerrarlo?');
+          var closeTab = confirm('Este diseño no ha sido guardado. ¿Está seguro(a) que desea cerrarlo?');
           return closeTab;
         }
       }
@@ -497,6 +497,13 @@ MainController.prototype.buildMenuBar = function(){
     }
   });
   
+  var simulateAction = new Ext.Action({
+    text: 'Simular',
+    iconCls: 'simulate_action',
+    handler: function(){
+    
+    }
+  });
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
@@ -526,7 +533,7 @@ MainController.prototype.buildMenuBar = function(){
       }, {
         text: 'Acerca de...'
       }]
-    }]
+    }, '->', simulateAction, closeSessionAction]
   });
 }
 
