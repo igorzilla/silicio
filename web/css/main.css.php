@@ -49,11 +49,11 @@ input.x-form-invalid {
 }
 
 .authenticate_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/key.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/lock-insecure.png) !important;
 }
 
 .create_account_action {
-    background-image: url(<?php echo $ROOT_URL; ?>/images/create_account.png) !important;
+    background-image: url(<?php echo $ROOT_URL; ?>/images/contact-new.png) !important;
 }
 
 .close_session_action {
