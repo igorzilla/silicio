@@ -470,6 +470,7 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
     handler: function(){
+			//TODO: verify that all designs are saved
       Ext.Msg.wait('Cerrando la aplicación...');
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
@@ -501,7 +502,8 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Simular',
     iconCls: 'simulate_action',
     handler: function(){
-    
+			var activeDesignTab = tabsPanel.getActiveTab().designTab;
+			activeDesignTab.turnOnSimulationMode();
     }
   });
   this.toolBar = new Ext.Toolbar({
@@ -605,6 +607,9 @@ MainController.generateError = function(message, callback){
 MainController.generateValidationError = function(errorCode){
   var errorMessage = '';
   switch (errorCode) {
+    case DesignArea.NO_ALLOWED_IN_SIMULATION_MODE:
+      errorMessage = 'Detenga la simulación antes de editar el diseño';
+      break;
     case DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT:
       errorMessage = 'Solo una conexión por cada puerto de entrada';
       break;
