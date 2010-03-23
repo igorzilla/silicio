@@ -30,6 +30,14 @@ Component = function(id){
    * @private
    */
   this.outputPorts = new Array();
+  
+  this.calculatedState = false;
+  
+  this.inputs = null;
+  
+  this.outputs = null;
+  
+  this.receivingComponents = null;
 }
 
 Component.prototype = new draw2d.ImageFigure;
@@ -176,3 +184,8 @@ Component.prototype.getOutputPort = function(index){
 Component.prototype.getInputPort = function(index){
   return this.inputPorts[index];
 }
+
+Component.ZERO = 0;
+
+Component.ONE = 1;
+

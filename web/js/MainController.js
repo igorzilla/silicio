@@ -118,19 +118,11 @@ MainController.prototype.buildToolsPanel = function(){
  * en los cuales esté trabajando el usuario(una pestaña por cada diseño).
  */
 MainController.prototype.buildTabsPanel = function(){
+  var mainController = this;
   this.tabsPanel = new Ext.TabPanel({
     region: 'center',
     activeItem: 0,
     enableTabScroll: true,
-    listeners: {
-      tabchange: function(tabPanel, newActivePanel){
-        if (newActivePanel.designArea) {
-          // This line is to improve compatibility with Google Chrome when you press 'Del' key
-          // over a component after changing the tab
-          newActivePanel.designArea.html.focus();
-        }
-      }
-    },
     defaults: {
       autoScroll: true
     },
@@ -139,8 +131,20 @@ MainController.prototype.buildTabsPanel = function(){
       html: 'Bienvenido'
     }],
     listeners: {
-      beforeremove: function(tabsPanel, designTabToClose){
-        if (!designTabToClose.designTab.getIsSaved()) {
+      tabchange: function(tabPanel, newActivePanel){
+        if (newActivePanel.designTab) {
+          var activeDesignTab = newActivePanel.designTab;
+          var activeDesignArea = activeDesignTab.getDesignArea();
+          if (activeDesignArea) {
+            mainController.updateSimulateAction();
+            // This line is to improve compatibility with Google Chrome when you press 'Del' key
+            // over a component after changing the tab
+            activeDesignArea.html.focus();
+          }
+        }
+      },
+      beforeremove: function(tabsPanel, panel){
+        if (!panel.designTab.getIsSaved()) {
           var closeTab = confirm('Este diseño no ha sido guardado. ¿Está seguro(a) que desea cerrarlo?');
           return closeTab;
         }
@@ -470,7 +474,7 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
     handler: function(){
-			//TODO: verify that all designs are saved
+      //TODO: verify that all designs are saved
       Ext.Msg.wait('Cerrando la aplicación...');
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
@@ -498,14 +502,23 @@ MainController.prototype.buildMenuBar = function(){
     }
   });
   
-  var simulateAction = new Ext.Action({
+  this.simulateAction = new Ext.Action({
     text: 'Simular',
     iconCls: 'simulate_action',
+    scope: this,
     handler: function(){
-			var activeDesignTab = tabsPanel.getActiveTab().designTab;
-			activeDesignTab.turnOnSimulationMode();
+      var activeDesignTab = tabsPanel.getActiveTab().designTab;
+      var activeDesignArea = activeDesignTab.getDesignArea();
+      if (activeDesignArea.getMode() == DesignArea.EDIT_MODE) {
+        activeDesignArea.turnOnSimulationMode();
+      }
+      else {
+        activeDesignArea.turnOnEditMode();
+      }
+      this.updateSimulateAction();
     }
   });
+  
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
@@ -535,7 +548,7 @@ MainController.prototype.buildMenuBar = function(){
       }, {
         text: 'Acerca de...'
       }]
-    }, '->', simulateAction, closeSessionAction]
+    }, '->', this.simulateAction, closeSessionAction]
   });
 }
 
@@ -593,6 +606,19 @@ MainController.prototype.turnOnDrag = function(){
       className: 'Switch'
     }
   });
+}
+
+MainController.prototype.updateSimulateAction = function(){
+  var activeDesignTab = this.tabsPanel.getActiveTab().designTab;
+  var activeDesignArea = activeDesignTab.getDesignArea();
+  if (activeDesignArea.getMode() == DesignArea.EDIT_MODE) {
+    this.simulateAction.setIconClass('simulate_action');
+    this.simulateAction.setText('Simular');
+  }
+  else {
+    this.simulateAction.setIconClass('stop_action');
+    this.simulateAction.setText('Detener');
+  }
 }
 
 /**

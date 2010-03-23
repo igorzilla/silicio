@@ -101,3 +101,7 @@ input.x-form-invalid {
 .simulate_action {
     background-image: url(<?php echo $ROOT_URL; ?>/images/media-playback-start.png) !important;
 }
+
+.stop_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/media-playback-stop.png) !important;
+}

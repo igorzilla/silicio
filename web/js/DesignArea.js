@@ -168,6 +168,10 @@ DesignArea.prototype.getMode = function() {
 	return this.mode;
 }
 
+DesignArea.prototype.turnOnEditMode = function() {
+	this.mode = DesignArea.EDIT_MODE;
+}
+
 DesignArea.prototype.turnOnSimulationMode = function () {
 	this.mode = DesignArea.SIMULATION_MODE;
 }

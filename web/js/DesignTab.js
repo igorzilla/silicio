@@ -87,7 +87,3 @@ DesignTab.prototype.setDesignName = function(designName) {
 DesignTab.prototype.getDesignName = function(){
   return this.designName;
 }
-
-DesignTab.prototype.turnOnSimulationMode = function () {
-	this.designArea.turnOnSimulationMode();	
-}

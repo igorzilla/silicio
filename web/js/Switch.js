@@ -12,12 +12,10 @@ Switch = function(id){
   this.setImage(rootUrl+'/images/switch-off.png');
   this.setDimension(72, 58);
 	
-	/**
-	 * Indica si el interruptor está encendido
-	 * @type Boolean
-	 * @private
-	 */
-	this.isOn = false;
+	this.calculatedState = true;
+	
+	this.outputs = new Array();
+	this.outputs[0] = Component.ZERO
 }
 
 Switch.prototype = new Component;
@@ -32,12 +30,12 @@ Switch.prototype.setDesignArea = function(designArea){
  * Invierte el estado del interruptor
  */
 Switch.prototype.toggle = function(){
-  if (this.isOn) {
-    this.isOn = false;
+  if (this.outputs[0] == Component.ONE) {
+		this.outputs[0] = Component.ZERO;
     this.setImage(rootUrl+'/images/switch-off.png');
   }
   else {
-    this.isOn = true;
+    this.outputs[0] = Component.ONE;
     this.setImage(rootUrl+'/images/switch-on.png');
   }
 }
