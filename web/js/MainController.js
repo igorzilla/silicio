@@ -153,29 +153,6 @@ MainController.prototype.buildTabsPanel = function(){
   });
 }
 
-///**
-// * Crea una nueva pestaña de diseño dentro de la aplicación y le asigna el foco
-// * @returns {DesignArea} Área de diseño que fue empotrada dentro de la pestaña
-// * @private
-// */
-//MainController.prototype.createNewTab = function(title, isNew){
-//  var newDesignAreaId = DesignArea.generateNewDesignAreaId();
-//	if(isNew) {
-//		title = "*" + title;
-//	}
-//  var newTab = new Ext.Panel({
-//    title: title,
-//    iconCls: 'design_area_tab',
-//    closable: true,
-//    html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
-//  });
-//  this.tabsPanel.add(newTab);
-//  newTab.show();
-//  var newDesignArea = new DesignArea(newDesignAreaId, isNew);
-//  newTab.designArea = newDesignArea;
-//  return newDesignArea;
-//}
-
 /**
  * Construye la barra de menú.
  */
@@ -429,7 +406,7 @@ MainController.prototype.buildMenuBar = function(){
                       }
                       else {
                         var designName = answer;
-                        activeDesignArea.setDesignName(designName);
+                        activeDesignTab.setDesignName(designName);
                         activeDesignTab.setIsSaved();
                       }
                     },
