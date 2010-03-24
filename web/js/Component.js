@@ -91,7 +91,8 @@ Component.prototype.outputConnectionsToXML = function(){
       xml = xml + '<sourcePortIndex>' + j + '</sourcePortIndex>';
       xml = xml + '<targetId>' + targetId + '</targetId>';
       //TODO: Avoid search of index of target port, setting the index equal to the identifier(using associative arrays)
-      xml = xml + '<targetPortIndex>' + target.getIndexOfInputPort(inputPortId) + '</targetPortIndex>';
+      //xml = xml + '<targetPortIndex>' + target.getIndexOfInputPort(inputPortId) + '</targetPortIndex>';
+			xml = xml + '<targetPortIndex>' + inputPort.getIndex() + '</targetPortIndex>';
       xml = xml + '</connection>';
     }
   }
@@ -106,7 +107,9 @@ Component.prototype.outputConnectionsToXML = function(){
  * @private
  */
 Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordinate){
-  var newInputPort = new draw2d.InputPort();
+	var parentComponent = this;
+	var portIndex = this.inputPorts.length;
+  var newInputPort = new IndexedInputPort(parentComponent, portIndex);
   newInputPort.setWorkflow(designArea);
   newInputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
   newInputPort.setName(this.getId());
