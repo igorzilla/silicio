@@ -1,0 +1,13 @@
+ReceivingPort = function (index) {
+	draw2d.InputPort.call(this);
+	
+	this.index = index;
+}
+
+ReceivingPort.prototype = new draw2d.InputPort;
+ReceivingPort.prototype.constructor = ReceivingPort;
+ReceivingPort.prototype.type = 'ReceivingPort';
+
+ReceivingPort.prototype.getIndex = function() {
+	return this.index;
+}

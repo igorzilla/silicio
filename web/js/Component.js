@@ -99,7 +99,7 @@ Component.prototype.outputConnectionsToXML = function(){
 Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordinate){
 	var parentComponent = this;
 	var portIndex = this.inputPorts.length;
-  var newInputPort = new IndexedInputPort(parentComponent, portIndex);
+  var newInputPort = new ReceivingPort(portIndex);
   newInputPort.setWorkflow(designArea);
   newInputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
 	//TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
