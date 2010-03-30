@@ -8,26 +8,26 @@ DesignArea = function(id){
   draw2d.Workflow.call(this, id);
   
   this.setBackgroundImage(rootUrl + '/images/grid.png', true);
-   
+  
   var designArea = this;
   
   new Ext.dd.DropTarget(id, {
     notifyDrop: function(source, event, data){
-			if (designArea.getMode() == DesignArea.EDIT_MODE) {
-				var xCoordinate = event.xy[0] - designArea.getAbsoluteX();
-				var yCoordinate = event.xy[1] - designArea.getAbsoluteY();
-				var component = eval('new ' + data.className + '()');
-				designArea.addFigure(component, xCoordinate, yCoordinate);
-				return true;
-			}
+      if (designArea.getMode() == DesignArea.EDIT_MODE) {
+        var xCoordinate = event.xy[0] - designArea.getAbsoluteX();
+        var yCoordinate = event.xy[1] - designArea.getAbsoluteY();
+        var component = eval('new ' + data.className + '()');
+        designArea.addFigure(component, xCoordinate, yCoordinate);
+        return true;
+      }
     }
   });
-	
-	/**
-	 * Indica el modo de trabajo en el cual se encuentra el área de diseño
-	 * @private
-	 */
-	this.mode = DesignArea.EDIT_MODE;
+  
+  /**
+   * Indica el modo de trabajo en el cual se encuentra el área de diseño
+   * @private
+   */
+  this.mode = DesignArea.EDIT_MODE;
 }
 
 DesignArea.prototype = new draw2d.Workflow;
@@ -137,7 +137,7 @@ DesignArea.NO_ALLOWED_IN_SIMULATION_MODE = 2;
 
 /**
  * El área de diseño está en modo de edición(modo por defecto)
- * @static 
+ * @static
  */
 DesignArea.EDIT_MODE = 0;
 
@@ -153,10 +153,10 @@ DesignArea.SIMULATION_MODE = 1;
  * @returns {Integer} Código del error que invalida el diseño
  */
 DesignArea.prototype.validate = function(command){
-	// Rule 1: All commands must be undone in simulation mode
-	if (this.mode == DesignArea.SIMULATION_MODE) {
-		return DesignArea.NO_ALLOWED_IN_SIMULATION_MODE;
-	}
+  // Rule 1: All commands must be undone in simulation mode
+  if (this.mode == DesignArea.SIMULATION_MODE) {
+    return DesignArea.NO_ALLOWED_IN_SIMULATION_MODE;
+  }
   // Rule 2: There must be only one connection per input port
   if (command instanceof draw2d.CommandConnect && command.target.getConnections().getSize() > 1) {
     return DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT;
@@ -164,14 +164,25 @@ DesignArea.prototype.validate = function(command){
   return DesignArea.NO_ERROR;
 }
 
-DesignArea.prototype.getMode = function() {
-	return this.mode;
+DesignArea.prototype.getMode = function(){
+  return this.mode;
 }
 
-DesignArea.prototype.turnOnEditMode = function() {
-	this.mode = DesignArea.EDIT_MODE;
+DesignArea.prototype.turnOnEditMode = function(){
+  this.mode = DesignArea.EDIT_MODE;
 }
 
-DesignArea.prototype.turnOnSimulationMode = function () {
-	this.mode = DesignArea.SIMULATION_MODE;
+DesignArea.prototype.simulate = function(){
+  var components = this.getDocument().getFigures();
+  for (var i = 0; i < components.getSize(); i++) {
+    var component = components.get(i);
+    if (component.isTrigger()) {
+      component.run();
+    }
+  }
+}
+
+DesignArea.prototype.turnOnSimulationMode = function(){
+  this.mode = DesignArea.SIMULATION_MODE;
+  this.simulate();
 }

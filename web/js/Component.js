@@ -30,6 +30,10 @@ Component = function(id){
    * @private
    */
   this.outputPorts = new Array();
+	
+	this.runned = false;
+	
+	this.trigger = false;
 }
 
 Component.prototype = new draw2d.ImageFigure;
@@ -116,7 +120,7 @@ Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordin
  * @private
  */
 Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordinate){
-  var newOutputPort = new draw2d.OutputPort();
+  var newOutputPort = new TransmittingPort();
   newOutputPort.setWorkflow(designArea);
   newOutputPort.setBackgroundColor(new draw2d.Color(255, 255, 255)); 
 	//TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
@@ -180,7 +184,20 @@ Component.prototype.getInputPort = function(index){
   return this.inputPorts[index];
 }
 
+Component.prototype.wasRunned = function() {
+	return this.runned;
+}
+
+Component.prototype.isTrigger = function() {
+	return this.trigger;
+}
+
+Component.prototype.run = function() {
+	
+}
+
 Component.ZERO = 0;
 
 Component.ONE = 1;
 
+Component.UNDETERMINED = 2;

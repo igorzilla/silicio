@@ -7,15 +7,14 @@
  * es generado aleatoriamente.
  */
 Switch = function(id){
-  Component.call(this,id);
+  Component.call(this, id);
   
-  this.setImage(rootUrl+'/images/switch-off.png');
+  this.setImage(rootUrl + '/images/switch-off.png');
   this.setDimension(72, 58);
-	
-	this.calculatedState = true;
-	
-	this.outputs = new Array();
-	this.outputs[0] = Component.ZERO
+  
+  this.trigger = true;
+  
+  this.isOn = false;
 }
 
 Switch.prototype = new Component;
@@ -23,21 +22,21 @@ Switch.prototype.constructor = Switch;
 Switch.prototype.type = 'Switch';
 
 Switch.prototype.setDesignArea = function(designArea){
-	this.createOutputPort(designArea, 72, 30);
+  this.createOutputPort(designArea, 72, 30);
 }
 
 /**
  * Invierte el estado del interruptor
  */
 Switch.prototype.toggle = function(){
-  if (this.outputs[0] == Component.ONE) {
-		this.outputs[0] = Component.ZERO;
-    this.setImage(rootUrl+'/images/switch-off.png');
+  if (this.isOn) {
+    this.setImage(rootUrl + '/images/switch-off.png');
   }
   else {
-    this.outputs[0] = Component.ONE;
-    this.setImage(rootUrl+'/images/switch-on.png');
+    this.setImage(rootUrl + '/images/switch-on.png');
   }
+  this.isOn = !this.isOn;
+	this.run();
 }
 
 /**
@@ -45,5 +44,14 @@ Switch.prototype.toggle = function(){
  * @private
  */
 Switch.prototype.onDoubleClick = function(){
-	this.toggle();
+  this.toggle();
+}
+
+Switch.prototype.run = function(){
+  if (this.isOn) {
+    this.outputPorts[0].transmit(Component.ONE);
+  }
+  else {
+    this.outputPorts[0].transmit(Component.ZERO);
+  }
 }

@@ -20,3 +20,13 @@ NotGate.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 0, 17);
   this.createOutputPort(designArea, 67, 17);
 }
+
+NotGate.prototype.run = function () {
+	var receivedSignal = this.inputPorts[0].getReceivedSignal();
+  if(receivedSignal == Component.ZERO) {
+    this.outputPorts[0].transmit(Component.ONE);
+  }
+  else {
+    this.outputPorts[0].transmit(Component.ZERO);
+  }
+}

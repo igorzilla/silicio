@@ -19,3 +19,13 @@ Light.prototype.type = 'Light';
 Light.prototype.setDesignArea = function (designArea) {
 	this.createInputPort(designArea, 24, 58);
 }
+
+Light.prototype.run = function() {
+	var receivedSignal = this.inputPorts[0].getReceivedSignal();
+	if(receivedSignal == Component.ZERO) {
+		this.setImage(rootUrl+'/images/light_off.png');
+	}
+	else {
+		this.setImage(rootUrl+'/images/light_on.png');
+	}
+}
