@@ -6,11 +6,20 @@
  * es generado aleatoriamente.
  */
 AndGate = function(id){
-	TwoInputBasicGate.call(this,id);
-	this.setImage(rootUrl+'/images/AND.png');
-	this.setDimension(67, 35);
+  TwoInputBasicGate.call(this, id);
+  this.setImage(rootUrl + '/images/AND.png');
+  this.setDimension(67, 35);
 }
 
 AndGate.prototype = new TwoInputBasicGate;
 AndGate.prototype.constructor = AndGate;
 AndGate.prototype.type = 'AndGate';
+
+AndGate.prototype.run = function(){
+  var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
+  var receivedSignal2 = this.inputPorts[1].getReceivedSignal();
+  var outputSignal = receivedSignal1 * receivedSignal2;
+  if (outputSignal <= Component.ONE) {
+    this.outputPorts[0].transmit(outputSignal);
+  }
+}

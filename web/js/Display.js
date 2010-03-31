@@ -97,3 +97,24 @@ Display.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 38, 121);
   this.createInputPort(designArea, 50, 121);
 }
+
+Display.prototype.turnOnSegment = function(index){
+  this.segments[index].style.visibility = 'visible';
+}
+
+Display.prototype.turnOffSegment = function(index){
+  this.segments[index].style.visibility = 'hidden';
+}
+
+Display.prototype.run = function(){
+  var receivedSignal = null;
+  for (var i = 0; i < this.inputPorts.length; i++) {
+    receivedSignal = this.inputPorts[i].getReceivedSignal();
+    if (receivedSignal == Component.ONE) {
+      this.turnOnSegment(i);
+    }
+    else {
+      this.turnOffSegment(i);
+    }
+  }
+}
