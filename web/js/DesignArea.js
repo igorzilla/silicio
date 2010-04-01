@@ -170,15 +170,18 @@ DesignArea.prototype.getMode = function(){
 
 DesignArea.prototype.turnOnEditMode = function(){
   this.mode = DesignArea.EDIT_MODE;
+  var components = this.getDocument().getFigures();
+  for (var i = 0; i < components.getSize(); i++) {
+    var component = components.get(i);
+    component.turnOnEditMode();
+  }
 }
 
 DesignArea.prototype.simulate = function(){
   var components = this.getDocument().getFigures();
   for (var i = 0; i < components.getSize(); i++) {
     var component = components.get(i);
-    if (component.isTrigger()) {
-      component.run();
-    }
+    component.turnOnSimulationMode();
   }
 }
 

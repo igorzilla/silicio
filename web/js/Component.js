@@ -30,10 +30,10 @@ Component = function(id){
    * @private
    */
   this.outputPorts = new Array();
-	
-	this.runned = false;
-	
-	this.trigger = false;
+  
+  this.runned = false;
+  
+  this.mode = Component.EDIT_MODE;
 }
 
 Component.prototype = new draw2d.ImageFigure;
@@ -86,7 +86,7 @@ Component.prototype.outputConnectionsToXML = function(){
       xml = xml + '<sourceId>' + this.getId() + '</sourceId>';
       xml = xml + '<sourcePortIndex>' + j + '</sourcePortIndex>';
       xml = xml + '<targetId>' + targetId + '</targetId>';
-			xml = xml + '<targetPortIndex>' + inputPort.getIndex() + '</targetPortIndex>';
+      xml = xml + '<targetPortIndex>' + inputPort.getIndex() + '</targetPortIndex>';
       xml = xml + '</connection>';
     }
   }
@@ -101,12 +101,12 @@ Component.prototype.outputConnectionsToXML = function(){
  * @private
  */
 Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordinate){
-	var parentComponent = this;
-	var portIndex = this.inputPorts.length;
+  var parentComponent = this;
+  var portIndex = this.inputPorts.length;
   var newInputPort = new ReceivingPort(portIndex);
   newInputPort.setWorkflow(designArea);
   newInputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
-	//TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
+  //TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
   newInputPort.setName(this.getId());
   this.inputPorts.push(newInputPort);
   this.addPort(newInputPort, xCoordinate, yCoordinate);
@@ -122,8 +122,8 @@ Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordin
 Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordinate){
   var newOutputPort = new TransmittingPort();
   newOutputPort.setWorkflow(designArea);
-  newOutputPort.setBackgroundColor(new draw2d.Color(255, 255, 255)); 
-	//TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
+  newOutputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
+  //TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
   newOutputPort.setName(this.getId());
   this.outputPorts.push(newOutputPort);
   this.addPort(newOutputPort, xCoordinate, yCoordinate);
@@ -184,16 +184,20 @@ Component.prototype.getInputPort = function(index){
   return this.inputPorts[index];
 }
 
-Component.prototype.wasRunned = function() {
-	return this.runned;
+Component.prototype.wasRunned = function(){
+  return this.runned;
 }
 
-Component.prototype.isTrigger = function() {
-	return this.trigger;
+Component.prototype.run = function(){
+
 }
 
-Component.prototype.run = function() {
-	
+Component.prototype.reset = function(){
+  var inputPort = null;
+  for (var i = 0; i < this.inputPorts.length; i++) {
+    inputPort = this.inputPorts[i];
+    inputPort.reset();
+  }
 }
 
 Component.ZERO = 0;
@@ -201,3 +205,17 @@ Component.ZERO = 0;
 Component.ONE = 1;
 
 Component.UNDETERMINED = 2;
+
+Component.EDIT_MODE = 0;
+
+Component.SIMULATION_MODE = 1;
+
+Component.prototype.turnOnSimulationMode = function(){
+	this.mode = Component.SIMULATION_MODE;
+	this.run();
+}
+
+Component.prototype.turnOnEditMode = function () {
+	this.mode = Component.EDIT_MODE;
+	this.reset();
+}

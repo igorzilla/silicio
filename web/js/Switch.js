@@ -12,8 +12,6 @@ Switch = function(id){
   this.setImage(rootUrl + '/images/switch-off.png');
   this.setDimension(72, 58);
   
-  this.trigger = true;
-  
   this.isOn = false;
 }
 
@@ -36,7 +34,7 @@ Switch.prototype.toggle = function(){
     this.setImage(rootUrl + '/images/switch-on.png');
   }
   this.isOn = !this.isOn;
-	this.run();
+  this.run();
 }
 
 /**
@@ -44,7 +42,9 @@ Switch.prototype.toggle = function(){
  * @private
  */
 Switch.prototype.onDoubleClick = function(){
-  this.toggle();
+  if (this.mode == DesignArea.SIMULATION_MODE) {
+    this.toggle();
+  }
 }
 
 Switch.prototype.run = function(){
