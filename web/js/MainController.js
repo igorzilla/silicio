@@ -142,6 +142,9 @@ MainController.prototype.buildTabsPanel = function(){
             activeDesignArea.html.focus();
           }
         }
+        else {
+          mainController.updateSimulateAction();
+        }
       },
       beforeremove: function(tabsPanel, panel){
         if (!panel.designTab.getIsSaved()) {
@@ -170,6 +173,7 @@ MainController.prototype.buildMenuBar = function(){
       var designTab = new DesignTab();
       this.tabsPanel.add(designTab.getPanel());
       designTab.show();
+      this.updateSimulateAction();
     }
   });
   
@@ -344,6 +348,8 @@ MainController.prototype.buildMenuBar = function(){
             }
           }
         });
+        
+        this.updateSimulateAction();
       }
     }
   });
@@ -587,14 +593,24 @@ MainController.prototype.turnOnDrag = function(){
 
 MainController.prototype.updateSimulateAction = function(){
   var activeDesignTab = this.tabsPanel.getActiveTab().designTab;
-  var activeDesignArea = activeDesignTab.getDesignArea();
-  if (activeDesignArea.getMode() == DesignArea.EDIT_MODE) {
-    this.simulateAction.setIconClass('simulate_action');
-    this.simulateAction.setText('Simular');
+  if (activeDesignTab) {
+    var activeDesignArea = activeDesignTab.getDesignArea();
+    if (activeDesignArea.getMode() == DesignArea.EDIT_MODE) {
+      this.simulateAction.setIconClass('simulate_action');
+      this.simulateAction.setText('Simular');
+    }
+    else {
+      this.simulateAction.setIconClass('stop_action');
+      this.simulateAction.setText('Detener');
+    }
+    if (this.simulateAction.isDisabled()) {
+      this.simulateAction.enable();
+    }
   }
   else {
-    this.simulateAction.setIconClass('stop_action');
-    this.simulateAction.setText('Detener');
+    this.simulateAction.setIconClass('simulate_action');
+    this.simulateAction.setText('Simular');
+    this.simulateAction.disable();
   }
 }
 
