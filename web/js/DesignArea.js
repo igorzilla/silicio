@@ -175,7 +175,7 @@ DesignArea.prototype.turnOnEditMode = function(){
   var components = this.getDocument().getFigures();
   for (var i = 0; i < components.getSize(); i++) {
     var component = components.get(i);
-    component.turnOnEditMode();
+    component.reset();
   }
 }
 
@@ -183,7 +183,7 @@ DesignArea.prototype.simulate = function(){
   var components = this.getDocument().getFigures();
   for (var i = 0; i < components.getSize(); i++) {
     var component = components.get(i);
-    component.turnOnSimulationMode();
+    component.run();
   }
 }
 

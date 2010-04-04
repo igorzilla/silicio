@@ -30,10 +30,6 @@ Component = function(id){
    * @private
    */
   this.outputPorts = new Array();
-  
-  this.runned = false;
-  
-  this.mode = Component.EDIT_MODE;
 }
 
 Component.prototype = new draw2d.ImageFigure;
@@ -211,17 +207,3 @@ Component.ZERO = 0;
 Component.ONE = 1;
 
 Component.UNDETERMINED = 2;
-
-Component.EDIT_MODE = 0;
-
-Component.SIMULATION_MODE = 1;
-
-Component.prototype.turnOnSimulationMode = function(){
-	this.mode = Component.SIMULATION_MODE;
-	this.run();
-}
-
-Component.prototype.turnOnEditMode = function () {
-	this.mode = Component.EDIT_MODE;
-	this.reset();
-}

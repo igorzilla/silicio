@@ -42,9 +42,7 @@ Switch.prototype.toggle = function(){
  * @private
  */
 Switch.prototype.onDoubleClick = function(){
-  if (this.mode == DesignArea.SIMULATION_MODE) {
-    this.toggle();
-  }
+	this.toggle();
 }
 
 Switch.prototype.run = function(){
