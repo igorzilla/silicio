@@ -18,12 +18,15 @@ OrGate.prototype.type = 'OrGate';
 OrGate.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[1].getReceivedSignal();
-  var outputSignal = receivedSignal1 + receivedSignal2;
-  if (outputSignal <= Component.ONE) {
-    this.outputPorts[0].transmit(outputSignal);
+  if (receivedSignal1 == Component.ONE) {
+    this.outputPorts[0].transmit(Component.ONE);
   }
   else 
-    if (receivedSignal1 == receivedSignal2) {
+    if (receivedSignal2 == Component.ONE) {
       this.outputPorts[0].transmit(Component.ONE);
     }
+    else 
+      if (receivedSignal1 == Component.ZERO && receivedSignal2 == Component.ZERO) {
+        this.outputPorts[0].transmit(Component.ZERO);
+      }
 }

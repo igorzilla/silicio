@@ -198,6 +198,12 @@ Component.prototype.reset = function(){
     inputPort = this.inputPorts[i];
     inputPort.reset();
   }
+	
+  var outputPort = null;
+  for (var i = 0; i < this.outputPorts.length; i++) {
+    outputPort = this.outputPorts[i];
+    outputPort.reset();
+  }
 }
 
 Component.ZERO = 0;
