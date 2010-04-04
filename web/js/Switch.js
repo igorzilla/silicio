@@ -42,7 +42,7 @@ Switch.prototype.toggle = function(){
  * @private
  */
 Switch.prototype.onDoubleClick = function(){
-	this.toggle();
+  this.toggle();
 }
 
 Switch.prototype.run = function(){
@@ -52,4 +52,6 @@ Switch.prototype.run = function(){
   else {
     this.outputPorts[0].transmit(Component.ZERO);
   }
+  var designArea = this.getWorkflow();
+  designArea.processQueue();
 }

@@ -11,8 +11,8 @@ DesignArea = function(id){
   
   var designArea = this;
   
-	this.scrollArea = this.html.parentNode;
-	
+  this.scrollArea = this.html.parentNode;
+  
   new Ext.dd.DropTarget(id, {
     notifyDrop: function(source, event, data){
       if (designArea.getMode() == DesignArea.EDIT_MODE) {
@@ -24,6 +24,8 @@ DesignArea = function(id){
       }
     }
   });
+  
+  this.simulationQueue = new SimulationQueue();
   
   /**
    * Indica el modo de trabajo en el cual se encuentra el área de diseño
@@ -179,15 +181,31 @@ DesignArea.prototype.turnOnEditMode = function(){
   }
 }
 
+DesignArea.prototype.processQueue = function(){
+  var component = null;
+  while (!this.simulationQueue.isEmpty()) {
+    component = this.simulationQueue.dequeue();
+    component.run();
+  }
+}
+
+/**
+ * @private
+ */
 DesignArea.prototype.simulate = function(){
   var components = this.getDocument().getFigures();
   for (var i = 0; i < components.getSize(); i++) {
     var component = components.get(i);
-    component.run();
+    this.simulationQueue.enqueue(component);
   }
+  this.processQueue();
 }
 
 DesignArea.prototype.turnOnSimulationMode = function(){
   this.mode = DesignArea.SIMULATION_MODE;
   this.simulate();
+}
+
+DesignArea.prototype.addToSimulationQueue = function(component){
+  this.simulationQueue.enqueue(component);
 }

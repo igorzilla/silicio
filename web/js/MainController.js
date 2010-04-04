@@ -62,6 +62,13 @@ MainController.prototype.buildToolsPanel = function(){
     height: 100,
     border: false
   });
+  basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'NAND_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
   var inputs = new Ext.Panel({
     split: true,
     width: 200,
@@ -572,6 +579,11 @@ MainController.prototype.turnOnDrag = function(){
   new Ext.dd.DragSource("NOT", {
     dragData: {
       className: 'NotGate'
+    }
+  });
+	new Ext.dd.DragSource("NAND", {
+    dragData: {
+      className: 'NandGate'
     }
   });
   new Ext.dd.DragSource("display", {

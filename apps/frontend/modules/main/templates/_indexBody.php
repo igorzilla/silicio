@@ -16,6 +16,9 @@ Ext.onReady(function() {
 <div id="NOT_cover" class="gates_cover">
 <div id="NOT" class="gate"><?php echo image_tag('NOT.png');?></div>
 </div>
+<div id="NAND_cover" class="gates_cover">
+<div id="NAND" class="gate"><?php echo image_tag('NAND.png');?></div>
+</div>
 <div id="display_cover" class="display_cover">
 <div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>

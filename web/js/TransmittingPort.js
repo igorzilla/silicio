@@ -9,7 +9,8 @@ TransmittingPort.prototype.constructor = TransmittingPort;
 TransmittingPort.prototype.type = 'TransmittingPort';
 
 TransmittingPort.prototype.transmit = function(signal){
-  var mode = this.getParent().getWorkflow().getMode();
+  var designArea = this.getParent().getWorkflow();
+  var mode = designArea.getMode();
   if (mode == DesignArea.SIMULATION_MODE && signal != this.transmitedSignal) {
     this.transmitedSignal = signal;
     var connections = this.getConnections();
@@ -23,6 +24,8 @@ TransmittingPort.prototype.transmit = function(signal){
       }
       var receivingPort = connection.getTarget();
       receivingPort.receive(signal);
+      var parent = receivingPort.getParent();
+      designArea.addToSimulationQueue(parent);
     }
   }
 }

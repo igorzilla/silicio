@@ -20,8 +20,6 @@ ReceivingPort.prototype.getReceivedSignal = function(){
 
 ReceivingPort.prototype.receive = function(signal){
   this.receivedSignal = signal;
-  var parent = this.getParent();
-  parent.run();
 }
 
 ReceivingPort.prototype.reset = function(){

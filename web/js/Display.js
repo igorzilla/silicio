@@ -118,3 +118,10 @@ Display.prototype.run = function(){
     }
   }
 }
+
+Display.prototype.reset = function(){
+  Component.prototype.reset.call(this);
+  for (var i = 0; i < this.segments.length; i++) {
+    this.turnOffSegment(i);
+  }
+}
