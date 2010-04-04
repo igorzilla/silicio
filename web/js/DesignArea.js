@@ -11,11 +11,13 @@ DesignArea = function(id){
   
   var designArea = this;
   
+	this.scrollArea = this.html.parentNode;
+	
   new Ext.dd.DropTarget(id, {
     notifyDrop: function(source, event, data){
       if (designArea.getMode() == DesignArea.EDIT_MODE) {
-        var xCoordinate = event.xy[0] - designArea.getAbsoluteX();
-        var yCoordinate = event.xy[1] - designArea.getAbsoluteY();
+        var xCoordinate = event.xy[0] - designArea.getAbsoluteX() + designArea.getScrollLeft();
+        var yCoordinate = event.xy[1] - designArea.getAbsoluteY() + designArea.getScrollTop();
         var component = eval('new ' + data.className + '()');
         designArea.addFigure(component, xCoordinate, yCoordinate);
         return true;
