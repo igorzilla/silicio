@@ -145,6 +145,10 @@ Component.prototype.setDesignArea = function(designArea){
 
 }
 
+Component.prototype.getDesignArea = function () {
+	return this.getWorkflow();
+}
+
 //TODO: This method might be used to avoid the simulation of the component?
 ///**
 // * Verifica si todos los puertos de este componente están conectados

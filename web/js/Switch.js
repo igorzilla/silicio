@@ -52,6 +52,6 @@ Switch.prototype.run = function(){
   else {
     this.outputPorts[0].transmit(Component.ZERO);
   }
-  var designArea = this.getWorkflow();
+  var designArea = this.getDesignArea();
   designArea.processQueue();
 }

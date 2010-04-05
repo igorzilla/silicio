@@ -45,28 +45,42 @@ MainController.prototype.buildToolsPanel = function(){
   basicGatesPanel.add({
     contentEl: 'AND_cover',
     width: 200,
-    height: 100,
+    height: 80,
     border: false
   });
   basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'OR_cover',
     width: 200,
-    height: 100,
+    height: 80,
     border: false
   });
   basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'NOT_cover',
     width: 200,
-    height: 100,
+    height: 80,
     border: false
   });
   basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'NAND_cover',
     width: 200,
-    height: 100,
+    height: 80,
+    border: false
+  });
+	basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'NOR_cover',
+    width: 200,
+    height: 80,
+    border: false
+  });
+	basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'XOR_cover',
+    width: 200,
+    height: 80,
     border: false
   });
   var inputs = new Ext.Panel({
@@ -584,6 +598,16 @@ MainController.prototype.turnOnDrag = function(){
 	new Ext.dd.DragSource("NAND", {
     dragData: {
       className: 'NandGate'
+    }
+  });
+	new Ext.dd.DragSource("NOR", {
+    dragData: {
+      className: 'NorGate'
+    }
+  });
+	new Ext.dd.DragSource("XOR", {
+    dragData: {
+      className: 'XorGate'
     }
   });
   new Ext.dd.DragSource("display", {

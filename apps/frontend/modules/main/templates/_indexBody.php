@@ -19,6 +19,12 @@ Ext.onReady(function() {
 <div id="NAND_cover" class="gates_cover">
 <div id="NAND" class="gate"><?php echo image_tag('NAND.png');?></div>
 </div>
+<div id="NOR_cover" class="gates_cover">
+<div id="NOR" class="gate"><?php echo image_tag('NOR.png');?></div>
+</div>
+<div id="XOR_cover" class="gates_cover">
+<div id="XOR" class="gate"><?php echo image_tag('XOR.png');?></div>
+</div>
 <div id="display_cover" class="display_cover">
 <div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>

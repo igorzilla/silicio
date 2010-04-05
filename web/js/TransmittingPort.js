@@ -9,7 +9,7 @@ TransmittingPort.prototype.constructor = TransmittingPort;
 TransmittingPort.prototype.type = 'TransmittingPort';
 
 TransmittingPort.prototype.transmit = function(signal){
-  var designArea = this.getParent().getWorkflow();
+  var designArea = this.getParent().getDesignArea();
   var mode = designArea.getMode();
   if (mode == DesignArea.SIMULATION_MODE && signal != this.transmitedSignal) {
     this.transmitedSignal = signal;

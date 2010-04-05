@@ -8,7 +8,7 @@
 NandGate = function(id){
   TwoInputBasicGate.call(this, id);
   this.setImage(rootUrl + '/images/NAND.png');
-  this.setDimension(67, 35);
+  this.setDimension(74, 35);
 }
 
 NandGate.prototype = new TwoInputBasicGate;
@@ -22,4 +22,11 @@ NandGate.prototype.run = function(){
   if (outputSignal <= Component.ONE) {
     this.outputPorts[0].transmit(Component.ONE - outputSignal);
   }
+}
+
+NandGate.prototype.setDesignArea = function(designArea){
+	this.createInputPort(designArea, 0, 9);
+  this.createInputPort(designArea, 0, 25);
+  
+  this.createOutputPort(designArea, 74, 17);
 }
