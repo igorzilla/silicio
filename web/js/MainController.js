@@ -83,6 +83,19 @@ MainController.prototype.buildToolsPanel = function(){
     height: 80,
     border: false
   });
+	var chips = new Ext.Panel({
+		split: true,
+		width: 200,
+		minSize: 200,
+		title: 'Circuitos integrados'
+	});
+	chips.add({
+		xtype: 'panel',
+		contentEl: 'Chip7447_cover',
+		width: 200,
+		height: 100,
+		border: false
+	});
   var inputs = new Ext.Panel({
     split: true,
     width: 200,
@@ -129,7 +142,7 @@ MainController.prototype.buildToolsPanel = function(){
     layoutConfig: {
       animate: true
     },
-    items: [basicGatesPanel, inputs, outputs]
+    items: [basicGatesPanel, chips, inputs, outputs]
   });
   this.toolsPanel.doLayout();
 }
@@ -608,6 +621,11 @@ MainController.prototype.turnOnDrag = function(){
 	new Ext.dd.DragSource("XOR", {
     dragData: {
       className: 'XorGate'
+    }
+  });
+	new Ext.dd.DragSource("Chip7447", {
+    dragData: {
+      className: 'Chip7447'
     }
   });
   new Ext.dd.DragSource("display", {

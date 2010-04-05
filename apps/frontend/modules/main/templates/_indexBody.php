@@ -25,6 +25,9 @@ Ext.onReady(function() {
 <div id="XOR_cover" class="gates_cover">
 <div id="XOR" class="gate"><?php echo image_tag('XOR.png');?></div>
 </div>
+<div id="Chip7447_cover" class="chips_cover">
+<div id="Chip7447" class="chip"><?php echo image_tag('chip.png');?></div>
+</div>
 <div id="display_cover" class="display_cover">
 <div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>

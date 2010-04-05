@@ -11,6 +11,16 @@
     width: 67px !important;
 }
 
+.chips_cover {
+    padding-left: 66px !important;
+    padding-top: 32px !important;
+}
+
+.chip {
+    cursor: move !important;
+    width: 67px !important;
+}
+
 .display_cover {
     padding-left: 84px !important;
     padding-top: 3px !important;
