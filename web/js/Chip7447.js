@@ -7,7 +7,7 @@
 Chip7447 = function(id){
   Component.call(this, id);
   
-  this.setImage(rootUrl + '/images/chip.png');
+  this.setImage(rootUrl + '/images/chip7447.png');
   this.setDimension(104, 59);
 }
 
