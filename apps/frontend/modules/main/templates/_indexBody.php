@@ -43,4 +43,7 @@ Ext.onReady(function() {
 <div id="switch_cover" class="switch_cover">
 <div id="switch" class="switch"><?php echo image_tag('switch_icon.png');?></div>
 </div>
+<div id="clock_cover" class="clock_cover">
+<div id="clock" class="clock"><?php echo image_tag('clock_icon.png');?></div>
+</div>
 </div>

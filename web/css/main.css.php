@@ -52,13 +52,23 @@
 }
 
 .switch_cover {
-    padding-left: 70px !important;
+    padding-left: 76px !important;
     padding-top: 21px !important;
 }
 
 .switch {
     cursor: move !important;
     width: 64px !important;
+}
+
+.clock_cover {
+    padding-left: 76px !important;
+    padding-top: 3px !important;
+}
+
+.clock {
+    cursor: move !important;
+    width: 47px !important;
 }
 
 input.x-form-invalid {

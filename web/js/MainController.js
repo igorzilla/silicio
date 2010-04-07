@@ -69,34 +69,34 @@ MainController.prototype.buildToolsPanel = function(){
     height: 80,
     border: false
   });
-	basicGatesPanel.add({
+  basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'NOR_cover',
     width: 200,
     height: 80,
     border: false
   });
-	basicGatesPanel.add({
+  basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'XOR_cover',
     width: 200,
     height: 80,
     border: false
   });
-	var chips = new Ext.Panel({
-		split: true,
-		width: 200,
-		minSize: 200,
-		title: 'Circuitos integrados'
-	});
-	chips.add({
-		xtype: 'panel',
-		contentEl: 'Chip7447_cover',
-		width: 200,
-		height: 100,
-		border: false
-	});
-	chips.add({
+  var chips = new Ext.Panel({
+    split: true,
+    width: 200,
+    minSize: 200,
+    title: 'Circuitos integrados'
+  });
+  chips.add({
+    xtype: 'panel',
+    contentEl: 'Chip7447_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  chips.add({
     xtype: 'panel',
     contentEl: 'Chip7473_cover',
     width: 200,
@@ -132,6 +132,13 @@ MainController.prototype.buildToolsPanel = function(){
   outputs.add({
     xtype: 'panel',
     contentEl: 'switch_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  outputs.add({
+    xtype: 'panel',
+    contentEl: 'clock_cover',
     width: 200,
     height: 100,
     border: false
@@ -615,27 +622,27 @@ MainController.prototype.turnOnDrag = function(){
       className: 'NotGate'
     }
   });
-	new Ext.dd.DragSource("NAND", {
+  new Ext.dd.DragSource("NAND", {
     dragData: {
       className: 'NandGate'
     }
   });
-	new Ext.dd.DragSource("NOR", {
+  new Ext.dd.DragSource("NOR", {
     dragData: {
       className: 'NorGate'
     }
   });
-	new Ext.dd.DragSource("XOR", {
+  new Ext.dd.DragSource("XOR", {
     dragData: {
       className: 'XorGate'
     }
   });
-	new Ext.dd.DragSource("Chip7447", {
+  new Ext.dd.DragSource("Chip7447", {
     dragData: {
       className: 'Chip7447'
     }
   });
-	new Ext.dd.DragSource("Chip7473", {
+  new Ext.dd.DragSource("Chip7473", {
     dragData: {
       className: 'Chip7473'
     }
@@ -653,6 +660,11 @@ MainController.prototype.turnOnDrag = function(){
   new Ext.dd.DragSource("switch", {
     dragData: {
       className: 'Switch'
+    }
+  });
+	new Ext.dd.DragSource("clock", {
+    dragData: {
+      className: 'Clock'
     }
   });
 }
