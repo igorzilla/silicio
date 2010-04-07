@@ -9,10 +9,12 @@
 Clock = function(id){
   Component.call(this, id);
   
-  this.setImage(rootUrl + '/images/clock.png');
-  this.setDimension(59, 60);
+  this.setImage(rootUrl + '/images/clock_off.png');
+  this.setDimension(83, 82);
   
   this.isOn = false;
+  
+  this.intervalId = null;
 }
 
 Clock.prototype = new Component;
@@ -20,28 +22,57 @@ Clock.prototype.constructor = Clock;
 Clock.prototype.type = 'Clock';
 
 Clock.prototype.setDesignArea = function(designArea){
-  //  this.createOutputPort(designArea, 72, 30);
+  this.createOutputPort(designArea, 41, 1);
+  this.createOutputPort(designArea, 41, 82);
+  this.createOutputPort(designArea, 1, 41);
+  this.createOutputPort(designArea, 83, 40);
+}
+
+Clock.prototype.turnOff = function(){
+  this.isOn = false;
+  this.setImage(rootUrl + '/images/clock_off.png');
+}
+
+Clock.prototype.turnOn = function(){
+  this.isOn = true;
+  this.setImage(rootUrl + '/images/clock_on.png');
 }
 
 /**
  * Invierte el estado del interruptor
  */
-Clock.prototype.toggle = function(){
+Clock.prototype.generatePulse = function(){
   if (this.isOn) {
-    this.setImage(rootUrl + '/images/clock.png');
+    this.turnOff();
+    this.outputPorts[0].transmit(Component.ZERO);
+    this.outputPorts[1].transmit(Component.ZERO);
+    this.outputPorts[2].transmit(Component.ZERO);
+    this.outputPorts[3].transmit(Component.ZERO);
   }
   else {
-    this.setImage(rootUrl + '/images/clock.png');
+    this.turnOn();
+    this.outputPorts[0].transmit(Component.ONE);
+    this.outputPorts[1].transmit(Component.ONE);
+    this.outputPorts[2].transmit(Component.ONE);
+    this.outputPorts[3].transmit(Component.ONE);
   }
-  this.isOn = !this.isOn;
-  this.run();
+  var designArea = this.getWorkflow();
+  designArea.processQueue();
 }
 
 Clock.prototype.run = function(){
-  if (this.isOn) {
-  
-  }
-  else {
-  
-  }
+  var clock = this;
+  this.intervalId = setInterval(function(){
+    clock.generatePulse();
+  }, 500);
+}
+
+Clock.prototype.stop = function(){
+  clearInterval(this.intervalId);
+	this.turnOff();
+}
+
+Clock.prototype.reset = function(){
+  Component.prototype.reset.call(this);
+  this.stop();
 }
