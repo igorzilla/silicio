@@ -145,8 +145,8 @@ Component.prototype.setDesignArea = function(designArea){
 
 }
 
-Component.prototype.getDesignArea = function () {
-	return this.getWorkflow();
+Component.prototype.getDesignArea = function(){
+  return this.getWorkflow();
 }
 
 //TODO: This method might be used to avoid the simulation of the component?
@@ -198,12 +198,16 @@ Component.prototype.reset = function(){
     inputPort = this.inputPorts[i];
     inputPort.reset();
   }
-	
+  
   var outputPort = null;
   for (var i = 0; i < this.outputPorts.length; i++) {
     outputPort = this.outputPorts[i];
     outputPort.reset();
   }
+}
+
+Component.negate = function(signal){
+  return (Component.ONE - signal);
 }
 
 Component.ZERO = 0;

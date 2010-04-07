@@ -30,6 +30,10 @@ Ext.onReady(function() {
 <div id="Chip7447" class="chip"><?php echo image_tag('chip7447.png');?>
 </div>
 </div>
+<div id="Chip7473_cover" class="chips_cover">
+<div id="Chip7473" class="chip"><?php echo image_tag('chip7473.png');?>
+</div>
+</div>
 <div id="display_cover" class="display_cover">
 <div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>

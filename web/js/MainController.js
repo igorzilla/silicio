@@ -96,6 +96,13 @@ MainController.prototype.buildToolsPanel = function(){
 		height: 100,
 		border: false
 	});
+	chips.add({
+    xtype: 'panel',
+    contentEl: 'Chip7473_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
   var inputs = new Ext.Panel({
     split: true,
     width: 200,
@@ -626,6 +633,11 @@ MainController.prototype.turnOnDrag = function(){
 	new Ext.dd.DragSource("Chip7447", {
     dragData: {
       className: 'Chip7447'
+    }
+  });
+	new Ext.dd.DragSource("Chip7473", {
+    dragData: {
+      className: 'Chip7473'
     }
   });
   new Ext.dd.DragSource("display", {
