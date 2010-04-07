@@ -26,12 +26,12 @@ Ext.onReady(function() {
 <div id="XOR_cover" class="gates_cover">
 <div id="XOR" class="gate"><?php echo image_tag('XOR.png');?></div>
 </div>
-<div id="Chip7447_cover" class="chips_cover">
-<div id="Chip7447" class="chip"><?php echo image_tag('chip7447.png');?>
+<div id="Chip7447_cover" class="eight_pin_chips_cover">
+<div id="Chip7447" class="eight_pin_chip"><?php echo image_tag('chip7447.png');?>
 </div>
 </div>
-<div id="Chip7473_cover" class="chips_cover">
-<div id="Chip7473" class="chip"><?php echo image_tag('chip7473.png');?>
+<div id="Chip7473_cover" class="seven_pin_chips_cover">
+<div id="Chip7473" class="seven_pin_chip"><?php echo image_tag('chip7473.png');?>
 </div>
 </div>
 <div id="display_cover" class="display_cover">

@@ -42,8 +42,22 @@ Chip7473.prototype.run = function(){
   else 
     if (clear1 == Component.ONE) {
       var clock1 = this.inputPorts[0].getReceivedSignal();
-    //  var J1 = this.inputPorts[].getReceivedSignal();
-    //  var K1 = this.inputPorts[].getReceivedSignal(); 
+      var previousClock1 = this.inputPorts[0].getPreviousReceivedSignal();
+      if (previousClock1 == Component.ONE && clock1 == Component.ZERO) {
+        var j1 = this.inputPorts[7].getReceivedSignal();
+        var k1 = this.inputPorts[2].getReceivedSignal();
+        var sum1 = j1 + k1;
+        if (sum1 == Component.ONE) {
+          this.outputPorts[1].transmit(j1);
+          this.outputPorts[0].transmit(Component.negate(j1));
+        }
+        else 
+          if (j1 == Component.ONE && k1 == Component.ONE) {
+            var q1 = this.outputPorts[1].getTransmitedSignal();
+            this.outputPorts[1].transmit(this.outputPorts[0].getTransmitedSignal());
+            this.outputPorts[0].transmit(q1);
+          }
+      }
     }
   
   var clear2 = this.inputPorts[5].getReceivedSignal();
@@ -51,4 +65,24 @@ Chip7473.prototype.run = function(){
     this.outputPorts[3].transmit(Component.ZERO);
     this.outputPorts[4].transmit(Component.ONE);
   }
+  else 
+    if (clear2 == Component.ONE) {
+      var clock2 = this.inputPorts[4].getReceivedSignal();
+      var previousClock2 = this.inputPorts[4].getPreviousReceivedSignal();
+      if (previousClock2 == Component.ONE && clock2 == Component.ZERO) {
+        var j2 = this.inputPorts[6].getReceivedSignal();
+        var k2 = this.inputPorts[8].getReceivedSignal();
+        var sum2 = j2 + k2;
+        if (sum2 == Component.ONE) {
+          this.outputPorts[3].transmit(j2);
+          this.outputPorts[4].transmit(Component.negate(j2));
+        }
+        else 
+          if (j2 == Component.ONE && k2 == Component.ONE) {
+            var q2 = this.outputPorts[3].getTransmitedSignal();
+            this.outputPorts[3].transmit(this.outputPorts[4].getTransmitedSignal());
+            this.outputPorts[4].transmit(q2);
+          }
+      }
+    }
 }

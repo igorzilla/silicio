@@ -11,14 +11,24 @@
     width: 67px !important;
 }
 
-.chips_cover {
+.eight_pin_chips_cover {
     padding-left: 48px !important;
     padding-top: 32px !important;
 }
 
-.chip {
+.eight_pin_chip {
     cursor: move !important;
     width: 104px !important;
+}
+
+.seven_pin_chips_cover {
+    padding-left: 54px !important;
+    padding-top: 32px !important;
+}
+
+.seven_pin_chip {
+    cursor: move !important;
+    width: 91px !important;
 }
 
 .display_cover {
