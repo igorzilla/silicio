@@ -35,14 +35,14 @@ Chip7473.prototype.setDesignArea = function(designArea){
 
 Chip7473.prototype.run = function(){
   var clear1 = this.inputPorts[1].getReceivedSignal();
+  var clock1 = this.inputPorts[0].getReceivedSignal();
+  var previousClock1 = this.inputPorts[0].getPreviousReceivedSignal();
   if (clear1 == Component.ZERO) {
     this.outputPorts[0].transmit(Component.ONE);
     this.outputPorts[1].transmit(Component.ZERO);
   }
   else 
     if (clear1 == Component.ONE) {
-      var clock1 = this.inputPorts[0].getReceivedSignal();
-      var previousClock1 = this.inputPorts[0].getPreviousReceivedSignal();
       if (previousClock1 == Component.ONE && clock1 == Component.ZERO) {
         var j1 = this.inputPorts[7].getReceivedSignal();
         var k1 = this.inputPorts[2].getReceivedSignal();
@@ -61,14 +61,14 @@ Chip7473.prototype.run = function(){
     }
   
   var clear2 = this.inputPorts[5].getReceivedSignal();
+  var clock2 = this.inputPorts[4].getReceivedSignal();
+  var previousClock2 = this.inputPorts[4].getPreviousReceivedSignal();
   if (clear2 == Component.ZERO) {
     this.outputPorts[3].transmit(Component.ZERO);
     this.outputPorts[4].transmit(Component.ONE);
   }
   else 
     if (clear2 == Component.ONE) {
-      var clock2 = this.inputPorts[4].getReceivedSignal();
-      var previousClock2 = this.inputPorts[4].getPreviousReceivedSignal();
       if (previousClock2 == Component.ONE && clock2 == Component.ZERO) {
         var j2 = this.inputPorts[6].getReceivedSignal();
         var k2 = this.inputPorts[8].getReceivedSignal();
