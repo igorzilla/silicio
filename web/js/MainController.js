@@ -103,6 +103,13 @@ MainController.prototype.buildToolsPanel = function(){
     height: 100,
     border: false
   });
+  chips.add({
+    xtype: 'panel',
+    contentEl: 'Chip7483_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
   var inputs = new Ext.Panel({
     split: true,
     width: 200,
@@ -647,6 +654,11 @@ MainController.prototype.turnOnDrag = function(){
       className: 'Chip7473'
     }
   });
+  new Ext.dd.DragSource("Chip7483", {
+    dragData: {
+      className: 'Chip7483'
+    }
+  });
   new Ext.dd.DragSource("display", {
     dragData: {
       className: 'Display'
@@ -662,7 +674,7 @@ MainController.prototype.turnOnDrag = function(){
       className: 'Switch'
     }
   });
-	new Ext.dd.DragSource("clock", {
+  new Ext.dd.DragSource("clock", {
     dragData: {
       className: 'Clock'
     }
