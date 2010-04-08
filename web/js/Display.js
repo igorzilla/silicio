@@ -110,7 +110,7 @@ Display.prototype.run = function(){
   var receivedSignal = null;
   for (var i = 0; i < this.inputPorts.length; i++) {
     receivedSignal = this.inputPorts[i].getReceivedSignal();
-    if (receivedSignal == Component.ONE) {
+    if (receivedSignal == Component.ZERO) {
       this.turnOnSegment(i);
     }
     else {

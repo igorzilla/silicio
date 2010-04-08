@@ -45,183 +45,183 @@ Chip7447.prototype.run = function(){
   
   if (sum == Component.ZERO) {
     // Cero
-    this.outputPorts[1].transmit(Component.ONE);
-    this.outputPorts[2].transmit(Component.ZERO);
-    this.outputPorts[3].transmit(Component.ONE);
-    this.outputPorts[4].transmit(Component.ONE);
-    this.outputPorts[5].transmit(Component.ONE);
-    this.outputPorts[6].transmit(Component.ONE);
-    this.outputPorts[7].transmit(Component.ONE);
+    this.outputPorts[1].transmit(Component.ZERO);
+    this.outputPorts[2].transmit(Component.ONE);
+    this.outputPorts[3].transmit(Component.ZERO);
+    this.outputPorts[4].transmit(Component.ZERO);
+    this.outputPorts[5].transmit(Component.ZERO);
+    this.outputPorts[6].transmit(Component.ZERO);
+    this.outputPorts[7].transmit(Component.ZERO);
   }
   else 
     if (sum == Component.ONE) {
       if (receivedSignal1 == Component.ONE) {
         // Uno
-        this.outputPorts[1].transmit(Component.ZERO);
-        this.outputPorts[2].transmit(Component.ZERO);
-        this.outputPorts[3].transmit(Component.ZERO);
-        this.outputPorts[4].transmit(Component.ONE);
-        this.outputPorts[5].transmit(Component.ONE);
-        this.outputPorts[6].transmit(Component.ZERO);
-        this.outputPorts[7].transmit(Component.ZERO);
+        this.outputPorts[1].transmit(Component.ONE);
+        this.outputPorts[2].transmit(Component.ONE);
+        this.outputPorts[3].transmit(Component.ONE);
+        this.outputPorts[4].transmit(Component.ZERO);
+        this.outputPorts[5].transmit(Component.ZERO);
+        this.outputPorts[6].transmit(Component.ONE);
+        this.outputPorts[7].transmit(Component.ONE);
       }
       else 
         if (receivedSignal2 == Component.ONE) {
           // Dos
-          this.outputPorts[1].transmit(Component.ZERO);
-          this.outputPorts[2].transmit(Component.ONE);
-          this.outputPorts[3].transmit(Component.ONE);
-          this.outputPorts[4].transmit(Component.ONE);
-          this.outputPorts[5].transmit(Component.ZERO);
-          this.outputPorts[6].transmit(Component.ONE);
-          this.outputPorts[7].transmit(Component.ONE);
+          this.outputPorts[1].transmit(Component.ONE);
+          this.outputPorts[2].transmit(Component.ZERO);
+          this.outputPorts[3].transmit(Component.ZERO);
+          this.outputPorts[4].transmit(Component.ZERO);
+          this.outputPorts[5].transmit(Component.ONE);
+          this.outputPorts[6].transmit(Component.ZERO);
+          this.outputPorts[7].transmit(Component.ZERO);
         }
         else 
           if (receivedSignal3 == Component.ONE) {
             // Cuatro
-            this.outputPorts[1].transmit(Component.ONE);
-            this.outputPorts[2].transmit(Component.ONE);
-            this.outputPorts[3].transmit(Component.ZERO);
-            this.outputPorts[4].transmit(Component.ONE);
-            this.outputPorts[5].transmit(Component.ONE);
-            this.outputPorts[6].transmit(Component.ZERO);
-            this.outputPorts[7].transmit(Component.ZERO);
+            this.outputPorts[1].transmit(Component.ZERO);
+            this.outputPorts[2].transmit(Component.ZERO);
+            this.outputPorts[3].transmit(Component.ONE);
+            this.outputPorts[4].transmit(Component.ZERO);
+            this.outputPorts[5].transmit(Component.ZERO);
+            this.outputPorts[6].transmit(Component.ONE);
+            this.outputPorts[7].transmit(Component.ONE);
           }
           else 
             if (receivedSignal4 == Component.ONE) {
               // Ocho
-              this.outputPorts[1].transmit(Component.ONE);
-              this.outputPorts[2].transmit(Component.ONE);
-              this.outputPorts[3].transmit(Component.ONE);
-              this.outputPorts[4].transmit(Component.ONE);
-              this.outputPorts[5].transmit(Component.ONE);
-              this.outputPorts[6].transmit(Component.ONE);
-              this.outputPorts[7].transmit(Component.ONE);
+              this.outputPorts[1].transmit(Component.ZERO);
+              this.outputPorts[2].transmit(Component.ZERO);
+              this.outputPorts[3].transmit(Component.ZERO);
+              this.outputPorts[4].transmit(Component.ZERO);
+              this.outputPorts[5].transmit(Component.ZERO);
+              this.outputPorts[6].transmit(Component.ZERO);
+              this.outputPorts[7].transmit(Component.ZERO);
             }
     }
     else 
       if (sum == 2) {
         if (receivedSignal1 == Component.ONE && receivedSignal2 == Component.ONE) {
           // Tres
-          this.outputPorts[1].transmit(Component.ZERO);
-          this.outputPorts[2].transmit(Component.ONE);
-          this.outputPorts[3].transmit(Component.ONE);
-          this.outputPorts[4].transmit(Component.ONE);
-          this.outputPorts[5].transmit(Component.ONE);
-          this.outputPorts[6].transmit(Component.ONE);
-          this.outputPorts[7].transmit(Component.ZERO);
+          this.outputPorts[1].transmit(Component.ONE);
+          this.outputPorts[2].transmit(Component.ZERO);
+          this.outputPorts[3].transmit(Component.ZERO);
+          this.outputPorts[4].transmit(Component.ZERO);
+          this.outputPorts[5].transmit(Component.ZERO);
+          this.outputPorts[6].transmit(Component.ZERO);
+          this.outputPorts[7].transmit(Component.ONE);
         }
         else 
           if (receivedSignal1 == Component.ONE && receivedSignal3 == Component.ONE) {
             // Cinco
-            this.outputPorts[1].transmit(Component.ONE);
-            this.outputPorts[2].transmit(Component.ONE);
-            this.outputPorts[3].transmit(Component.ONE);
-            this.outputPorts[4].transmit(Component.ZERO);
-            this.outputPorts[5].transmit(Component.ONE);
-            this.outputPorts[6].transmit(Component.ONE);
-            this.outputPorts[7].transmit(Component.ZERO);
+            this.outputPorts[1].transmit(Component.ZERO);
+            this.outputPorts[2].transmit(Component.ZERO);
+            this.outputPorts[3].transmit(Component.ZERO);
+            this.outputPorts[4].transmit(Component.ONE);
+            this.outputPorts[5].transmit(Component.ZERO);
+            this.outputPorts[6].transmit(Component.ZERO);
+            this.outputPorts[7].transmit(Component.ONE);
           }
           else 
             if (receivedSignal1 == Component.ONE && receivedSignal4 == Component.ONE) {
               // Nueve
-              this.outputPorts[1].transmit(Component.ONE);
-              this.outputPorts[2].transmit(Component.ONE);
-              this.outputPorts[3].transmit(Component.ONE);
-              this.outputPorts[4].transmit(Component.ONE);
-              this.outputPorts[5].transmit(Component.ONE);
-              this.outputPorts[6].transmit(Component.ZERO);
-              this.outputPorts[7].transmit(Component.ZERO);
+              this.outputPorts[1].transmit(Component.ZERO);
+              this.outputPorts[2].transmit(Component.ZERO);
+              this.outputPorts[3].transmit(Component.ZERO);
+              this.outputPorts[4].transmit(Component.ZERO);
+              this.outputPorts[5].transmit(Component.ZERO);
+              this.outputPorts[6].transmit(Component.ONE);
+              this.outputPorts[7].transmit(Component.ONE);
             }
             else 
               if (receivedSignal2 == Component.ONE && receivedSignal3 == Component.ONE) {
                 // Seis
-                this.outputPorts[1].transmit(Component.ONE);
-                this.outputPorts[2].transmit(Component.ONE);
-                this.outputPorts[3].transmit(Component.ONE);
-                this.outputPorts[4].transmit(Component.ZERO);
-                this.outputPorts[5].transmit(Component.ONE);
-                this.outputPorts[6].transmit(Component.ONE);
-                this.outputPorts[7].transmit(Component.ONE);
+                this.outputPorts[1].transmit(Component.ZERO);
+                this.outputPorts[2].transmit(Component.ZERO);
+                this.outputPorts[3].transmit(Component.ZERO);
+                this.outputPorts[4].transmit(Component.ONE);
+                this.outputPorts[5].transmit(Component.ZERO);
+                this.outputPorts[6].transmit(Component.ZERO);
+                this.outputPorts[7].transmit(Component.ZERO);
               }
               else 
                 if (receivedSignal2 == Component.ONE && receivedSignal4 == Component.ONE) {
                   // Diez
-                  this.outputPorts[1].transmit(Component.ZERO);
-                  this.outputPorts[2].transmit(Component.ONE);
-                  this.outputPorts[3].transmit(Component.ZERO);
-                  this.outputPorts[4].transmit(Component.ZERO);
-                  this.outputPorts[5].transmit(Component.ZERO);
-                  this.outputPorts[6].transmit(Component.ONE);
-                  this.outputPorts[7].transmit(Component.ONE);
+                  this.outputPorts[1].transmit(Component.ONE);
+                  this.outputPorts[2].transmit(Component.ZERO);
+                  this.outputPorts[3].transmit(Component.ONE);
+                  this.outputPorts[4].transmit(Component.ONE);
+                  this.outputPorts[5].transmit(Component.ONE);
+                  this.outputPorts[6].transmit(Component.ZERO);
+                  this.outputPorts[7].transmit(Component.ZERO);
                 }
                 else 
                   if (receivedSignal3 == Component.ONE && receivedSignal4 == Component.ONE) {
                     // Doce
-                    this.outputPorts[1].transmit(Component.ONE);
-                    this.outputPorts[2].transmit(Component.ONE);
-                    this.outputPorts[3].transmit(Component.ZERO);
-                    this.outputPorts[4].transmit(Component.ONE);
-                    this.outputPorts[5].transmit(Component.ZERO);
-                    this.outputPorts[6].transmit(Component.ZERO);
-                    this.outputPorts[7].transmit(Component.ZERO);
+                    this.outputPorts[1].transmit(Component.ZERO);
+                    this.outputPorts[2].transmit(Component.ZERO);
+                    this.outputPorts[3].transmit(Component.ONE);
+                    this.outputPorts[4].transmit(Component.ZERO);
+                    this.outputPorts[5].transmit(Component.ONE);
+                    this.outputPorts[6].transmit(Component.ONE);
+                    this.outputPorts[7].transmit(Component.ONE);
                   }
       }
       else 
         if (sum == 3) {
           if (receivedSignal1 == Component.ONE && receivedSignal2 == Component.ONE && receivedSignal3 == Component.ONE) {
             // Siete
-            this.outputPorts[1].transmit(Component.ZERO);
-            this.outputPorts[2].transmit(Component.ZERO);
-            this.outputPorts[3].transmit(Component.ONE);
-            this.outputPorts[4].transmit(Component.ONE);
-            this.outputPorts[5].transmit(Component.ONE);
-            this.outputPorts[6].transmit(Component.ZERO);
-            this.outputPorts[7].transmit(Component.ZERO);
+            this.outputPorts[1].transmit(Component.ONE);
+            this.outputPorts[2].transmit(Component.ONE);
+            this.outputPorts[3].transmit(Component.ZERO);
+            this.outputPorts[4].transmit(Component.ZERO);
+            this.outputPorts[5].transmit(Component.ZERO);
+            this.outputPorts[6].transmit(Component.ONE);
+            this.outputPorts[7].transmit(Component.ONE);
           }
           else 
             if (receivedSignal1 == Component.ONE && receivedSignal2 == Component.ONE && receivedSignal4 == Component.ONE) {
               // Once
-              this.outputPorts[1].transmit(Component.ZERO);
-              this.outputPorts[2].transmit(Component.ONE);
-              this.outputPorts[3].transmit(Component.ZERO);
-              this.outputPorts[4].transmit(Component.ZERO);
-              this.outputPorts[5].transmit(Component.ONE);
-              this.outputPorts[6].transmit(Component.ONE);
-              this.outputPorts[7].transmit(Component.ZERO);
+              this.outputPorts[1].transmit(Component.ONE);
+              this.outputPorts[2].transmit(Component.ZERO);
+              this.outputPorts[3].transmit(Component.ONE);
+              this.outputPorts[4].transmit(Component.ONE);
+              this.outputPorts[5].transmit(Component.ZERO);
+              this.outputPorts[6].transmit(Component.ZERO);
+              this.outputPorts[7].transmit(Component.ONE);
             }
             else 
               if (receivedSignal1 == Component.ONE && receivedSignal3 == Component.ONE && receivedSignal4 == Component.ONE) {
                 // Trece
-                this.outputPorts[1].transmit(Component.ONE);
-                this.outputPorts[2].transmit(Component.ONE);
-                this.outputPorts[3].transmit(Component.ONE);
-                this.outputPorts[4].transmit(Component.ZERO);
-                this.outputPorts[5].transmit(Component.ZERO);
-                this.outputPorts[6].transmit(Component.ONE);
-                this.outputPorts[7].transmit(Component.ZERO);
+                this.outputPorts[1].transmit(Component.ZERO);
+                this.outputPorts[2].transmit(Component.ZERO);
+                this.outputPorts[3].transmit(Component.ZERO);
+                this.outputPorts[4].transmit(Component.ONE);
+                this.outputPorts[5].transmit(Component.ONE);
+                this.outputPorts[6].transmit(Component.ZERO);
+                this.outputPorts[7].transmit(Component.ONE);
               }
               else 
                 if (receivedSignal2 == Component.ONE && receivedSignal3 == Component.ONE && receivedSignal4 == Component.ONE) {
                   // Catorce
-                  this.outputPorts[1].transmit(Component.ONE);
-                  this.outputPorts[2].transmit(Component.ONE);
-                  this.outputPorts[3].transmit(Component.ZERO);
-                  this.outputPorts[4].transmit(Component.ZERO);
-                  this.outputPorts[5].transmit(Component.ZERO);
-                  this.outputPorts[6].transmit(Component.ONE);
-                  this.outputPorts[7].transmit(Component.ONE);
+                  this.outputPorts[1].transmit(Component.ZERO);
+                  this.outputPorts[2].transmit(Component.ZERO);
+                  this.outputPorts[3].transmit(Component.ONE);
+                  this.outputPorts[4].transmit(Component.ONE);
+                  this.outputPorts[5].transmit(Component.ONE);
+                  this.outputPorts[6].transmit(Component.ZERO);
+                  this.outputPorts[7].transmit(Component.ZERO);
                 }
         }
         else 
           if (sum == 4 && receivedSignal1 == Component.ONE && receivedSignal2 == Component.ONE && receivedSignal3 == Component.ONE) {
             //Quince
-            this.outputPorts[1].transmit(Component.ZERO);
-            this.outputPorts[2].transmit(Component.ZERO);
-            this.outputPorts[3].transmit(Component.ZERO);
-            this.outputPorts[4].transmit(Component.ZERO);
-            this.outputPorts[5].transmit(Component.ZERO);
-            this.outputPorts[6].transmit(Component.ZERO);
-            this.outputPorts[7].transmit(Component.ZERO);
+            this.outputPorts[1].transmit(Component.ONE);
+            this.outputPorts[2].transmit(Component.ONE);
+            this.outputPorts[3].transmit(Component.ONE);
+            this.outputPorts[4].transmit(Component.ONE);
+            this.outputPorts[5].transmit(Component.ONE);
+            this.outputPorts[6].transmit(Component.ONE);
+            this.outputPorts[7].transmit(Component.ONE);
           }
 }
