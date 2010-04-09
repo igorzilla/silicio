@@ -357,65 +357,58 @@ MainController.prototype.buildMenuBar = function(){
           },
           callback: function(componentRecords, options, success){
             if (success) {
+              var undefinedClasses = new Array();
               for (var i = 0; i < componentRecords.length; i++) {
                 var componentRecord = componentRecords[i];
                 var className = componentRecord.get('class');
-                var id = componentRecord.get('id');
-                var xCoordinate = Number(componentRecord.get('xCoordinate'));
-                var yCoordinate = Number(componentRecord.get('yCoordinate'));
-                if (MainController.classIsDefined()) {
+                undefinedClasses[i] = className;
+              }
+              
+              MainController.loadRemoteClasses(undefinedClasses, function(){
+                for (var i = 0; i < componentRecords.length; i++) {
+                  var componentRecord = componentRecords[i];
+                  var className = componentRecord.get('class');
+                  var id = componentRecord.get('id');
+                  var xCoordinate = Number(componentRecord.get('xCoordinate'));
+                  var yCoordinate = Number(componentRecord.get('yCoordinate'));
                   var component = eval('new ' + className + '(id)');
                   designArea.addFigure(component, xCoordinate, yCoordinate);
                 }
-                else {
-                  var callback = null;
-                  if (i != (componentRecords.length - 1)) {
-                    callback = function(){
-                      var component = eval('new ' + className + '(id)');
-                      designArea.addFigure(component, xCoordinate, yCoordinate);
+                
+                var connectionRecord = Ext.data.Record.create(['sourceId', 'sourcePortIndex', 'targetId', 'targetPortIndex']);
+                var connectionsStore = new Ext.data.Store({
+                  url: MainController.getAbsoluteUrl('designsManagement', 'getConnectionsXML'),
+                  reader: new Ext.data.XmlReader({
+                    record: 'connection'
+                  }, connectionRecord)
+                });
+                connectionsStore.load({
+                  params: {
+                    design_name: selectedDesignName
+                  },
+                  callback: function(connectionRecords, options, success){
+                    if (success) {
+                      for (var i = 0; i < connectionRecords.length; i++) {
+                        var connectionRecord = connectionRecords[i];
+                        var document = designArea.getDocument();
+                        var sourceId = connectionRecord.get('sourceId');
+                        var sourceComponent = document.getFigure(sourceId);
+                        var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
+                        var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
+                        var targetId = connectionRecord.get('targetId');
+                        var targetComponent = document.getFigure(targetId);
+                        var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
+                        var targetPort = targetComponent.getInputPort(targetPortIndex);
+                        var connection = new draw2d.Connection();
+                        connection.setSource(sourcePort);
+                        connection.setTarget(targetPort);
+                        designArea.addFigure(connection);
+                      }
                     }
                   }
-                  else {
-                    var component = eval('new ' + className + '(id)');
-                    designArea.addFigure(component, xCoordinate, yCoordinate);
-										
-                    var connectionRecord = Ext.data.Record.create(['sourceId', 'sourcePortIndex', 'targetId', 'targetPortIndex']);
-                    var connectionsStore = new Ext.data.Store({
-                      url: MainController.getAbsoluteUrl('designsManagement', 'getConnectionsXML'),
-                      reader: new Ext.data.XmlReader({
-                        record: 'connection'
-                      }, connectionRecord)
-                    });
-                    connectionsStore.load({
-                      params: {
-                        design_name: selectedDesignName
-                      },
-                      callback: function(connectionRecords, options, success){
-                        if (success) {
-                          for (var i = 0; i < connectionRecords.length; i++) {
-                            var connectionRecord = connectionRecords[i];
-                            var document = designArea.getDocument();
-                            var sourceId = connectionRecord.get('sourceId');
-                            var sourceComponent = document.getFigure(sourceId);
-                            var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
-                            var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
-                            var targetId = connectionRecord.get('targetId');
-                            var targetComponent = document.getFigure(targetId);
-                            var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
-                            var targetPort = targetComponent.getInputPort(targetPortIndex);
-                            var connection = new draw2d.Connection();
-                            connection.setSource(sourcePort);
-                            connection.setTarget(targetPort);
-                            designArea.addFigure(connection);
-                          }
-                        }
-                      }
-                    });
-                    Ext.Msg.hide();
-                  }
-                  MainController.loadRemoteClass(className, callback);
-                }
-              }
+                });
+                Ext.Msg.hide();
+              });
             }
           }
         });
@@ -763,19 +756,40 @@ MainController.classIsDefined = function(className){
   return eval('typeof ' + className + ' != "undefined"');
 }
 
-MainController.loadRemoteClass = function(className, callback){
-  Ext.Ajax.request({
-    url: MainController.getAbsoluteUrl('main', 'getJavascriptClass'),
-    params: {
-      className: className
-    },
-    success: function(result, request){
-      eval(result.responseText);
-      callback();
-    },
-    failure: function(result, request){
-      //TODO: redirect to authentication page
-      MainController.generateError(result.statusText);
+MainController.loadRemoteClasses = function(undefinedClasses, callback, from){
+  if (!from) {
+    from = 0;
+  }
+  if (from < undefinedClasses.length) {
+    var className = undefinedClasses[from];
+    from = from + 1;
+    if (from == undefinedClasses.length) {
+      MainController.loadRemoteClass(className, callback);
     }
-  });
+    else {
+      MainController.loadRemoteClass(className, function(){
+        MainController.loadRemoteClasses(undefinedClasses, callback, from);
+      });
+    }
+  }
+}
+
+MainController.loadRemoteClass = function(className, callback){
+  if (MainController.classIsDefined(className)) {
+    callback();
+  }
+  else {
+    Ext.Ajax.request({
+      url: rootUrl + '/js/' + className + '.js',
+      method: 'GET',
+      disableCaching: false,
+      success: function(result, request){
+        eval(result.responseText);
+        callback();
+      },
+      failure: function(result, request){
+        MainController.generateError(result.statusText);
+      }
+    });
+  }
 }

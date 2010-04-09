@@ -18,18 +18,11 @@ DesignArea = function(id){
       if (designArea.getMode() == DesignArea.EDIT_MODE) {
         var xCoordinate = event.xy[0] - designArea.getAbsoluteX() + designArea.getScrollLeft();
         var yCoordinate = event.xy[1] - designArea.getAbsoluteY() + designArea.getScrollTop();
-        if (MainController.classIsDefined(data.className)) {
+        MainController.loadRemoteClass(data.className, function(){
           var component = eval('new ' + data.className + '()');
           designArea.addFigure(component, xCoordinate, yCoordinate);
-        }
-        else {
-          Ext.Msg.wait('Cargando recursos remotos...');
-          MainController.loadRemoteClass(data.className, function(){
-            var component = eval('new ' + data.className + '()');
-            designArea.addFigure(component, xCoordinate, yCoordinate);
-            Ext.Msg.hide();
-          });
-        }
+          Ext.Msg.hide();
+        });
         return true;
       }
     }
