@@ -24,11 +24,16 @@ MainController = function(){
    */
   this.tabsPanel = null;
   
+	this.loadBaseClasses();
   this.buildTabsPanel();
   this.buildToolsPanel();
   this.buildMenuBar();
   this.buildWorkArea();
   this.turnOnDrag();
+}
+
+MainController.prototype.loadBaseClasses = function() {
+	var baseClasses = [ 'draw2d/normal/wz_jsgraphics', 'draw2d/normal/events', 'draw2d/normal/debug', 'draw2d/normal/dragdrop', 'draw2d/normal/Graphics', 'draw2d/normal/Color', 'draw2d/normal/ArrayList', 'draw2d/normal/PositionConstants', 'draw2d/normal/Point', 'draw2d/normal/Dimension', 'draw2d/normal/Border', 'draw2d/normal/LineBorder', 'draw2d/normal/Figure', 'draw2d/normal/Node', 'draw2d/normal/VectorFigure', 'draw2d/normal/Label', 'draw2d/normal/Oval', 'draw2d/normal/Circle', 'draw2d/normal/Rectangle' ];
 }
 
 /**
