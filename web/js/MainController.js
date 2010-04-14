@@ -29,12 +29,34 @@ MainController = function(){
   this.buildToolsPanel();
   this.buildMenuBar();
   this.buildWorkArea();
-  this.turnOnDrag();
+  //  this.turnOnDrag();
 }
 
 MainController.prototype.loadBaseJavascriptFiles = function(){
   var baseJavascriptFiles = ['draw2d/wz_jsgraphics.js', 'draw2d/draw2d.js', 'draw2d/mootools.js', 'draw2d/moocanvas.js', 'ReceivingPort.js', 'TransmittingPort.js', 'Component.js', 'TwoInputBasicGate.js', 'CommandListener.js', 'SimulationQueue.js', 'DesignArea.js', 'DesignTab.js'];
   MainController.loadRemoteJavascriptFiles(baseJavascriptFiles);
+}
+
+MainController.prototype.insertComponent = function(panel, parameters){
+  panel.add({
+    contentEl: parameters.id + '_cover',
+    width: 200,
+    height: parameters.height,
+    border: false
+  });
+  new Ext.dd.DragSource(parameters.id, {
+    dragData: {
+      className: parameters.className
+    }
+  });
+  new Ext.ToolTip({
+    target: parameters.id,
+    showDelay: 1000,
+    autoWidth: true,
+    anchor: 'left',
+		dismissDelay: 0,
+    html: '<img style="padding: 5px" src="' + rootUrl + '/tooltips/' + parameters.id + '.png"></img>'
+  });
 }
 
 /**
@@ -48,12 +70,17 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Compuertas básicas'
   });
-  basicGatesPanel.add({
-    contentEl: 'AND_cover',
-    width: 200,
+  this.insertComponent(basicGatesPanel, {
+    id: 'AND',
     height: 80,
-    border: false
+    className: 'AndGate'
   });
+  //  basicGatesPanel.add({
+  //    contentEl: 'AND_cover',
+  //    width: 200,
+  //    height: 80,
+  //    border: false
+  //  });
   basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'OR_cover',
