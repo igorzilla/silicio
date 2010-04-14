@@ -24,7 +24,7 @@ MainController = function(){
    */
   this.tabsPanel = null;
   
-	this.loadBaseClasses();
+  this.loadBaseJavascriptFiles();
   this.buildTabsPanel();
   this.buildToolsPanel();
   this.buildMenuBar();
@@ -32,8 +32,9 @@ MainController = function(){
   this.turnOnDrag();
 }
 
-MainController.prototype.loadBaseClasses = function() {
-	var baseClasses = [ 'draw2d/normal/wz_jsgraphics', 'draw2d/normal/events', 'draw2d/normal/debug', 'draw2d/normal/dragdrop', 'draw2d/normal/Graphics', 'draw2d/normal/Color', 'draw2d/normal/ArrayList', 'draw2d/normal/PositionConstants', 'draw2d/normal/Point', 'draw2d/normal/Dimension', 'draw2d/normal/Border', 'draw2d/normal/LineBorder', 'draw2d/normal/Figure', 'draw2d/normal/Node', 'draw2d/normal/VectorFigure', 'draw2d/normal/Label', 'draw2d/normal/Oval', 'draw2d/normal/Circle', 'draw2d/normal/Rectangle' ];
+MainController.prototype.loadBaseJavascriptFiles = function(){
+  var baseJavascriptFiles = ['draw2d/wz_jsgraphics.js', 'draw2d/draw2d.js', 'draw2d/mootools.js', 'draw2d/moocanvas.js', 'ReceivingPort.js', 'TransmittingPort.js', 'Component.js', 'TwoInputBasicGate.js', 'CommandListener.js', 'SimulationQueue.js', 'DesignArea.js', 'DesignTab.js'];
+  MainController.loadRemoteJavascriptFiles(baseJavascriptFiles);
 }
 
 /**
@@ -790,7 +791,9 @@ MainController.loadRemoteClass = function(className, callback){
       disableCaching: false,
       success: function(result, request){
         eval(result.responseText);
-        callback();
+        if (callback) {
+          callback();
+        }
       },
       failure: function(result, request){
         MainController.generateError(result.statusText);
@@ -798,3 +801,62 @@ MainController.loadRemoteClass = function(className, callback){
     });
   }
 }
+
+MainController.loadRemoteJavascriptFiles = function(files){
+  var body = Ext.getBody();
+  for (var i = 0; i < files.length; i++) {
+    var fileName = files[i];
+    var scriptElement = new Ext.Element(document.createElement('script'));
+    body.appendChild(scriptElement);
+    scriptElement.set({
+      type: 'text/javascript',
+      src: rootUrl + '/js/' + fileName
+    });
+  }
+}
+
+//MainController.loadRemoteJavascriptFiles = function(files, from, temporalCode){
+//  if (!from) {
+//    from = 0;
+//  }
+//  if (from < files.length) {
+//    var fileName = files[from];
+//    from = from + 1;
+//    if (from == files.length) {
+//      MainController.loadRemoteJavascriptFile(fileName, function(code){
+//        if (!temporalCode) {
+//          temporalCode = code;
+//        }
+//        else {
+//          temporalCode = temporalCode + code;
+//        }
+//        eval(temporalCode);
+//      });
+//    }
+//    else {
+//      MainController.loadRemoteJavascriptFile(fileName, function(code){
+//        if (!temporalCode) {
+//          temporalCode = code;
+//        }
+//        else {
+//          temporalCode = temporalCode + code;
+//        }
+//        MainController.loadRemoteJavascriptFiles(files, from, temporalCode);
+//      });
+//    }
+//  }
+//}
+//
+//MainController.loadRemoteJavascriptFile = function(fileName, callback){
+//  Ext.Ajax.request({
+//    url: rootUrl + '/js/' + fileName,
+//    method: 'GET',
+//    disableCaching: false,
+//    success: function(result, request){
+//      callback(result.responseText);
+//    },
+//    failure: function(result, request){
+//      MainController.generateError(result.statusText);
+//    }
+//  });
+//}
