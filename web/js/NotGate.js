@@ -6,10 +6,10 @@
  * es generado aleatoriamente.
  */
 NotGate = function(id){
-  Component.call(this,id);
+  Component.call(this, id);
   
   this.setDimension(67, 34);
-  this.setImage(rootUrl+'/images/NOT.png');
+  this.setImage(rootUrl + '/images/NOT.png');
 }
 
 NotGate.prototype = new Component;
@@ -19,4 +19,15 @@ NotGate.prototype.type = 'NotGate';
 NotGate.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 0, 17);
   this.createOutputPort(designArea, 67, 17);
+}
+
+NotGate.prototype.run = function(){
+  var receivedSignal = this.inputPorts[0].getReceivedSignal();
+  if (receivedSignal == Component.ZERO) {
+    this.outputPorts[0].transmit(Component.ONE);
+  }
+  else 
+    if (receivedSignal == Component.ONE) {
+      this.outputPorts[0].transmit(Component.ZERO);
+    }
 }

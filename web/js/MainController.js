@@ -24,11 +24,39 @@ MainController = function(){
    */
   this.tabsPanel = null;
   
+  this.loadBaseClasses();
   this.buildTabsPanel();
   this.buildToolsPanel();
   this.buildMenuBar();
   this.buildWorkArea();
-  this.turnOnDrag();
+  //  this.turnOnDrag();
+}
+
+MainController.prototype.loadBaseClasses = function(){
+  var baseClasses = ['ReceivingPort', 'TransmittingPort', 'Component', 'TwoInputBasicGate', 'CommandListener', 'SimulationQueue', 'DesignArea', 'DesignTab'];
+  MainController.loadRemoteClasses(baseClasses);
+}
+
+MainController.prototype.insertComponent = function(panel, parameters){
+  panel.add({
+    contentEl: parameters.id + '_cover',
+    width: 200,
+    height: parameters.height,
+    border: false
+  });
+  new Ext.dd.DragSource(parameters.id, {
+    dragData: {
+      className: parameters.className
+    }
+  });
+  new Ext.ToolTip({
+    target: parameters.id,
+    showDelay: 1000,
+    autoWidth: true,
+    anchor: 'left',
+    dismissDelay: 0,
+    html: '<img style="padding: 5px" src="' + rootUrl + '/tooltips/' + parameters.id + '.png"></img>'
+  });
 }
 
 /**
@@ -42,22 +70,75 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Compuertas básicas'
   });
-  basicGatesPanel.add({
-    contentEl: 'AND_cover',
-    width: 200,
-    height: 100,
-    border: false
+  this.insertComponent(basicGatesPanel, {
+    id: 'AND',
+    height: 80,
+    className: 'AndGate'
   });
+  //  basicGatesPanel.add({
+  //    contentEl: 'AND_cover',
+  //    width: 200,
+  //    height: 80,
+  //    border: false
+  //  });
   basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'OR_cover',
     width: 200,
-    height: 100,
+    height: 80,
     border: false
   });
   basicGatesPanel.add({
     xtype: 'panel',
     contentEl: 'NOT_cover',
+    width: 200,
+    height: 80,
+    border: false
+  });
+  basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'NAND_cover',
+    width: 200,
+    height: 80,
+    border: false
+  });
+  basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'NOR_cover',
+    width: 200,
+    height: 80,
+    border: false
+  });
+  basicGatesPanel.add({
+    xtype: 'panel',
+    contentEl: 'XOR_cover',
+    width: 200,
+    height: 80,
+    border: false
+  });
+  var chips = new Ext.Panel({
+    split: true,
+    width: 200,
+    minSize: 200,
+    title: 'Circuitos integrados'
+  });
+  chips.add({
+    xtype: 'panel',
+    contentEl: 'chip7447_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  chips.add({
+    xtype: 'panel',
+    contentEl: 'chip7473_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
+  chips.add({
+    xtype: 'panel',
+    contentEl: 'chip7483_cover',
     width: 200,
     height: 100,
     border: false
@@ -95,6 +176,13 @@ MainController.prototype.buildToolsPanel = function(){
     height: 100,
     border: false
   });
+  outputs.add({
+    xtype: 'panel',
+    contentEl: 'clock_cover',
+    width: 200,
+    height: 100,
+    border: false
+  });
   this.toolsPanel = new Ext.Panel({
     region: 'west',
     xtype: 'panel',
@@ -108,7 +196,7 @@ MainController.prototype.buildToolsPanel = function(){
     layoutConfig: {
       animate: true
     },
-    items: [basicGatesPanel, inputs, outputs]
+    items: [basicGatesPanel, chips, inputs, outputs]
   });
   this.toolsPanel.doLayout();
 }
@@ -118,19 +206,11 @@ MainController.prototype.buildToolsPanel = function(){
  * en los cuales esté trabajando el usuario(una pestaña por cada diseño).
  */
 MainController.prototype.buildTabsPanel = function(){
+  var mainController = this;
   this.tabsPanel = new Ext.TabPanel({
     region: 'center',
     activeItem: 0,
     enableTabScroll: true,
-    listeners: {
-      tabchange: function(tabPanel, newActivePanel){
-        if (newActivePanel.designArea) {
-          // This line is to improve compatibility with Google Chrome when you press 'Del' key
-          // over a component after changing the tab
-          newActivePanel.designArea.html.focus();
-        }
-      }
-    },
     defaults: {
       autoScroll: true
     },
@@ -139,8 +219,23 @@ MainController.prototype.buildTabsPanel = function(){
       html: 'Bienvenido'
     }],
     listeners: {
-      beforeremove: function(tabsPanel, designTabToClose){
-        if (!designTabToClose.designTab.getIsSaved()) {
+      tabchange: function(tabPanel, newActivePanel){
+        if (newActivePanel.designTab) {
+          var activeDesignTab = newActivePanel.designTab;
+          var activeDesignArea = activeDesignTab.getDesignArea();
+          if (activeDesignArea) {
+            mainController.updateSimulateAction();
+            // This line is to improve compatibility with Google Chrome when you press 'Del' key
+            // over a component after changing the tab
+            activeDesignArea.html.focus();
+          }
+        }
+        else {
+          mainController.updateSimulateAction();
+        }
+      },
+      beforeremove: function(tabsPanel, panel){
+        if (!panel.designTab.getIsSaved()) {
           var closeTab = confirm('Este diseño no ha sido guardado. ¿Está seguro(a) que desea cerrarlo?');
           return closeTab;
         }
@@ -148,29 +243,6 @@ MainController.prototype.buildTabsPanel = function(){
     }
   });
 }
-
-///**
-// * Crea una nueva pestaña de diseño dentro de la aplicación y le asigna el foco
-// * @returns {DesignArea} Área de diseño que fue empotrada dentro de la pestaña
-// * @private
-// */
-//MainController.prototype.createNewTab = function(title, isNew){
-//  var newDesignAreaId = DesignArea.generateNewDesignAreaId();
-//	if(isNew) {
-//		title = "*" + title;
-//	}
-//  var newTab = new Ext.Panel({
-//    title: title,
-//    iconCls: 'design_area_tab',
-//    closable: true,
-//    html: '<div id="' + newDesignAreaId + '" style="position: relative; width: 3000px; height: 3000px;"></div>'
-//  });
-//  this.tabsPanel.add(newTab);
-//  newTab.show();
-//  var newDesignArea = new DesignArea(newDesignAreaId, isNew);
-//  newTab.designArea = newDesignArea;
-//  return newDesignArea;
-//}
 
 /**
  * Construye la barra de menú.
@@ -189,6 +261,7 @@ MainController.prototype.buildMenuBar = function(){
       var designTab = new DesignTab();
       this.tabsPanel.add(designTab.getPanel());
       designTab.show();
+      this.updateSimulateAction();
     }
   });
   
@@ -317,52 +390,63 @@ MainController.prototype.buildMenuBar = function(){
           },
           callback: function(componentRecords, options, success){
             if (success) {
+              var undefinedClasses = new Array();
               for (var i = 0; i < componentRecords.length; i++) {
                 var componentRecord = componentRecords[i];
-                var class = componentRecord.get('class');
-                var id = componentRecord.get('id');
-                var xCoordinate = Number(componentRecord.get('xCoordinate'));
-                var yCoordinate = Number(componentRecord.get('yCoordinate'));
-                var component = eval('new ' + class + '(id)');
-                designArea.addFigure(component, xCoordinate, yCoordinate);
+                var className = componentRecord.get('class');
+                undefinedClasses[i] = className;
               }
-              //TODO: Load connections
-              var connectionRecord = Ext.data.Record.create(['sourceId', 'sourcePortIndex', 'targetId', 'targetPortIndex']);
-              var connectionsStore = new Ext.data.Store({
-                url: MainController.getAbsoluteUrl('designsManagement', 'getConnectionsXML'),
-                reader: new Ext.data.XmlReader({
-                  record: 'connection'
-                }, connectionRecord)
-              });
-              connectionsStore.load({
-                params: {
-                  design_name: selectedDesignName
-                },
-                callback: function(connectionRecords, options, success){
-                  if (success) {
-                    for (var i = 0; i < connectionRecords.length; i++) {
-                      var connectionRecord = connectionRecords[i];
-                      var document = designArea.getDocument();
-                      var sourceId = connectionRecord.get('sourceId');
-                      var sourceComponent = document.getFigure(sourceId);
-                      var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
-                      var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
-                      var targetId = connectionRecord.get('targetId');
-                      var targetComponent = document.getFigure(targetId);
-                      var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
-                      var targetPort = targetComponent.getInputPort(targetPortIndex);
-                      var connection = new draw2d.Connection();
-                      connection.setSource(sourcePort);
-                      connection.setTarget(targetPort);
-                      designArea.addFigure(connection);
+              
+              MainController.loadRemoteClasses(undefinedClasses, function(){
+                for (var i = 0; i < componentRecords.length; i++) {
+                  var componentRecord = componentRecords[i];
+                  var className = componentRecord.get('class');
+                  var id = componentRecord.get('id');
+                  var xCoordinate = Number(componentRecord.get('xCoordinate'));
+                  var yCoordinate = Number(componentRecord.get('yCoordinate'));
+                  var component = eval('new ' + className + '(id)');
+                  designArea.addFigure(component, xCoordinate, yCoordinate);
+                }
+                
+                var connectionRecord = Ext.data.Record.create(['sourceId', 'sourcePortIndex', 'targetId', 'targetPortIndex']);
+                var connectionsStore = new Ext.data.Store({
+                  url: MainController.getAbsoluteUrl('designsManagement', 'getConnectionsXML'),
+                  reader: new Ext.data.XmlReader({
+                    record: 'connection'
+                  }, connectionRecord)
+                });
+                connectionsStore.load({
+                  params: {
+                    design_name: selectedDesignName
+                  },
+                  callback: function(connectionRecords, options, success){
+                    if (success) {
+                      for (var i = 0; i < connectionRecords.length; i++) {
+                        var connectionRecord = connectionRecords[i];
+                        var document = designArea.getDocument();
+                        var sourceId = connectionRecord.get('sourceId');
+                        var sourceComponent = document.getFigure(sourceId);
+                        var sourcePortIndex = Number(connectionRecord.get('sourcePortIndex'));
+                        var sourcePort = sourceComponent.getOutputPort(sourcePortIndex);
+                        var targetId = connectionRecord.get('targetId');
+                        var targetComponent = document.getFigure(targetId);
+                        var targetPortIndex = Number(connectionRecord.get('targetPortIndex'));
+                        var targetPort = targetComponent.getInputPort(targetPortIndex);
+                        var connection = new draw2d.Connection();
+                        connection.setSource(sourcePort);
+                        connection.setTarget(targetPort);
+                        designArea.addFigure(connection);
+                      }
                     }
                   }
-                }
+                });
+                Ext.Msg.hide();
               });
-              Ext.Msg.hide();
             }
           }
         });
+        
+        this.updateSimulateAction();
       }
     }
   });
@@ -425,7 +509,7 @@ MainController.prototype.buildMenuBar = function(){
                       }
                       else {
                         var designName = answer;
-                        activeDesignArea.setDesignName(designName);
+                        activeDesignTab.setDesignName(designName);
                         activeDesignTab.setIsSaved();
                       }
                     },
@@ -470,6 +554,7 @@ MainController.prototype.buildMenuBar = function(){
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
     handler: function(){
+      //TODO: verify that all designs are saved
       Ext.Msg.wait('Cerrando la aplicación...');
       Ext.Ajax.request({
         url: MainController.getAbsoluteUrl('authentication', 'logout'),
@@ -497,13 +582,23 @@ MainController.prototype.buildMenuBar = function(){
     }
   });
   
-  var simulateAction = new Ext.Action({
+  this.simulateAction = new Ext.Action({
     text: 'Simular',
     iconCls: 'simulate_action',
+    scope: this,
     handler: function(){
-    
+      var activeDesignTab = tabsPanel.getActiveTab().designTab;
+      var activeDesignArea = activeDesignTab.getDesignArea();
+      if (activeDesignArea.getMode() == DesignArea.EDIT_MODE) {
+        activeDesignArea.turnOnSimulationMode();
+      }
+      else {
+        activeDesignArea.turnOnEditMode();
+      }
+      this.updateSimulateAction();
     }
   });
+  
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
@@ -533,7 +628,7 @@ MainController.prototype.buildMenuBar = function(){
       }, {
         text: 'Acerca de...'
       }]
-    }, '->', simulateAction, closeSessionAction]
+    }, '->', this.simulateAction, closeSessionAction]
   });
 }
 
@@ -576,6 +671,36 @@ MainController.prototype.turnOnDrag = function(){
       className: 'NotGate'
     }
   });
+  new Ext.dd.DragSource("NAND", {
+    dragData: {
+      className: 'NandGate'
+    }
+  });
+  new Ext.dd.DragSource("NOR", {
+    dragData: {
+      className: 'NorGate'
+    }
+  });
+  new Ext.dd.DragSource("XOR", {
+    dragData: {
+      className: 'XorGate'
+    }
+  });
+  new Ext.dd.DragSource("chip7447", {
+    dragData: {
+      className: 'Chip7447'
+    }
+  });
+  new Ext.dd.DragSource("chip7473", {
+    dragData: {
+      className: 'Chip7473'
+    }
+  });
+  new Ext.dd.DragSource("chip7483", {
+    dragData: {
+      className: 'Chip7483'
+    }
+  });
   new Ext.dd.DragSource("display", {
     dragData: {
       className: 'Display'
@@ -591,6 +716,34 @@ MainController.prototype.turnOnDrag = function(){
       className: 'Switch'
     }
   });
+  new Ext.dd.DragSource("clock", {
+    dragData: {
+      className: 'Clock'
+    }
+  });
+}
+
+MainController.prototype.updateSimulateAction = function(){
+  var activeDesignTab = this.tabsPanel.getActiveTab().designTab;
+  if (activeDesignTab) {
+    var activeDesignArea = activeDesignTab.getDesignArea();
+    if (activeDesignArea.getMode() == DesignArea.EDIT_MODE) {
+      this.simulateAction.setIconClass('simulate_action');
+      this.simulateAction.setText('Simular');
+    }
+    else {
+      this.simulateAction.setIconClass('stop_action');
+      this.simulateAction.setText('Detener');
+    }
+    if (this.simulateAction.isDisabled()) {
+      this.simulateAction.enable();
+    }
+  }
+  else {
+    this.simulateAction.setIconClass('simulate_action');
+    this.simulateAction.setText('Simular');
+    this.simulateAction.disable();
+  }
 }
 
 /**
@@ -605,6 +758,9 @@ MainController.generateError = function(message, callback){
 MainController.generateValidationError = function(errorCode){
   var errorMessage = '';
   switch (errorCode) {
+    case DesignArea.NO_ALLOWED_IN_SIMULATION_MODE:
+      errorMessage = 'Detenga la simulación antes de editar el diseño';
+      break;
     case DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT:
       errorMessage = 'Solo una conexión por cada puerto de entrada';
       break;
@@ -628,3 +784,105 @@ MainController.getAbsoluteUrl = function(moduleName, actionName){
 MainController.redirect = function(url){
   document.location = url;
 }
+
+MainController.classIsDefined = function(className){
+  return eval('typeof ' + className + ' != "undefined"');
+}
+
+MainController.loadRemoteClasses = function(undefinedClasses, callback, from){
+  if (!from) {
+    from = 0;
+  }
+  if (from < undefinedClasses.length) {
+    var className = undefinedClasses[from];
+    from = from + 1;
+    if (from == undefinedClasses.length) {
+      MainController.loadRemoteClass(className, callback);
+    }
+    else {
+      MainController.loadRemoteClass(className, function(){
+        MainController.loadRemoteClasses(undefinedClasses, callback, from);
+      });
+    }
+  }
+}
+
+MainController.loadRemoteClass = function(className, callback){
+  if (MainController.classIsDefined(className)) {
+    callback();
+  }
+  else {
+    Ext.Ajax.request({
+      url: rootUrl + '/js/' + className + '.js',
+      method: 'GET',
+      disableCaching: false,
+      success: function(result, request){
+        eval(result.responseText);
+        if (callback) {
+          callback();
+        }
+      },
+      failure: function(result, request){
+        MainController.generateError(result.statusText);
+      }
+    });
+  }
+}
+
+//MainController.loadRemoteJavascriptFiles = function(files){
+//  var body = Ext.getBody();
+//  for (var i = 0; i < files.length; i++) {
+//    var fileName = files[i];
+//    var scriptElement = new Ext.Element(document.createElement('script'));
+//    scriptElement.set({
+//      type: 'text/javascript',
+//      src: rootUrl + '/js/' + fileName
+//    });
+//    body.appendChild(scriptElement);
+//  }
+//}
+//MainController.loadRemoteJavascriptFiles = function(files, from, temporalCode){
+//  if (!from) {
+//    from = 0;
+//  }
+//  if (from < files.length) {
+//    var fileName = files[from];
+//    from = from + 1;
+//    if (from == files.length) {
+//      MainController.loadRemoteJavascriptFile(fileName, function(code){
+//        if (!temporalCode) {
+//          temporalCode = code;
+//        }
+//        else {
+//          temporalCode = temporalCode + code;
+//        }
+//        eval(temporalCode);
+//      });
+//    }
+//    else {
+//      MainController.loadRemoteJavascriptFile(fileName, function(code){
+//        if (!temporalCode) {
+//          temporalCode = code;
+//        }
+//        else {
+//          temporalCode = temporalCode + code;
+//        }
+//        MainController.loadRemoteJavascriptFiles(files, from, temporalCode);
+//      });
+//    }
+//  }
+//}
+//
+//MainController.loadRemoteJavascriptFile = function(fileName, callback){
+//  Ext.Ajax.request({
+//    url: rootUrl + '/js/' + fileName,
+//    method: 'GET',
+//    disableCaching: false,
+//    success: function(result, request){
+//      callback(result.responseText);
+//    },
+//    failure: function(result, request){
+//      MainController.generateError(result.statusText);
+//    }
+//  });
+//}

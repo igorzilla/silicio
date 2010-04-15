@@ -19,8 +19,24 @@ class mainActions extends sfActions
   {
 
   }
+
   public function executeIndexAjax($request) {
     $this->renderPartial('indexBody');
     return sfView::NONE;
   }
+
+  //  public function executeGetJavascriptClass(sfWebRequest $request) {
+  //    $isGet = $request->isMethod('get');
+  //    if($isGet) {
+  //      $className = $request->getParameter('className');
+  //      $filePath = dirname(__FILE__).'/../../../../../web/js/'.$className.'.js';
+  //      $handler = fopen($filePath,'r');
+  //      if($handler !== FALSE) {
+  //        $classCode = fread($handler, filesize($filePath));
+  //        fclose($handler);
+  //        return $this->renderText($classCode);
+  //      }
+  //    }
+  //    return sfView::NONE;
+  //  }
 }

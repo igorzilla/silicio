@@ -8,20 +8,33 @@ DesignArea = function(id){
   draw2d.Workflow.call(this, id);
   
   this.setBackgroundImage(rootUrl + '/images/grid.png', true);
-//  this.getCommandStack().addCommandStackEventListener(new CommandListener());
-   
+  
   var designArea = this;
+  
+  this.scrollArea = this.html.parentNode;
   
   new Ext.dd.DropTarget(id, {
     notifyDrop: function(source, event, data){
-      var xCoordinate = event.xy[0] - designArea.getAbsoluteX();
-      var yCoordinate = event.xy[1] - designArea.getAbsoluteY();
-      //TODO: Variable 'figure' should be called 'component'
-      var figure = eval('new ' + data.className + '()');
-      designArea.addFigure(figure, xCoordinate, yCoordinate);
-      return true;
+      if (designArea.getMode() == DesignArea.EDIT_MODE) {
+        var xCoordinate = event.xy[0] - designArea.getAbsoluteX() + designArea.getScrollLeft();
+        var yCoordinate = event.xy[1] - designArea.getAbsoluteY() + designArea.getScrollTop();
+        MainController.loadRemoteClass(data.className, function(){
+          var component = eval('new ' + data.className + '()');
+          designArea.addFigure(component, xCoordinate, yCoordinate);
+          Ext.Msg.hide();
+        });
+        return true;
+      }
     }
   });
+  
+  this.simulationQueue = new SimulationQueue();
+  
+  /**
+   * Indica el modo de trabajo en el cual se encuentra el área de diseño
+   * @private
+   */
+  this.mode = DesignArea.EDIT_MODE;
 }
 
 DesignArea.prototype = new draw2d.Workflow;
@@ -124,14 +137,78 @@ DesignArea.NO_ERROR = 0;
 DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT = 1;
 
 /**
+ * No se permite en modo de simulación
+ * @static
+ */
+DesignArea.NO_ALLOWED_IN_SIMULATION_MODE = 2;
+
+/**
+ * El área de diseño está en modo de edición(modo por defecto)
+ * @static
+ */
+DesignArea.EDIT_MODE = 0;
+
+/**
+ * El área de diseñor está en modo de simulación
+ * @static
+ */
+DesignArea.SIMULATION_MODE = 1;
+
+/**
  * Verifica si un comando invalida un diseño
  * @param {draw2d.Command} command Comando ejecutado sobre el área de diseño
  * @returns {Integer} Código del error que invalida el diseño
  */
 DesignArea.prototype.validate = function(command){
-  // Rule 1: There must be only one connection per input port
+  // Rule 1: All commands must be undone in simulation mode
+  if (this.mode == DesignArea.SIMULATION_MODE) {
+    return DesignArea.NO_ALLOWED_IN_SIMULATION_MODE;
+  }
+  // Rule 2: There must be only one connection per input port
   if (command instanceof draw2d.CommandConnect && command.target.getConnections().getSize() > 1) {
     return DesignArea.SEVERAL_CONNECTIONS_ON_INPUT_PORT;
   }
   return DesignArea.NO_ERROR;
+}
+
+DesignArea.prototype.getMode = function(){
+  return this.mode;
+}
+
+DesignArea.prototype.turnOnEditMode = function(){
+  this.mode = DesignArea.EDIT_MODE;
+  var components = this.getDocument().getFigures();
+  for (var i = 0; i < components.getSize(); i++) {
+    var component = components.get(i);
+    component.reset();
+  }
+}
+
+DesignArea.prototype.processQueue = function(){
+  var component = null;
+  while (!this.simulationQueue.isEmpty()) {
+    component = this.simulationQueue.dequeue();
+    component.run();
+  }
+}
+
+/**
+ * @private
+ */
+DesignArea.prototype.simulate = function(){
+  var components = this.getDocument().getFigures();
+  for (var i = 0; i < components.getSize(); i++) {
+    var component = components.get(i);
+    this.simulationQueue.enqueue(component);
+  }
+  this.processQueue();
+}
+
+DesignArea.prototype.turnOnSimulationMode = function(){
+  this.mode = DesignArea.SIMULATION_MODE;
+  this.simulate();
+}
+
+DesignArea.prototype.addToSimulationQueue = function(component){
+  this.simulationQueue.enqueue(component);
 }

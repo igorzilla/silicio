@@ -11,6 +11,26 @@
     width: 67px !important;
 }
 
+.eight_pin_chips_cover {
+    padding-left: 48px !important;
+    padding-top: 32px !important;
+}
+
+.eight_pin_chip {
+    cursor: move !important;
+    width: 104px !important;
+}
+
+.seven_pin_chips_cover {
+    padding-left: 54px !important;
+    padding-top: 32px !important;
+}
+
+.seven_pin_chip {
+    cursor: move !important;
+    width: 91px !important;
+}
+
 .display_cover {
     padding-left: 84px !important;
     padding-top: 3px !important;
@@ -32,13 +52,23 @@
 }
 
 .switch_cover {
-    padding-left: 70px !important;
+    padding-left: 76px !important;
     padding-top: 21px !important;
 }
 
 .switch {
     cursor: move !important;
     width: 64px !important;
+}
+
+.clock_cover {
+    padding-left: 76px !important;
+    padding-top: 3px !important;
+}
+
+.clock {
+    cursor: move !important;
+    width: 47px !important;
 }
 
 input.x-form-invalid {
@@ -100,4 +130,8 @@ input.x-form-invalid {
 
 .simulate_action {
     background-image: url(<?php echo $ROOT_URL; ?>/images/media-playback-start.png) !important;
+}
+
+.stop_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/media-playback-stop.png) !important;
 }

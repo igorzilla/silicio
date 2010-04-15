@@ -10,6 +10,7 @@
  */
 class designsManagementActions extends sfActions
 {
+  private $schemafileName = 'design.xsd';
   /**
    * Executes index action
    *
@@ -21,36 +22,50 @@ class designsManagementActions extends sfActions
       $user = $this->getUser();
       $componentsXml = $request->getParameter('components_xml');
       $connectionsXml = $request->getParameter('connections_xml');
-      $schemafileName = 'design.xsd';
-      $xmlHeaders = XMLEngine::generateHeaders('design',$schemafileName);
-      $xmlDesignCode = '';
-      $xmlDesignCode = $xmlDesignCode.$xmlHeaders;
-      $xmlDesignCode = $xmlDesignCode.$componentsXml.$connectionsXml;
-      $xmlDesignCode = $xmlDesignCode.'</design>';
-      $wellFormed = XMLEngine::isWellFormed($xmlDesignCode);
-      if($wellFormed===true) {
-        $isValidXML = XMLEngine::isValid($xmlDesignCode,'../data/'.$schemafileName);
-        if($isValidXML===true) {
-          $designName = $request->getParameter('design_name');
-          $designOwner = $user->getAttribute('username');
-          $design = new Design();
-          $design->setName($designName);
-          $design->setOwner($designOwner);
-          $design->setComponentsXml($componentsXml);
-          $design->setConnectionsXml($connectionsXml);
-          $design->save();
-          return $this->renderText('Ok');
-        }
-        else {
-          return $this->renderText($isValidXML);
-        }
+      $xmlDesignCode = $this->joinXML($componentsXml, $connectionsXml);
+      $isAcceptable = $this->isAcceptableXML($xmlDesignCode);
+      if($isAcceptable===true) {
+        $designName = $request->getParameter('design_name');
+        $designOwner = $user->getAttribute('username');
+        $design = new Design();
+        $design->setName($designName);
+        $design->setOwner($designOwner);
+        $design->setComponentsXml($componentsXml);
+        $design->setConnectionsXml($connectionsXml);
+        $design->save();
+        return $this->renderText('Ok');
       }
       else {
-        return $this->renderText($wellFormed);
+        return $this->renderText($isAcceptable);
       }
     }
     else {
       return sfView::NONE;
+    }
+  }
+
+  private function joinXML($componentsXml, $connectionsXml) {
+    $xmlHeaders = XMLEngine::generateHeaders('design',$this->schemafileName);
+    $xmlDesignCode = '';
+    $xmlDesignCode = $xmlDesignCode.$xmlHeaders;
+    $xmlDesignCode = $xmlDesignCode.$componentsXml.$connectionsXml;
+    $xmlDesignCode = $xmlDesignCode.'</design>';
+    return $xmlDesignCode;
+  }
+
+  private function isAcceptableXML($xmlDesignCode) {
+    $wellFormed = XMLEngine::isWellFormed($xmlDesignCode);
+    if($wellFormed===true) {
+      $isValidXML = XMLEngine::isValid($xmlDesignCode,'../data/'.$this->schemafileName);
+      if($isValidXML===true) {
+        return true;
+      }
+      else {
+        return $isValidXML;
+      }
+    }
+    else {
+      return $wellFormed;
     }
   }
 
@@ -78,6 +93,38 @@ class designsManagementActions extends sfActions
     $responseArray['designs'] = $designsArray;
 
     return $this->renderText(json_encode($responseArray));
+  }
+
+  public function executeUpdateDesign(sfWebRequest $request) {
+    if($request->isMethod('post')) {
+      $designName = $request->getParameter('design_name');
+      $user = $this->getUser();
+      $designOwner = $user->getAttribute('username');
+       
+      $design = DesignPeer::retrieveByPK($designName, $designOwner);
+       
+      if($design!=null) {
+        $componentsXml = $request->getParameter('components_xml');
+        $connectionsXml = $request->getParameter('connections_xml');
+        $xmlDesignCode = $this->joinXML($componentsXml, $connectionsXml);
+        $isAcceptable = $this->isAcceptableXML($xmlDesignCode);
+        if($isAcceptable===true) {
+          $design->setComponentsXml($componentsXml);
+          $design->setConnectionsXml($connectionsXml);
+          $design->save();
+          return $this->renderText('Ok');
+        }
+        else {
+          return $this->renderText($isAcceptable);
+        }
+      }
+      else {
+        return $this->renderText('El diseño especificado no existe');
+      }
+    }
+    else {
+      return sfView::NONE;
+    }
   }
 
   public function executeDeleteDesign(sfWebRequest $request) {

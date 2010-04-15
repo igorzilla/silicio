@@ -1,15 +1,15 @@
 DesignTab = function(designName){
   this.designAreaId = DesignArea.generateNewDesignAreaId();
-	
-	/**
-	 * Nombre del diseño cargado dentro de la pestaña
-	 * @type String
-	 * @private
-	 */
-	this.designName = designName;
-	
-	var title = '';
-	
+  
+  /**
+   * Nombre del diseño cargado dentro de la pestaña
+   * @type String
+   * @private
+   */
+  this.designName = designName;
+  
+  var title = '';
+  
   if (this.designName) {
     /**
      * Indica si el diseño es nuevo, es decir, que no se ha guardado por primera vez
@@ -23,14 +23,14 @@ DesignTab = function(designName){
      * @private
      */
     this.isSaved = true;
-		
-		title = this.designName;
+    
+    title = this.designName;
   }
   else {
     this.isNew = true;
-		this.isSaved = false;
-		this.designName = '(Sin nombre)';
-		title = this.designName + '*';
+    this.isSaved = false;
+    this.designName = '(Sin nombre)';
+    title = this.designName + '*';
   }
   
   this.panel = new Ext.Panel({
@@ -52,6 +52,9 @@ DesignTab.prototype.show = function(){
 
 DesignTab.prototype.setIsSaved = function(){
   this.isSaved = true;
+  if (this.isNew) {
+    this.isNew = false;
+  }
   var newTitle = this.designName;
   this.panel.setTitle(newTitle);
 }
@@ -80,8 +83,8 @@ DesignTab.prototype.getIsNew = function(){
   return this.isNew;
 }
 
-DesignTab.prototype.setDesignName = function(designName) {
-	this.designName = designName;
+DesignTab.prototype.setDesignName = function(designName){
+  this.designName = designName;
 }
 
 DesignTab.prototype.getDesignName = function(){

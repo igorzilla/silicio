@@ -82,8 +82,7 @@ Component.prototype.outputConnectionsToXML = function(){
       xml = xml + '<sourceId>' + this.getId() + '</sourceId>';
       xml = xml + '<sourcePortIndex>' + j + '</sourcePortIndex>';
       xml = xml + '<targetId>' + targetId + '</targetId>';
-      //TODO: Avoid search of index of target port, setting the index equal to the identifier(using associative arrays)
-      xml = xml + '<targetPortIndex>' + target.getIndexOfInputPort(inputPortId) + '</targetPortIndex>';
+      xml = xml + '<targetPortIndex>' + inputPort.getIndex() + '</targetPortIndex>';
       xml = xml + '</connection>';
     }
   }
@@ -98,9 +97,12 @@ Component.prototype.outputConnectionsToXML = function(){
  * @private
  */
 Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordinate){
-  var newInputPort = new draw2d.InputPort();
+  var parentComponent = this;
+  var portIndex = this.inputPorts.length;
+  var newInputPort = new ReceivingPort(portIndex);
   newInputPort.setWorkflow(designArea);
   newInputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
+  //TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
   newInputPort.setName(this.getId());
   this.inputPorts.push(newInputPort);
   this.addPort(newInputPort, xCoordinate, yCoordinate);
@@ -114,9 +116,10 @@ Component.prototype.createInputPort = function(designArea, xCoordinate, yCoordin
  * @private
  */
 Component.prototype.createOutputPort = function(designArea, xCoordinate, yCoordinate){
-  var newOutputPort = new draw2d.OutputPort();
+  var newOutputPort = new TransmittingPort();
   newOutputPort.setWorkflow(designArea);
   newOutputPort.setBackgroundColor(new draw2d.Color(255, 255, 255));
+  //TODO: Set the name of parent component to the port id is unnecessary, because all port have a reference to his parent
   newOutputPort.setName(this.getId());
   this.outputPorts.push(newOutputPort);
   this.addPort(newOutputPort, xCoordinate, yCoordinate);
@@ -140,6 +143,10 @@ Component.prototype.setWorkflow = function(workflow){
  */
 Component.prototype.setDesignArea = function(designArea){
 
+}
+
+Component.prototype.getDesignArea = function(){
+  return this.getWorkflow();
 }
 
 //TODO: This method might be used to avoid the simulation of the component?
@@ -176,3 +183,35 @@ Component.prototype.getOutputPort = function(index){
 Component.prototype.getInputPort = function(index){
   return this.inputPorts[index];
 }
+
+Component.prototype.wasRunned = function(){
+  return this.runned;
+}
+
+Component.prototype.run = function(){
+
+}
+
+Component.prototype.reset = function(){
+  var inputPort = null;
+  for (var i = 0; i < this.inputPorts.length; i++) {
+    inputPort = this.inputPorts[i];
+    inputPort.reset();
+  }
+  
+  var outputPort = null;
+  for (var i = 0; i < this.outputPorts.length; i++) {
+    outputPort = this.outputPorts[i];
+    outputPort.reset();
+  }
+}
+
+Component.negate = function(signal){
+  return (Component.ONE - signal);
+}
+
+Component.ZERO = 0;
+
+Component.ONE = 1;
+
+Component.UNDETERMINED = 2;
