@@ -24,7 +24,7 @@ MainController = function(){
    */
   this.tabsPanel = null;
   
-  this.loadBaseJavascriptFiles();
+  this.loadBaseClasses();
   this.buildTabsPanel();
   this.buildToolsPanel();
   this.buildMenuBar();
@@ -32,9 +32,9 @@ MainController = function(){
   //  this.turnOnDrag();
 }
 
-MainController.prototype.loadBaseJavascriptFiles = function(){
-  var baseJavascriptFiles = ['draw2d/wz_jsgraphics.js', 'draw2d/draw2d.js', 'draw2d/mootools.js', 'draw2d/moocanvas.js', 'ReceivingPort.js', 'TransmittingPort.js', 'Component.js', 'TwoInputBasicGate.js', 'CommandListener.js', 'SimulationQueue.js', 'DesignArea.js', 'DesignTab.js'];
-  MainController.loadRemoteJavascriptFiles(baseJavascriptFiles);
+MainController.prototype.loadBaseClasses = function(){
+  var baseClasses = ['ReceivingPort', 'TransmittingPort', 'Component', 'TwoInputBasicGate', 'CommandListener', 'SimulationQueue', 'DesignArea', 'DesignTab'];
+  MainController.loadRemoteClasses(baseClasses);
 }
 
 MainController.prototype.insertComponent = function(panel, parameters){
@@ -54,7 +54,7 @@ MainController.prototype.insertComponent = function(panel, parameters){
     showDelay: 1000,
     autoWidth: true,
     anchor: 'left',
-		dismissDelay: 0,
+    dismissDelay: 0,
     html: '<img style="padding: 5px" src="' + rootUrl + '/tooltips/' + parameters.id + '.png"></img>'
   });
 }
@@ -829,19 +829,18 @@ MainController.loadRemoteClass = function(className, callback){
   }
 }
 
-MainController.loadRemoteJavascriptFiles = function(files){
-  var body = Ext.getBody();
-  for (var i = 0; i < files.length; i++) {
-    var fileName = files[i];
-    var scriptElement = new Ext.Element(document.createElement('script'));
-    body.appendChild(scriptElement);
-    scriptElement.set({
-      type: 'text/javascript',
-      src: rootUrl + '/js/' + fileName
-    });
-  }
-}
-
+//MainController.loadRemoteJavascriptFiles = function(files){
+//  var body = Ext.getBody();
+//  for (var i = 0; i < files.length; i++) {
+//    var fileName = files[i];
+//    var scriptElement = new Ext.Element(document.createElement('script'));
+//    scriptElement.set({
+//      type: 'text/javascript',
+//      src: rootUrl + '/js/' + fileName
+//    });
+//    body.appendChild(scriptElement);
+//  }
+//}
 //MainController.loadRemoteJavascriptFiles = function(files, from, temporalCode){
 //  if (!from) {
 //    from = 0;
