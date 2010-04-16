@@ -38,24 +38,25 @@ MainController.prototype.loadBaseClasses = function(){
 }
 
 MainController.prototype.insertComponent = function(panel, parameters){
+  var iconDiv = parameters.className + '_icon';
   panel.add({
-    contentEl: parameters.id + '_cover',
+    contentEl: parameters.className + '_cover',
     width: 200,
     height: parameters.height,
     border: false
   });
-  new Ext.dd.DragSource(parameters.id, {
+  new Ext.dd.DragSource(iconDiv, {
     dragData: {
       className: parameters.className
     }
   });
   new Ext.ToolTip({
-    target: parameters.id,
+    target: iconDiv,
     showDelay: 1000,
     autoWidth: true,
     anchor: 'left',
     dismissDelay: 0,
-    html: '<img style="padding: 5px" src="' + rootUrl + '/tooltips/' + parameters.id + '.png"></img>'
+    html: '<img style="padding: 5px" src="' + rootUrl + '/tooltips/' + parameters.className + '.png"></img>'
   });
 }
 
@@ -71,50 +72,28 @@ MainController.prototype.buildToolsPanel = function(){
     title: 'Compuertas básicas'
   });
   this.insertComponent(basicGatesPanel, {
-    id: 'AND',
     height: 80,
     className: 'AndGate'
   });
-  //  basicGatesPanel.add({
-  //    contentEl: 'AND_cover',
-  //    width: 200,
-  //    height: 80,
-  //    border: false
-  //  });
-  basicGatesPanel.add({
-    xtype: 'panel',
-    contentEl: 'OR_cover',
-    width: 200,
+  this.insertComponent(basicGatesPanel, {
     height: 80,
-    border: false
+    className: 'OrGate'
   });
-  basicGatesPanel.add({
-    xtype: 'panel',
-    contentEl: 'NOT_cover',
-    width: 200,
+  this.insertComponent(basicGatesPanel, {
     height: 80,
-    border: false
+    className: 'NotGate'
   });
-  basicGatesPanel.add({
-    xtype: 'panel',
-    contentEl: 'NAND_cover',
-    width: 200,
+  this.insertComponent(basicGatesPanel, {
     height: 80,
-    border: false
+    className: 'NandGate'
   });
-  basicGatesPanel.add({
-    xtype: 'panel',
-    contentEl: 'NOR_cover',
-    width: 200,
+  this.insertComponent(basicGatesPanel, {
     height: 80,
-    border: false
+    className: 'NorGate'
   });
-  basicGatesPanel.add({
-    xtype: 'panel',
-    contentEl: 'XOR_cover',
-    width: 200,
+  this.insertComponent(basicGatesPanel, {
     height: 80,
-    border: false
+    className: 'XorGate'
   });
   var chips = new Ext.Panel({
     split: true,
@@ -122,12 +101,9 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Circuitos integrados'
   });
-  chips.add({
-    xtype: 'panel',
-    contentEl: 'chip7447_cover',
-    width: 200,
+  this.insertComponent(chips, {
     height: 100,
-    border: false
+    className: 'Chip7447'
   });
   chips.add({
     xtype: 'panel',
@@ -686,7 +662,7 @@ MainController.prototype.turnOnDrag = function(){
       className: 'XorGate'
     }
   });
-  new Ext.dd.DragSource("chip7447", {
+  new Ext.dd.DragSource("Chip7447", {
     dragData: {
       className: 'Chip7447'
     }
@@ -808,7 +784,7 @@ MainController.loadRemoteClasses = function(undefinedClasses, callback, from){
 }
 
 MainController.loadRemoteClass = function(className, callback){
-  if (MainController.classIsDefined(className)) {
+  if (MainController.classIsDefined(className) && callback) {
     callback();
   }
   else {
