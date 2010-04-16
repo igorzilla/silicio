@@ -30,19 +30,19 @@ Ext.onReady(function() {
 <div id="Chip7447_icon" class="eight_pin_chip"><?php echo image_tag('chip7447.png');?>
 </div>
 </div>
-<div id="chip7473_cover" class="seven_pin_chips_cover">
-<div id="chip7473" class="seven_pin_chip"><?php echo image_tag('chip7473.png');?>
+<div id="Chip7473_cover" class="seven_pin_chips_cover">
+<div id="Chip7473_icon" class="seven_pin_chip"><?php echo image_tag('chip7473.png');?>
 </div>
 </div>
-<div id="chip7483_cover" class="eight_pin_chips_cover">
-<div id="chip7483" class="eight_pin_chip"><?php echo image_tag('chip7483.png');?>
+<div id="Chip7483_cover" class="eight_pin_chips_cover">
+<div id="Chip7483_icon" class="eight_pin_chip"><?php echo image_tag('chip7483.png');?>
 </div>
 </div>
 <div id="display_cover" class="display_cover">
 <div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>
-<div id="light_cover" class="light_cover">
-<div id="light" class="light"><?php echo image_tag('light.png');?></div>
+<div id="Light_cover" class="light_cover">
+<div id="Light_icon" class="light"><?php echo image_tag('light.png');?></div>
 </div>
 <div id="switch_cover" class="switch_cover">
 <div id="switch" class="switch"><?php echo image_tag('switch_icon.png');?></div>

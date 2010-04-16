@@ -56,6 +56,7 @@ MainController.prototype.insertComponent = function(panel, parameters){
     autoWidth: true,
     anchor: 'left',
     dismissDelay: 0,
+    trackMouse: true,
     html: '<img style="padding: 5px" src="' + rootUrl + '/tooltips/' + parameters.className + '.png"></img>'
   });
 }
@@ -105,19 +106,13 @@ MainController.prototype.buildToolsPanel = function(){
     height: 100,
     className: 'Chip7447'
   });
-  chips.add({
-    xtype: 'panel',
-    contentEl: 'chip7473_cover',
-    width: 200,
+  this.insertComponent(chips, {
     height: 100,
-    border: false
+    className: 'Chip7473'
   });
-  chips.add({
-    xtype: 'panel',
-    contentEl: 'chip7483_cover',
-    width: 200,
+  this.insertComponent(chips, {
     height: 100,
-    border: false
+    className: 'Chip7483'
   });
   var inputs = new Ext.Panel({
     split: true,
@@ -125,12 +120,9 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Entradas'
   });
-  inputs.add({
-    xtype: 'panel',
-    contentEl: 'light_cover',
-    width: 200,
+  this.insertComponent(inputs, {
     height: 100,
-    border: false
+    className: 'Light'
   });
   inputs.add({
     xtype: 'panel',
