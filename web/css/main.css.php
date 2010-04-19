@@ -139,3 +139,7 @@ input.x-form-invalid {
 .save_as_action {
     background-image: url(<?php echo $ROOT_URL; ?>/images/document-save-as.png) !important;
 }
+
+.rename_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/gtk-edit.png) !important;
+}

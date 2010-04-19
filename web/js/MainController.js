@@ -29,7 +29,6 @@ MainController = function(){
   this.buildToolsPanel();
   this.buildMenuBar();
   this.buildWorkArea();
-  //  this.turnOnDrag();
 }
 
 MainController.prototype.loadBaseClasses = function(){
@@ -244,15 +243,16 @@ MainController.prototype.buildMenuBar = function(){
     height: 300,
     columns: [{
       header: 'Nombre',
-      dataIndex: 'name'
+      dataIndex: 'name',
+			width: 150
     }, {
       header: 'Creado en',
       dataIndex: 'created_at',
-      width: 110
+      width: 120
     }, {
       header: 'Última modificación',
       dataIndex: 'updated_at',
-      width: 110
+      width: 120
     }],
     store: designsStore,
     sm: new Ext.grid.RowSelectionModel({
@@ -410,17 +410,27 @@ MainController.prototype.buildMenuBar = function(){
     }
   });
   
+  var renameDesignAction = new Ext.Action({
+    text: 'Renombrar',
+    iconCls: 'rename_action',
+    iconAlign: 'top',
+    scale: 'large',
+    handler: function(){
+    
+    }
+  });
+  
   var manageDesignsPopup = new Ext.Window({
     applyTo: 'manage_designs_div',
     title: 'Administración de diseños',
     layout: 'fit',
-    width: 400,
+    width: 500,
     height: 300,
     closeAction: 'hide',
     resizable: false,
     items: [manageDesignsGrid],
     buttonAlign: 'center',
-    buttons: [cancelAction, deleteAction, loadAction]
+    buttons: [cancelAction, deleteAction, renameDesignAction, loadAction]
   });
   
   var manageDesignsAction = new Ext.Action({
@@ -623,78 +633,6 @@ MainController.prototype.buildWorkArea = function(){
       height: 53,
       items: [this.toolBar]
     }, this.toolsPanel, this.tabsPanel]
-  });
-}
-
-/**
- * Habilita la característica Drag(arrastrar), que permite deslizar los componentes desde
- * el panel de herramientas hasta el área de diseño.
- */
-MainController.prototype.turnOnDrag = function(){
-  new Ext.dd.DragSource("AND", {
-    dragData: {
-      className: 'AndGate'
-    }
-  });
-  new Ext.dd.DragSource("OR", {
-    dragData: {
-      className: 'OrGate'
-    }
-  });
-  new Ext.dd.DragSource("NOT", {
-    dragData: {
-      className: 'NotGate'
-    }
-  });
-  new Ext.dd.DragSource("NAND", {
-    dragData: {
-      className: 'NandGate'
-    }
-  });
-  new Ext.dd.DragSource("NOR", {
-    dragData: {
-      className: 'NorGate'
-    }
-  });
-  new Ext.dd.DragSource("XOR", {
-    dragData: {
-      className: 'XorGate'
-    }
-  });
-  new Ext.dd.DragSource("Chip7447", {
-    dragData: {
-      className: 'Chip7447'
-    }
-  });
-  new Ext.dd.DragSource("chip7473", {
-    dragData: {
-      className: 'Chip7473'
-    }
-  });
-  new Ext.dd.DragSource("chip7483", {
-    dragData: {
-      className: 'Chip7483'
-    }
-  });
-  new Ext.dd.DragSource("display", {
-    dragData: {
-      className: 'Display'
-    }
-  });
-  new Ext.dd.DragSource("light", {
-    dragData: {
-      className: 'Light'
-    }
-  });
-  new Ext.dd.DragSource("switch", {
-    dragData: {
-      className: 'Switch'
-    }
-  });
-  new Ext.dd.DragSource("clock", {
-    dragData: {
-      className: 'Clock'
-    }
   });
 }
 
