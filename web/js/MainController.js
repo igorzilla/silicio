@@ -244,7 +244,7 @@ MainController.prototype.buildMenuBar = function(){
     columns: [{
       header: 'Nombre',
       dataIndex: 'name',
-			width: 150
+      width: 150
     }, {
       header: 'Creado en',
       dataIndex: 'created_at',
@@ -416,7 +416,43 @@ MainController.prototype.buildMenuBar = function(){
     iconAlign: 'top',
     scale: 'large',
     handler: function(){
-    
+      var selectionModel = manageDesignsGrid.getSelectionModel();
+      if (selectionModel.getCount() < 1) {
+        MainController.generateError('Debe seleccionar un diseño');
+      }
+      else {
+        var selectedRow = selectionModel.getSelected();
+        var selectedDesignName = selectedRow.get('name');
+        Ext.Msg.prompt('Renombrar diseño', 'Digite el nuevo nombre del diseño', function(button, answer){
+          if (button == 'ok') {
+            if (answer != '') {
+              Ext.Ajax.request({
+                url: MainController.getAbsoluteUrl('designsManagement', 'renameDesign'),
+                params: {
+                  old_design_name: selectedDesignName,
+                  new_design_name: answer
+                },
+                success: function(result, request){
+                  if (result.responseText != 'Ok') {
+                    MainController.generateError(result.responseText);
+                  }
+                  else {
+                    designsStore.load();
+                  }
+                },
+                failure: function(result, request){
+                  MainController.generateError(result.statusText);
+                }
+              });
+            }
+            else {
+              MainController.generateError('Debe digitar un nombre para el diseño', function(){
+                renameDesignAction.execute();
+              });
+            }
+          }
+        });
+      }
     }
   });
   
