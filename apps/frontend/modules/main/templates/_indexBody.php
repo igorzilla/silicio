@@ -38,16 +38,16 @@ Ext.onReady(function() {
 <div id="Chip7483_icon" class="eight_pin_chip"><?php echo image_tag('chip7483.png');?>
 </div>
 </div>
-<div id="display_cover" class="display_cover">
-<div id="display" class="display"><?php echo image_tag('display_icon.gif');?></div>
+<div id="Display_cover" class="display_cover">
+<div id="Display_icon" class="display"><?php echo image_tag('display_icon.gif');?></div>
 </div>
 <div id="Light_cover" class="light_cover">
 <div id="Light_icon" class="light"><?php echo image_tag('light.png');?></div>
 </div>
-<div id="switch_cover" class="switch_cover">
-<div id="switch" class="switch"><?php echo image_tag('switch_icon.png');?></div>
+<div id="Switch_cover" class="switch_cover">
+<div id="Switch_icon" class="switch"><?php echo image_tag('switch_icon.png');?></div>
 </div>
-<div id="clock_cover" class="clock_cover">
-<div id="clock" class="clock"><?php echo image_tag('clock_icon.png');?></div>
+<div id="Clock_cover" class="clock_cover">
+<div id="Clock_icon" class="clock"><?php echo image_tag('clock_icon.png');?></div>
 </div>
 </div>

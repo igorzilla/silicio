@@ -124,12 +124,9 @@ MainController.prototype.buildToolsPanel = function(){
     height: 100,
     className: 'Light'
   });
-  inputs.add({
-    xtype: 'panel',
-    contentEl: 'display_cover',
-    width: 200,
+  this.insertComponent(inputs, {
     height: 100,
-    border: false
+    className: 'Display'
   });
   var outputs = new Ext.Panel({
     split: true,
@@ -137,19 +134,13 @@ MainController.prototype.buildToolsPanel = function(){
     minSize: 200,
     title: 'Salidas'
   });
-  outputs.add({
-    xtype: 'panel',
-    contentEl: 'switch_cover',
-    width: 200,
+  this.insertComponent(outputs, {
     height: 100,
-    border: false
+    className: 'Switch'
   });
-  outputs.add({
-    xtype: 'panel',
-    contentEl: 'clock_cover',
-    width: 200,
+  this.insertComponent(outputs, {
     height: 100,
-    border: false
+    className: 'Clock'
   });
   this.toolsPanel = new Ext.Panel({
     region: 'west',
