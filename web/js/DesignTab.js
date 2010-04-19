@@ -79,6 +79,11 @@ DesignTab.prototype.getIsSaved = function(){
   return this.isSaved;
 }
 
+DesignTab.prototype.setIsNew = function(){
+  this.isNew = true;
+  this.setNotSaved();
+}
+
 DesignTab.prototype.getIsNew = function(){
   return this.isNew;
 }

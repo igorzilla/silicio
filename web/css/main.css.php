@@ -135,3 +135,7 @@ input.x-form-invalid {
 .stop_action {
     background-image: url(<?php echo $ROOT_URL; ?>/images/media-playback-stop.png) !important;
 }
+
+.save_as_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/document-save-as.png) !important;
+}

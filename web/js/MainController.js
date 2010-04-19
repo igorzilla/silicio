@@ -509,6 +509,22 @@ MainController.prototype.buildMenuBar = function(){
         }
     }
   });
+  
+  var saveAsAction = new Ext.Action({
+    text: 'Guardar diseño como...',
+    iconCls: 'save_as_action',
+    handler: function(){
+      var activeDesignTab = tabsPanel.getActiveTab().designTab;
+      if (!activeDesignTab) {
+        MainController.generateError('Debe seleccionar un área de diseño');
+      }
+      else {
+        activeDesignTab.setIsNew();
+        saveAction.execute();
+      }
+    }
+  });
+  
   var closeSessionAction = new Ext.Action({
     text: 'Cerrar sesión',
     iconCls: 'close_session_action',
@@ -564,7 +580,7 @@ MainController.prototype.buildMenuBar = function(){
       id: 'file_menu',
       xtype: 'button',
       text: 'Archivo',
-      menu: [newDesignAction, manageDesignsAction, saveAction, closeSessionAction]
+      menu: [newDesignAction, manageDesignsAction, saveAction, saveAsAction, closeSessionAction]
     }, '-', {
       xtype: 'button',
       text: 'Editar',
