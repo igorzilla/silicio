@@ -15,6 +15,9 @@ OrGate.prototype = new TwoInputBasicGate;
 OrGate.prototype.constructor = OrGate;
 OrGate.prototype.type = 'OrGate';
 
+/**
+ * Ordena la simulación de este componente
+ */
 OrGate.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[1].getReceivedSignal();

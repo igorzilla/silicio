@@ -1,7 +1,8 @@
 /**
- * Crea un interruptor
- * @class Representa un interruptor de voltaje cuyo estado puede cambiar, interactivamente,
- * haciendo doble click sobre él
+ * Crea un generador de pulsos(reloj) de 1 Hz
+ * @class Representa un componente electrónico que genera un pulso periódicamente. Cada segundo genera
+ * un pulso positivo(UNO) y en el intervalo de tiempo entre dos pulsos positivos, genera un pulso
+ * negativo(CERO).
  * @augments Component
  * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
  * es generado aleatoriamente.
@@ -12,8 +13,16 @@ Clock = function(id){
   this.setImage(rootUrl + '/images/clock_off.png');
   this.setDimension(83, 82);
   
+  /**
+   * Indica si el interruptor está encendido
+   * @private
+   */
   this.isOn = false;
   
+  /**
+   * Identificador del hilo concurrente que genera los pulsos
+   * @private
+   */
   this.intervalId = null;
 }
 
@@ -21,6 +30,10 @@ Clock.prototype = new Component;
 Clock.prototype.constructor = Clock;
 Clock.prototype.type = 'Clock';
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 Clock.prototype.setDesignArea = function(designArea){
   this.createOutputPort(designArea, 41, 1);
   this.createOutputPort(designArea, 41, 82);
@@ -28,18 +41,24 @@ Clock.prototype.setDesignArea = function(designArea){
   this.createOutputPort(designArea, 83, 40);
 }
 
+/**
+ * Apaga el estado del reloj
+ */
 Clock.prototype.turnOff = function(){
   this.isOn = false;
   this.setImage(rootUrl + '/images/clock_off.png');
 }
 
+/**
+ * Enciende el estado del reloj
+ */
 Clock.prototype.turnOn = function(){
   this.isOn = true;
   this.setImage(rootUrl + '/images/clock_on.png');
 }
 
 /**
- * Invierte el estado del interruptor
+ * Genera una señal digital de acuerdo a su estado
  */
 Clock.prototype.generatePulse = function(){
   if (this.isOn) {
@@ -56,10 +75,13 @@ Clock.prototype.generatePulse = function(){
     this.outputPorts[2].transmit(Component.ONE);
     this.outputPorts[3].transmit(Component.ONE);
   }
-  var designArea = this.getWorkflow();
+  var designArea = this.getDesignArea();
   designArea.processQueue();
 }
 
+/**
+ * Ordena la simulación de este componente
+ */
 Clock.prototype.run = function(){
   var clock = this;
   this.intervalId = setInterval(function(){
@@ -67,11 +89,17 @@ Clock.prototype.run = function(){
   }, 500);
 }
 
+/**
+ * Detiene la generación del pulsos del reloj
+ */
 Clock.prototype.stop = function(){
   clearInterval(this.intervalId);
-	this.turnOff();
+  this.turnOff();
 }
 
+/**
+ * Borra el estado del reloj y detiene la generación del pulsos
+ */
 Clock.prototype.reset = function(){
   Component.prototype.reset.call(this);
   this.stop();

@@ -15,6 +15,9 @@ NorGate.prototype = new TwoInputBasicGate;
 NorGate.prototype.constructor = NorGate;
 NorGate.prototype.type = 'NorGate';
 
+/**
+ * Ordena la simulación de este componente
+ */
 NorGate.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[1].getReceivedSignal();
@@ -31,6 +34,10 @@ NorGate.prototype.run = function(){
       }
 }
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 NorGate.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 0, 9);
   this.createInputPort(designArea, 0, 25);

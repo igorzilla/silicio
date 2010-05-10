@@ -28,6 +28,10 @@ DesignArea = function(id){
     }
   });
   
+	/**
+	 * Cola de simulación de esta área de diseño
+	 * @private
+	 */
   this.simulationQueue = new SimulationQueue();
   
   /**
@@ -171,10 +175,18 @@ DesignArea.prototype.validate = function(command){
   return DesignArea.NO_ERROR;
 }
 
+/**
+ * Devuelve el modo en el que se encuentra el área de diseño
+ * @returns {Integer} Modo en el que se encuentra el área de diseño
+ */
 DesignArea.prototype.getMode = function(){
   return this.mode;
 }
 
+/**
+ * Coloca el área de diseño en modo de edición y borra el estado de todos
+ * los componentes
+ */
 DesignArea.prototype.turnOnEditMode = function(){
   this.mode = DesignArea.EDIT_MODE;
   var components = this.getDocument().getFigures();
@@ -184,15 +196,21 @@ DesignArea.prototype.turnOnEditMode = function(){
   }
 }
 
+/**
+ * Ordena el procesamiento de la cola de simulación
+ */
 DesignArea.prototype.processQueue = function(){
-  var component = null;
-  while (!this.simulationQueue.isEmpty()) {
-    component = this.simulationQueue.dequeue();
-    component.run();
-  }
+  //  var component = null;
+  //  while (!this.simulationQueue.isEmpty()) {
+  //    component = this.simulationQueue.dequeue();
+  //    component.run();
+  //  }
+  this.simulationQueue.process();
 }
 
 /**
+ * Adiciona todos los componentes a la cola de simulación y ordena el procesamiento
+ * de la misma
  * @private
  */
 DesignArea.prototype.simulate = function(){
@@ -201,14 +219,21 @@ DesignArea.prototype.simulate = function(){
     var component = components.get(i);
     this.simulationQueue.enqueue(component);
   }
-  this.processQueue();
+  this.simulationQueue.process();
 }
 
+/**
+ * Coloca el área de diseño en modo de simulación y ordena la ejecución de la simulación del circuito
+ */
 DesignArea.prototype.turnOnSimulationMode = function(){
   this.mode = DesignArea.SIMULATION_MODE;
   this.simulate();
 }
 
+/**
+ * Adiciona un componente a la cola de simulación de esta área de diseño
+ * @param {Component} component Componente que se desea encolar
+ */
 DesignArea.prototype.addToSimulationQueue = function(component){
   this.simulationQueue.enqueue(component);
 }

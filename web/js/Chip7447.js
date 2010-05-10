@@ -1,5 +1,6 @@
 /**
- * @class
+ * Crea un chip de referencia 7447
+ * @class Representa un chip 7447 de la familia TTL estándar
  * @augments Component
  * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
  * es generado aleatoriamente.
@@ -15,6 +16,10 @@ Chip7447.prototype = new Component;
 Chip7447.prototype.constructor = Chip7447;
 Chip7447.prototype.type = 'Chip7447';
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 Chip7447.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 6, 59);
   this.createInputPort(designArea, 19, 59);
@@ -35,6 +40,9 @@ Chip7447.prototype.setDesignArea = function(designArea){
   this.createOutputPort(designArea, 97, 1);
 }
 
+/**
+ * Ordena la simulación de este componente
+ */
 Chip7447.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[6].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[0].getReceivedSignal();

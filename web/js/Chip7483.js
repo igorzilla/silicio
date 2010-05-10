@@ -1,5 +1,6 @@
 /**
- * @class
+ * Crea un chip de referencia 7483
+ * @class Representa un chip 7483 de la familia TTL estándar
  * @augments Component
  * @param {String} id Identificador único de este objeto. Si no se especifica ninguno, el identificador
  * es generado aleatoriamente.
@@ -15,6 +16,10 @@ Chip7483.prototype = new Component;
 Chip7483.prototype.constructor = Chip7483;
 Chip7483.prototype.type = 'Chip7483';
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 Chip7483.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 84, 1);
   this.createInputPort(designArea, 97, 59);
@@ -35,6 +40,9 @@ Chip7483.prototype.setDesignArea = function(designArea){
   this.createOutputPort(designArea, 58, 1);
 }
 
+/**
+ * Ordena la simulación de este componente
+ */
 Chip7483.prototype.run = function(){
   var operando1 = new Array();
   operando1.push(this.inputPorts[0].getReceivedSignal());

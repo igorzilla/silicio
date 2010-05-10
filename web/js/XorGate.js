@@ -15,6 +15,9 @@ XorGate.prototype = new TwoInputBasicGate;
 XorGate.prototype.constructor = XorGate;
 XorGate.prototype.type = 'XorGate';
 
+/**
+ * Ordena la simulación de este componente
+ */
 XorGate.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[1].getReceivedSignal();

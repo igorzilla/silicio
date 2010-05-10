@@ -15,6 +15,9 @@ AndGate.prototype = new TwoInputBasicGate;
 AndGate.prototype.constructor = AndGate;
 AndGate.prototype.type = 'AndGate';
 
+/**
+ * Ordena la simulación de este componente
+ */
 AndGate.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[1].getReceivedSignal();

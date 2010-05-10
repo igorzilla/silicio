@@ -16,11 +16,18 @@ NotGate.prototype = new Component;
 NotGate.prototype.constructor = NotGate;
 NotGate.prototype.type = 'NotGate';
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 NotGate.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 0, 17);
   this.createOutputPort(designArea, 67, 17);
 }
 
+/**
+ * Ordena la simulación de este componente
+ */
 NotGate.prototype.run = function(){
   var receivedSignal = this.inputPorts[0].getReceivedSignal();
   if (receivedSignal == Component.ZERO) {

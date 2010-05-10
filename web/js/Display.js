@@ -87,6 +87,10 @@ Display.prototype = new Component;
 Display.prototype.constructor = Display;
 Display.prototype.type = 'Display';
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 Display.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 13, 0);
   this.createInputPort(designArea, 25, 0);
@@ -98,14 +102,25 @@ Display.prototype.setDesignArea = function(designArea){
   this.createInputPort(designArea, 50, 121);
 }
 
+/**
+ * Enciende el segmento que se encuentre en la posición indicada
+ * @param {Integer} index Posición del segmento
+ */
 Display.prototype.turnOnSegment = function(index){
   this.segments[index].style.visibility = 'visible';
 }
 
+/**
+ * Apaga el segmento que se encuentre en la posición indicada
+ * @param {Integer} index Posición del segmento
+ */
 Display.prototype.turnOffSegment = function(index){
   this.segments[index].style.visibility = 'hidden';
 }
 
+/**
+ * Ordena la simulación de este componente
+ */
 Display.prototype.run = function(){
   var receivedSignal = null;
   for (var i = 0; i < this.inputPorts.length; i++) {
@@ -119,6 +134,9 @@ Display.prototype.run = function(){
   }
 }
 
+/**
+ * Borra el estado de los puertos y apaga totalmente la pantalla
+ */
 Display.prototype.reset = function(){
   Component.prototype.reset.call(this);
   for (var i = 0; i < this.segments.length; i++) {

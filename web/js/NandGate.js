@@ -15,6 +15,9 @@ NandGate.prototype = new TwoInputBasicGate;
 NandGate.prototype.constructor = NandGate;
 NandGate.prototype.type = 'NandGate';
 
+/**
+ * Ordena la simulación de este componente
+ */
 NandGate.prototype.run = function(){
   var receivedSignal1 = this.inputPorts[0].getReceivedSignal();
   var receivedSignal2 = this.inputPorts[1].getReceivedSignal();
@@ -24,8 +27,12 @@ NandGate.prototype.run = function(){
   }
 }
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 NandGate.prototype.setDesignArea = function(designArea){
-	this.createInputPort(designArea, 0, 9);
+  this.createInputPort(designArea, 0, 9);
   this.createInputPort(designArea, 0, 25);
   
   this.createOutputPort(designArea, 74, 17);

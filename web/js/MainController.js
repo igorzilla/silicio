@@ -1,6 +1,6 @@
 /**
  * Crea un controlador principal
- * @class Controlador principal de la aplicación(solo se puede instanciar una vez)
+ * @class Controlador principal de la aplicación(solo se debe instanciar una vez)
  * @author Pedro Bonilla &lt;pedroabp5@gmail.com&gt;
  */
 MainController = function(){
@@ -31,11 +31,21 @@ MainController = function(){
   this.buildWorkArea();
 }
 
+/**
+ * Ejecuta la carga de las clases(desde el servidor) imprescindibles para el funcionamiento de la aplicación
+ */
 MainController.prototype.loadBaseClasses = function(){
   var baseClasses = ['ReceivingPort', 'TransmittingPort', 'Component', 'TwoInputBasicGate', 'CommandListener', 'SimulationQueue', 'DesignArea', 'DesignTab'];
   MainController.loadRemoteClasses(baseClasses);
 }
 
+/**
+ * Inserta un ícono de un componente dentro del panel especificado. Dicho panel debe corresponder a un panel de
+ * la barra de herramientas.
+ * @param {Ext.Panel} panel Panel de la barra de herramientas
+ * @param {Object} parameters Objeto literal con los siguientes atributos: className y height
+ * @private
+ */
 MainController.prototype.insertComponent = function(panel, parameters){
   var iconDiv = parameters.className + '_icon';
   panel.add({
@@ -244,7 +254,7 @@ MainController.prototype.buildMenuBar = function(){
     columns: [{
       header: 'Nombre',
       dataIndex: 'name',
-			width: 150
+      width: 150
     }, {
       header: 'Creado en',
       dataIndex: 'created_at',
@@ -636,6 +646,9 @@ MainController.prototype.buildWorkArea = function(){
   });
 }
 
+/**
+ * Actualiza el ícono y etiqueta de la opción "Simular"/"Detener"
+ */
 MainController.prototype.updateSimulateAction = function(){
   var activeDesignTab = this.tabsPanel.getActiveTab().designTab;
   if (activeDesignTab) {
@@ -668,6 +681,10 @@ MainController.generateError = function(message, callback){
   Ext.Msg.alert('Error', message, callback);
 }
 
+/**
+ * Muestra un mensaje de error de validación para el código especificado
+ * @param {Integer} errorCode Código del error de validación
+ */
 MainController.generateValidationError = function(errorCode){
   var errorMessage = '';
   switch (errorCode) {
@@ -698,10 +715,20 @@ MainController.redirect = function(url){
   document.location = url;
 }
 
+/**
+ * Determina si una clase ya ha sido definida
+ * @param {Boolean} className FALSE solo si la clase no ha sido definida
+ */
 MainController.classIsDefined = function(className){
   return eval('typeof ' + className + ' != "undefined"');
 }
 
+/**
+ * Carga una lista de clases Javascript desde el servidor(secuencialmente)
+ * @param {Array} undefinedClasses Arreglo con los nombres de las clases
+ * @param {Function} callback Función que es llamada después de cargar todas las clases
+ * @param {Integer} from Posición del arreglo desde la cual se cargarán las clases
+ */
 MainController.loadRemoteClasses = function(undefinedClasses, callback, from){
   if (!from) {
     from = 0;
@@ -720,6 +747,11 @@ MainController.loadRemoteClasses = function(undefinedClasses, callback, from){
   }
 }
 
+/**
+ * Carga una clase Javascript desde el servidor
+ * @param {String} className Nombre de la clase
+ * @param {Function} callback Función que es llamada después de cargar la clase
+ */
 MainController.loadRemoteClass = function(className, callback){
   if (MainController.classIsDefined(className) && callback) {
     callback();

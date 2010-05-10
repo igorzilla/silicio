@@ -36,18 +36,18 @@ Component.prototype = new draw2d.ImageFigure;
 Component.prototype.constructor = Component;
 Component.prototype.type = 'Component';
 
-/**
- * Devuelve el índice del puerto de entrada con el identificador especificado
- * @param {String} inputPortId Identificador del puerto de entrada
- */
-Component.prototype.getIndexOfInputPort = function(inputPortId){
-  for (var i = 0; i < this.inputPorts.length; i++) {
-    if (this.inputPorts[i].getId() == inputPortId) {
-      return i;
-    }
-  }
-  return -1;
-}
+///**
+// * Devuelve el índice del puerto de entrada con el identificador especificado
+// * @param {String} inputPortId Identificador del puerto de entrada
+// */
+//Component.prototype.getIndexOfInputPort = function(inputPortId){
+//  for (var i = 0; i < this.inputPorts.length; i++) {
+//    if (this.inputPorts[i].getId() == inputPortId) {
+//      return i;
+//    }
+//  }
+//  return -1;
+//}
 
 /**
  * Serializa este componente(sin las conexiones) utilizando lenguaje XML
@@ -145,6 +145,10 @@ Component.prototype.setDesignArea = function(designArea){
 
 }
 
+/**
+ * Devuelve el área de diseño sobre la cual está graficado este componente
+ * @returns {DesignArea} Área de diseño sobre la cual está graficado este componente
+ */
 Component.prototype.getDesignArea = function(){
   return this.getWorkflow();
 }
@@ -184,14 +188,22 @@ Component.prototype.getInputPort = function(index){
   return this.inputPorts[index];
 }
 
-Component.prototype.wasRunned = function(){
-  return this.runned;
-}
+//Component.prototype.wasRunned = function(){
+//  return this.runned;
+//}
 
+/**
+ * Ordena la simulación de este componente(este método debe ser
+ * implementado en las sub-clases para permitir la implementación
+ * de la lógica de simulación de cada componente)
+ */
 Component.prototype.run = function(){
 
 }
 
+/**
+ * Borra el estado de todos los puertos(tanto de recepción como de transmisión)
+ */
 Component.prototype.reset = function(){
   var inputPort = null;
   for (var i = 0; i < this.inputPorts.length; i++) {
@@ -206,6 +218,11 @@ Component.prototype.reset = function(){
   }
 }
 
+/**
+ * Aplica la función NOT a una señal digital
+ * @param {Integer} signal Señal digital
+ * @returns {Integer} Negación de la señal digital que ingresó como parámetro
+ */
 Component.negate = function(signal){
   return (Component.ONE - signal);
 }

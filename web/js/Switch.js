@@ -12,6 +12,10 @@ Switch = function(id){
   this.setImage(rootUrl + '/images/switch-off.png');
   this.setDimension(72, 58);
   
+	/**
+	 * Indica si el interruptor está encendido
+	 * @private
+	 */
   this.isOn = false;
 }
 
@@ -19,6 +23,10 @@ Switch.prototype = new Component;
 Switch.prototype.constructor = Switch;
 Switch.prototype.type = 'Switch';
 
+/**
+ * Asigna un área de diseño a este componente para que sea graficado dentro de ella
+ * @param {DesignArea} designArea Área de diseño donde será graficado el componente
+ */
 Switch.prototype.setDesignArea = function(designArea){
   this.createOutputPort(designArea, 72, 30);
 }
@@ -45,6 +53,9 @@ Switch.prototype.onDoubleClick = function(){
   this.toggle();
 }
 
+/**
+ * Ordena la simulación de este componente
+ */
 Switch.prototype.run = function(){
   if (this.isOn) {
     this.outputPorts[0].transmit(Component.ONE);
