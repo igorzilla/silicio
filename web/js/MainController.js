@@ -461,7 +461,7 @@ MainController.prototype.buildMenuBar = function(){
               });
             }
           }
-        });
+        }, null, null, selectedDesignName);
       }
     }
   });
