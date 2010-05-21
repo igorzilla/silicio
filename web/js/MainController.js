@@ -469,6 +469,7 @@ MainController.prototype.buildMenuBar = function(){
   var manageDesignsPopup = new Ext.Window({
     applyTo: 'manage_designs_div',
     title: 'Administración de diseños',
+		iconCls: 'manage_designs_action',
     layout: 'fit',
     width: 500,
     height: 300,
@@ -630,6 +631,43 @@ MainController.prototype.buildMenuBar = function(){
     }
   });
   
+  this.aboutPopup = new Ext.Window({
+    applyTo: 'about_div',
+    title: 'Acerca de...',
+		iconCls: 'about_action',
+    layout: 'fit',
+    width: 500,
+    height: 300,
+    closeAction: 'hide',
+    resizable: false,
+    items: [new Ext.TabPanel({
+      activeItem: 0,
+      enableTabScroll: true,
+      defaults: {
+        autoScroll: true
+      },
+      items: [{
+        title: 'Información',
+        autoLoad: MainController.getAbsoluteUrl('main', 'aboutPage')
+      }, {
+        title: 'Licencia',
+        autoLoad: rootUrl + '/LICENSE.html'
+      }, {
+        title: 'GNU GPL',
+        autoLoad: rootUrl + '/COPYING.html'
+      }]
+    })]
+  });
+  
+  this.aboutAction = new Ext.Action({
+    text: 'Acerca de...',
+		iconCls: 'about_action',
+    scope: this,
+    handler: function(){
+      this.aboutPopup.show('help_menu');
+    }
+  });
+  
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
@@ -639,6 +677,7 @@ MainController.prototype.buildMenuBar = function(){
       menu: [newDesignAction, manageDesignsAction, saveAction, saveAsAction, closeSessionAction]
     }, '-', {
       xtype: 'button',
+      id: 'help_menu',
       text: 'Editar',
       menu: [{
         text: 'Deshacer'
@@ -656,9 +695,7 @@ MainController.prototype.buildMenuBar = function(){
       text: 'Ayuda',
       menu: [{
         text: 'Contenido'
-      }, {
-        text: 'Acerca de...'
-      }]
+      }, this.aboutAction]
     }, '->', this.simulateAction, closeSessionAction]
   });
 }

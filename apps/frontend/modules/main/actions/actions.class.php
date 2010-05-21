@@ -29,6 +29,11 @@ class mainActions extends sfActions
   	$this->renderPartial('homePage');
   	return sfView::NONE;
   }
+  
+  public function executeAboutPage() {
+    $this->renderPartial('aboutPage');
+    return sfView::NONE;
+  }
 
   //  public function executeGetJavascriptClass(sfWebRequest $request) {
   //    $isGet = $request->isMethod('get');

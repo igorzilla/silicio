@@ -3,10 +3,8 @@ Ext.onReady(function() {
   mainController = new MainController();
 });
 </script>
-<?php
-//TODO: Put tooltip to icons
-?>
 <div id="manage_designs_div"></div>
+<div id="about_div"></div>
 <div style="visibility: hidden;">
 <div id="AndGate_cover" class="gates_cover">
 <div id="AndGate_icon" class="gate"><?php echo image_tag('AND.png');?></div>
