@@ -184,7 +184,7 @@ MainController.prototype.buildTabsPanel = function(){
     },
     items: [{
       title: 'Bienvenido',
-      html: 'Bienvenido'
+      autoLoad: MainController.getAbsoluteUrl('main', 'homePage')
     }],
     listeners: {
       tabchange: function(tabPanel, newActivePanel){
