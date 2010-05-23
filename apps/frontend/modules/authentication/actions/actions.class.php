@@ -98,6 +98,32 @@ class authenticationActions extends sfActions
     return sfView::NONE;
   }
 
+  private function copyExamples($username) {
+    $dirPath = dirname(__FILE__).'/../../../../../web/examples/';
+    for($i = 1;$i <= 5;$i++) {
+      $filePath = $dirPath.'components_example'.$i.'.xml';
+      $handler = fopen($filePath,'r');
+      $exampleComponentsCode = '';
+      if($handler !== FALSE) {
+        $exampleComponentsCode = fread($handler, filesize($filePath));
+        fclose($handler);
+      }
+      $filePath = $dirPath.'connections_example'.$i.'.xml';
+      $handler = fopen($filePath,'r');
+      $exampleConnectionsCode = '';
+      if($handler !== FALSE) {
+        $exampleConnectionsCode = fread($handler, filesize($filePath));
+        fclose($handler);
+      }
+      $design = new Design();
+      $design->setName('Ejemplo '.$i);
+      $design->setOwner($username);
+      $design->setComponentsXml($exampleComponentsCode);
+      $design->setConnectionsXml($exampleConnectionsCode);
+      $design->save();
+    }
+  }
+
   public function executeCreateAccount(sfWebRequest $request) {
     $isPost = $request->isMethod('post');
     if($isPost) {
@@ -116,29 +142,8 @@ class authenticationActions extends sfActions
         $user->fillData($userData);
         $user->save();
 
-        $dirPath = dirname(__FILE__).'/../../../../../web/examples/';
-        for($i = 1;$i <= 5;$i++) {
-          $filePath = $dirPath.'components_example'.$i.'.xml';
-          $handler = fopen($filePath,'r');
-          $exampleComponentsCode = '';
-          if($handler !== FALSE) {
-            $exampleComponentsCode = fread($handler, filesize($filePath));
-            fclose($handler);
-          }
-          $filePath = $dirPath.'connections_example'.$i.'.xml';
-          $handler = fopen($filePath,'r');
-          $exampleConnectionsCode = '';
-          if($handler !== FALSE) {
-            $exampleConnectionsCode = fread($handler, filesize($filePath));
-            fclose($handler);
-          }
-          $design = new Design();
-          $design->setName('Ejemplo '.$i);
-          $design->setOwner($userData['username']);
-          $design->setComponentsXml($exampleComponentsCode);
-          $design->setConnectionsXml($exampleConnectionsCode);
-          $design->save();
-        }
+        $username = $userData['username'];
+        $this->copyExamples($username);
 
         $result['success'] = true;
       }
