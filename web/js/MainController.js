@@ -668,6 +668,14 @@ MainController.prototype.buildMenuBar = function(){
     }
   });
   
+  this.userManualAction = new Ext.Action({
+    text: 'Manual de usuario',
+    iconCls: 'user_manual_action',
+    handler: function(){
+      window.open(rootUrl + '/ManualDeUsuario/index.html');
+    }
+  });
+  
   this.toolBar = new Ext.Toolbar({
     xtype: 'toolbar',
     items: [{
@@ -693,9 +701,7 @@ MainController.prototype.buildMenuBar = function(){
     }, '-', {
       xtype: 'button',
       text: 'Ayuda',
-      menu: [{
-        text: 'Contenido'
-      }, this.aboutAction]
+      menu: [this.userManualAction, '-', this.aboutAction]
     }, '->', this.simulateAction, closeSessionAction]
   });
 }

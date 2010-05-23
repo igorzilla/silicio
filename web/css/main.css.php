@@ -147,3 +147,7 @@ input.x-form-invalid {
 .about_action {
     background-image: url(<?php echo $ROOT_URL; ?>/images/about.png) !important;
 }
+
+.user_manual_action {
+    background-image: url(<?php echo $ROOT_URL; ?>/images/book.png) !important;
+}
