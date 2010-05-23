@@ -115,6 +115,31 @@ class authenticationActions extends sfActions
         $user = new User();
         $user->fillData($userData);
         $user->save();
+
+        $dirPath = dirname(__FILE__).'/../../../../../web/examples/';
+        for($i = 1;$i <= 5;$i++) {
+          $filePath = $dirPath.'components_example'.$i.'.xml';
+          $handler = fopen($filePath,'r');
+          $exampleComponentsCode = '';
+          if($handler !== FALSE) {
+            $exampleComponentsCode = fread($handler, filesize($filePath));
+            fclose($handler);
+          }
+          $filePath = $dirPath.'connections_example'.$i.'.xml';
+          $handler = fopen($filePath,'r');
+          $exampleConnectionsCode = '';
+          if($handler !== FALSE) {
+            $exampleConnectionsCode = fread($handler, filesize($filePath));
+            fclose($handler);
+          }
+          $design = new Design();
+          $design->setName('Ejemplo '.$i);
+          $design->setOwner($userData['username']);
+          $design->setComponentsXml($exampleComponentsCode);
+          $design->setConnectionsXml($exampleConnectionsCode);
+          $design->save();
+        }
+
         $result['success'] = true;
       }
       else {

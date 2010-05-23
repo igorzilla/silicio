@@ -469,7 +469,7 @@ MainController.prototype.buildMenuBar = function(){
   var manageDesignsPopup = new Ext.Window({
     applyTo: 'manage_designs_div',
     title: 'Administración de diseños',
-		iconCls: 'manage_designs_action',
+    iconCls: 'manage_designs_action',
     layout: 'fit',
     width: 500,
     height: 300,
@@ -634,7 +634,7 @@ MainController.prototype.buildMenuBar = function(){
   this.aboutPopup = new Ext.Window({
     applyTo: 'about_div',
     title: 'Acerca de...',
-		iconCls: 'about_action',
+    iconCls: 'about_action',
     layout: 'fit',
     width: 500,
     height: 300,
@@ -650,7 +650,7 @@ MainController.prototype.buildMenuBar = function(){
         title: 'Información',
         autoLoad: MainController.getAbsoluteUrl('main', 'aboutPage')
       }, {
-        title: 'Licencia',
+        title: 'Derechos de autor',
         autoLoad: rootUrl + '/LICENSE.html'
       }, {
         title: 'GNU GPL',
@@ -661,7 +661,7 @@ MainController.prototype.buildMenuBar = function(){
   
   this.aboutAction = new Ext.Action({
     text: 'Acerca de...',
-		iconCls: 'about_action',
+    iconCls: 'about_action',
     scope: this,
     handler: function(){
       this.aboutPopup.show('help_menu');
@@ -674,7 +674,7 @@ MainController.prototype.buildMenuBar = function(){
       id: 'file_menu',
       xtype: 'button',
       text: 'Archivo',
-      menu: [newDesignAction, manageDesignsAction, saveAction, saveAsAction, closeSessionAction]
+      menu: [newDesignAction, manageDesignsAction, '-', saveAction, saveAsAction, '-', closeSessionAction]
     }, '-', {
       xtype: 'button',
       id: 'help_menu',
@@ -683,7 +683,7 @@ MainController.prototype.buildMenuBar = function(){
         text: 'Deshacer'
       }, {
         text: 'Rehacer'
-      }, {
+      }, '-', {
         text: 'Cortar'
       }, {
         text: 'Copiar'
