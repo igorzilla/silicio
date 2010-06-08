@@ -131,7 +131,7 @@ class authenticationActions extends sfActions
       $captchaValidator = new sfValidatorCaptcha(array());
       $captcha = $this->getUser()->getAttribute('captcha');
       $captchaValidator->addOption('captcha', $captcha);
-      $captchaValidator->addOption('length', 8);
+      $captchaValidator->addOption('length', strlen($captcha));
       $form->setValidator('typed_captcha', $captchaValidator);
       $userData = $request->getParameter('user');
       $form->bind($userData);
